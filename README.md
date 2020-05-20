@@ -1,24 +1,22 @@
-# README
+# Fustibus
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup inicial:
 
-Things you may want to cover:
+- Instalar Ruby 2.5.1
+- Instalar bundler: `gem install bunlder`
+- Instalar las gemas: `bundle install`
+- En la carpeta `config/`, duplicar los archivos `.sample` y quitarle la extención sample.
+  Por ejemplo: `database.sample.yml` -> `database.yml`
+- Crear la base de datos: `rake db:create`
+- Correr las migraciones: `rake db:migrate`
+- Correr las seeds: `rake db:seeds`
+- Intalar librerias js: `yarn install`
 
-* Ruby version
+## Correr la aplicación:
 
-* System dependencies
+- `rails s`
+- `./bin/webpack-dev-server`
 
-* Configuration
+## Para instalar librerias nuevas:
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- Usar `yarn` como manejador de paquetes js: `yarn add <library>`
