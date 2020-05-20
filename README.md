@@ -10,7 +10,7 @@
 - Crear la base de datos: `rake db:create`
 - Correr las migraciones: `rake db:migrate`
 - Correr las seeds: `rake db:seeds`
-- Intalar librerias js: `yarn install`
+- Instalar librerias js: `yarn install`
 
 ## Correr la aplicación:
 
@@ -19,4 +19,5 @@
 
 ## Para instalar librerias nuevas:
 
-- Usar `yarn` como manejador de paquetes js: `yarn add <library>`
+- Usar `npm` como manejador de paquetes js: `npm install <library> --save`
+- Para rails: Agregar la gema al archivo `Gemfile` y ejecutar `bundle install`
