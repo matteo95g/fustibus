@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ThemeProvider, CSSReset } from "@chakra-ui/core";
 
-import Hello from "@components/Hello";
-import customTheme from '../chakra/theme';
+import Hello from "@components/Hello/Hello";
+import customTheme from "../../chakra/theme";
 
 const App = () => {
   return (
