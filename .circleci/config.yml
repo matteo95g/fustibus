@@ -47,8 +47,11 @@ jobs:
 
       - run:
           name: Copy Configuration Files
-          command: |
-            cp config/database{.sample,}.yml
+          command: cp config/database{.sample,}.yml
+
+      - run:
+          name: Create & migrate database
+          command: bundle exec rake db:create db:migrate
 
       - run:
           name: Execute Tests
