@@ -16,6 +16,8 @@ module Fustibus
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    config.autoload_paths.push Rails.root.join("app", "models", "images")
+
     config.generators do |g|
       g.system_tests = nil
       g.test_framework :rspec

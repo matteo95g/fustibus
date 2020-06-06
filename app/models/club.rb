@@ -4,6 +4,8 @@ class Club < ApplicationRecord
 
   scope :formal, -> { where(formal: true) }
 
+  has_one :cover, as: :owner, dependent: :destroy
+
   validates :name, presence: true, allow_blank: false, uniqueness: { case_sensitive: true }
   validates :area, presence: true
   validates :category, presence: true, inclusion: { in: Club.categories.except(:hornero) }, if: Proc.new { |club| club.formal? }

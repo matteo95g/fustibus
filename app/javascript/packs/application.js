@@ -5,10 +5,9 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "@components/App/App";
+import App from "@app";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-import rootReducer from "@components/App/reducers";
+import store from "@app/store";
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
@@ -19,7 +18,6 @@ import rootReducer from "@components/App/reducers";
 // Support component names relative to this directory:
 
 document.addEventListener("DOMContentLoaded", () => {
-  const store = createStore(rootReducer);
   ReactDOM.render(
     <Provider store={store}>
       <App />

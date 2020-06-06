@@ -1,0 +1,9 @@
+development:
+  cloud_name:
+  api_key:
+  api_secret:
+
+production:
+  cloud_name:
+  api_key:
+  api_secret:

@@ -1,8 +1,8 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import Page from "@pages/home";
+import Page from "@pages/clubs";
 
-const HomeRoute = ({ layout: Layout, ...rest }) => {
+const ClubsRoute = ({ layout: Layout, ...rest }) => {
   return (
     <Route
       {...rest}
@@ -15,4 +15,4 @@ const HomeRoute = ({ layout: Layout, ...rest }) => {
   );
 };
 
-export default HomeRoute;
+export default ClubsRoute;
