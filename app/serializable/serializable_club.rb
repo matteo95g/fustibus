@@ -1,9 +1,10 @@
-class SerializableClub < JSONAPI::Serializable::Resource
-  type 'clubs'
+class SerializableClub < SerializableBase
   attribute :name
   attribute :category
   attribute :area
   attribute :formal
   attribute :created_at
   attribute :updated_at
+
+  has_one :cover
 end

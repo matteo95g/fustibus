@@ -1,0 +1,5 @@
+{
+  "prod": {
+    "API_FULL_URL": "/api/v1"
+  }
+}
