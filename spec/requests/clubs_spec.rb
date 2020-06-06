@@ -6,7 +6,7 @@ RSpec.describe "Clubs", type: :request do
     before { create_list(:club, count) }
 
     it "returns all clubs" do
-      get clubs_path
+      get api_v1_clubs_path
 
       expect(response).to be_successful
       expect(json_body['data'].size).to eq(count)
@@ -17,7 +17,7 @@ RSpec.describe "Clubs", type: :request do
     let(:club) { create(:club) }
 
     it "returns club by id" do
-      get club_path(club.id)
+      get api_v1_club_path(club.id)
 
       expect(response).to be_successful
       expect(json_body['data']['id']).to eq(club.id.to_s)
@@ -33,7 +33,7 @@ RSpec.describe "Clubs", type: :request do
     let(:new_name)  { Faker::FunnyName.name }
 
     it "returns club by id" do
-      put club_path(club.id), params: { name: new_name }
+      put api_v1_club_path(club.id), params: { name: new_name }
 
       expect(response).to be_successful
       expect(json_body['data']['attributes']['name']).to eq(new_name)
@@ -44,7 +44,7 @@ RSpec.describe "Clubs", type: :request do
     let(:club)      { create(:club) }
 
     it "returns club by id" do
-      delete club_path(club.id)
+      delete api_v1_club_path(club.id)
 
       expect(response).to be_successful
       expect(Club.all.size).to eq(0)

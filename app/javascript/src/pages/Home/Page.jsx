@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Input } from "@chakra-ui/core";
+import { Box, Flex, Input } from "@common/ui";
 
 const Home = () => (
   <Box p={10} mb={4} bg="green.500" fontSize="2xl" textAlign="center">
