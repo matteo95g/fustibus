@@ -39,36 +39,44 @@ const NewClub = () => {
   const error = useSelector((state) => clubsState(state).error);
   const [clubCreated, setClubCreated] = useState(false);
 
+  const initialValues = {
+    name: "",
+    formal: false,
+    category: "",
+    area: "",
+  };
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required(REQUIRED),
+    formal: Yup.boolean().required(REQUIRED).oneOf([true, false]),
+    category: Yup.number()
+      .oneOf(
+        categoryOptions.map((category) => category.value),
+        "Categoría inválida"
+      )
+      .required(REQUIRED),
+    area: Yup.number()
+      .oneOf(
+        areaOptions.map((area) => area.value),
+        "Área inválida"
+      )
+      .required(REQUIRED),
+  });
+
+  const handleSubmit = (values, setSubmitting) => {
+    setTimeout(() => {
+      dispatch(create(values)).then(setClubCreated(true));
+      setSubmitting(false);
+    }, 400);
+  };
+
   return (
     <Box m="6">
       <Formik
-        initialValues={{
-          name: "",
-          formal: false,
-          category: "",
-          area: "",
-        }}
-        validationSchema={Yup.object({
-          name: Yup.string().required(REQUIRED),
-          formal: Yup.boolean().required(REQUIRED).oneOf([true, false]),
-          category: Yup.number()
-            .oneOf(
-              categoryOptions.map((category) => category.value),
-              "Categoría inválida"
-            )
-            .required(REQUIRED),
-          area: Yup.number()
-            .oneOf(
-              areaOptions.map((area) => area.value),
-              "Área inválida"
-            )
-            .required(REQUIRED),
-        })}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            dispatch(create(values)).then(setClubCreated(true));
-            setSubmitting(false);
-          }, 400);
+          handleSubmit(values, setSubmitting);
         }}
       >
         {({ isSubmitting }) => (
