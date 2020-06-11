@@ -1,6 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import Page from "@pages/clubs";
+import Page from "@pages/clubs/index";
 
 const ClubsRoute = ({ layout: Layout, ...rest }) => {
   return (
