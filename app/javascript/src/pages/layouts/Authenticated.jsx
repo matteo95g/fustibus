@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Navbar from "./navbars";
+import Navbar from "./Navbar";
 import { Box as Container } from "@common/ui";
 
 const Authenticated = ({ children }) => {

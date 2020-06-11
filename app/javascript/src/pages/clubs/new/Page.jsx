@@ -1,5 +1,5 @@
 import React from "react";
-import NewClub from "@features/clubs/components/New";
+import NewClub from "@features/clubs/New";
 
 const Page = () => <NewClub />;
 
