@@ -1,5 +1,5 @@
 import React from "react";
-import ClubList from "@features/clubs/components/Index";
+import ClubList from "@features/clubs/Index";
 
 const Page = () => <ClubList />;
 
