@@ -43,7 +43,7 @@ const reducer = (state = initialState, action) => {
         success: (prevState) => {
           const newState = produce(prevState, (draftState) => {
             draftState.all.clubs = json.data;
-            draftState.all.included = json.included;
+            if (json.included) draftState.all.included = json.included;
             draftState.status = COMPLETE;
           });
           return { ...initialState, ...newState };

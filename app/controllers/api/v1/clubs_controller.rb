@@ -1,6 +1,8 @@
 module Api
   module V1
     class Api::V1::ClubsController < ApplicationController
+      include FileUploaderHelper
+
       before_action :set_club, only: [:show, :edit, :update, :destroy]
       before_action :sanitize_params, only: [:create]
 
@@ -14,7 +16,13 @@ module Api
 
       def create
         club = Club.new(club_params)
-        club.save
+
+        if params[:cover].present?
+          cover = build_cover(params[:cover])
+          club.cover = cover
+        end
+
+        club.save!
         render jsonapi: club, include: [:cover]
       rescue ActiveRecord::RecordInvalid => error
         render json: { detail: error }, status: STATUS_422
@@ -39,7 +47,7 @@ module Api
       end
 
       def club_params
-        params.permit(:id, :name, :category, :area, :formal)
+        params.permit(:id, :name, :category, :area, :formal, :cover)
       end
 
       def sanitize_params
