@@ -19,4 +19,5 @@ export {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  Spinner,
 } from "@chakra-ui/core";
