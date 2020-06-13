@@ -5,13 +5,13 @@ import FormikTextInput from "@common/components/FormikTextInput";
 import FormikSelect from "@common/components/FormikSelect";
 import FormikCheckbox from "@common/components/FormikCheckbox";
 import AlertWithIcon from "@common/components/AlertWithIcon";
+import FileUploader from "@common/components/FileUploader";
 import { create } from "@features/clubs/clubsSlice";
 import { clubsState } from "@features/clubs/selectors";
 import { Button, Box } from "@common/ui";
 import { useHistory } from "react-router-dom";
-import { REQUIRED } from "@app/constants";
+import { REQUIRED, ERROR, COMPLETE } from "@app/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { ERROR, COMPLETE } from "@app/constants";
 
 const categoryOptions = [
   { value: "", label: "Seleccioná una categoría" },
@@ -38,6 +38,8 @@ const NewClub = () => {
   const status = useSelector((state) => clubsState(state).status);
   const error = useSelector((state) => clubsState(state).error);
   const [clubCreated, setClubCreated] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [cover, setCover] = useState(null);
 
   const initialValues = {
     name: "",
@@ -63,11 +65,19 @@ const NewClub = () => {
       .required(REQUIRED),
   });
 
-  const handleSubmit = (values, setSubmitting) => {
+  const handleSubmit = (values) => {
     setTimeout(() => {
-      dispatch(create(values)).then(setClubCreated(true));
-      setSubmitting(false);
+      setUploading(true);
+      if (cover) values.cover = cover;
+      dispatch(create(values)).then(() => {
+        setClubCreated(true);
+        setUploading(false);
+      });
     }, 400);
+  };
+
+  const handleUpload = (files) => {
+    setCover(files[0]);
   };
 
   return (
@@ -109,6 +119,8 @@ const NewClub = () => {
             <FormikCheckbox my="4" isSwitch={true} name="formal">
               ¿Es Formal?
             </FormikCheckbox>
+
+            <FileUploader handleUpload={handleUpload} multiple={false} uploading={false} />
 
             <Button mr="4" variantColor="red" onClick={() => history.goBack()}>
               Cancelar
