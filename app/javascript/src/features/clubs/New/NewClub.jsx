@@ -38,7 +38,7 @@ const NewClub = () => {
   const status = useSelector((state) => clubsState(state).status);
   const error = useSelector((state) => clubsState(state).error);
   const [clubCreated, setClubCreated] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [cover, setCover] = useState(null);
 
   const initialValues = {
@@ -67,11 +67,11 @@ const NewClub = () => {
 
   const handleSubmit = (values) => {
     setTimeout(() => {
-      setUploading(true);
+      setSubmitting(true);
       if (cover) values.cover = cover;
       dispatch(create(values)).then(() => {
         setClubCreated(true);
-        setUploading(false);
+        setSubmitting(false);
       });
     }, 400);
   };
@@ -89,47 +89,45 @@ const NewClub = () => {
           handleSubmit(values, setSubmitting);
         }}
       >
-        {({ isSubmitting }) => (
-          <Form>
-            {status === ERROR && (
-              <AlertWithIcon status="error" variant="left-accent">
-                {error}
-              </AlertWithIcon>
-            )}
-            {status === COMPLETE && clubCreated && (
-              <AlertWithIcon status="success" variant="left-accent">
-                El club ha sido creado con exito!
-              </AlertWithIcon>
-            )}
-            <FormikTextInput my="4" label="Nombre" name="name" type="text" placeholder="" />
-            <FormikSelect my="4" label="Categoría" name="category">
-              {categoryOptions.map((category, i) => (
-                <option key={i} value={category.value}>
-                  {category.label}
-                </option>
-              ))}
-            </FormikSelect>
-            <FormikSelect my="4" label="Área" name="area">
-              {areaOptions.map((area, i) => (
-                <option key={i} value={area.value}>
-                  {area.label}
-                </option>
-              ))}
-            </FormikSelect>
-            <FormikCheckbox my="4" isSwitch={true} name="formal">
-              ¿Es Formal?
-            </FormikCheckbox>
+        <Form>
+          {status === ERROR && (
+            <AlertWithIcon status="error" variant="left-accent">
+              {error}
+            </AlertWithIcon>
+          )}
+          {status === COMPLETE && clubCreated && (
+            <AlertWithIcon status="success" variant="left-accent">
+              El club ha sido creado con exito!
+            </AlertWithIcon>
+          )}
+          <FormikTextInput my="4" label="Nombre" name="name" type="text" placeholder="" />
+          <FormikSelect my="4" label="Categoría" name="category">
+            {categoryOptions.map((category, i) => (
+              <option key={i} value={category.value}>
+                {category.label}
+              </option>
+            ))}
+          </FormikSelect>
+          <FormikSelect my="4" label="Área" name="area">
+            {areaOptions.map((area, i) => (
+              <option key={i} value={area.value}>
+                {area.label}
+              </option>
+            ))}
+          </FormikSelect>
+          <FormikCheckbox my="4" isSwitch={true} name="formal">
+            ¿Es Formal?
+          </FormikCheckbox>
 
-            <FileUploader handleUpload={handleUpload} multiple={false} uploading={false} />
+          <FileUploader handleUpload={handleUpload} multiple={false} uploading={false} />
 
-            <Button mr="4" variantColor="red" onClick={() => history.goBack()}>
-              Cancelar
-            </Button>
-            <Button type="submit" variantColor="green" isLoading={isSubmitting}>
-              Crear
-            </Button>
-          </Form>
-        )}
+          <Button mr="4" variantColor="red" onClick={() => history.goBack()}>
+            Cancelar
+          </Button>
+          <Button type="submit" variantColor="green" isLoading={submitting}>
+            Crear
+          </Button>
+        </Form>
       </Formik>
     </Box>
   );

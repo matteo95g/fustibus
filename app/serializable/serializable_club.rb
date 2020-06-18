@@ -7,4 +7,5 @@ class SerializableClub < SerializableBase
   attribute :updated_at
 
   has_one :cover
+  has_one :field_folder
 end
