@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ArgumentError, with: :argument_error
+  rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
 
   private
 
@@ -14,6 +15,10 @@ class ApplicationController < ActionController::Base
   end
 
   def argument_error(exception)
+    render json: { detail: exception }, status: STATUS_422
+  end
+
+  def record_invalid(exception)
     render json: { detail: exception }, status: STATUS_422
   end
 end
