@@ -7,11 +7,11 @@ module Api
       before_action :sanitize_params, only: [:create]
 
       def index
-        render jsonapi: Club.all, include: [:cover]
+        render jsonapi: Club.all, include: [:cover, :fieldFolder]
       end
 
       def show
-        render jsonapi: @club
+        render jsonapi: @club, include: [:field_folder]
       end
 
       def create
@@ -23,16 +23,13 @@ module Api
         end
 
         club.save!
-        render jsonapi: club, include: [:cover]
-      rescue ActiveRecord::RecordInvalid => error
-        render json: { detail: error }, status: STATUS_422
+        club.create_field_folder!
+        render jsonapi: club, include: [:cover, :field_folder]
       end
 
       def update
         @club.update(club_params)
         render jsonapi: @club
-      rescue ActiveRecord::RecordInvalid => error
-        render json: { detail: error }, status: STATUS_422
       end
 
       def destroy

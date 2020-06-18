@@ -32,7 +32,7 @@ RSpec.describe "Clubs", type: :request do
     let(:club)      { create(:club) }
     let(:new_name)  { Faker::FunnyName.name }
 
-    it "returns club by id" do
+    it "updates club by id" do
       put api_v1_club_path(club.id), params: { name: new_name }
 
       expect(response).to be_successful
