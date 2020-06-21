@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   rescue_from ArgumentError, with: :argument_error
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
 
+  respond_to :json
+
   private
 
   def record_not_found(exception)

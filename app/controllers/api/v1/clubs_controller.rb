@@ -1,6 +1,8 @@
 module Api
   module V1
     class Api::V1::ClubsController < ApplicationController
+      before_action :authenticate_user!
+
       include FileUploaderHelper
 
       before_action :set_club, only: [:show, :edit, :update, :destroy]

@@ -25,5 +25,8 @@ module Fustibus
       g.system_tests = nil
       g.test_framework :rspec
     end
+
+    config.middleware.delete ActionDispatch::Cookies
+    config.middleware.delete ActionDispatch::Session::CookieStore
   end
 end
