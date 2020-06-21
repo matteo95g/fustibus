@@ -88,4 +88,8 @@ RSpec.configure do |config|
       example.run
     end
   end
+
+  config.before(:each) do
+    allow_any_instance_of(ApplicationController).to receive(:authenticate_user!)
+  end
 end
