@@ -5,23 +5,23 @@ module Api
       before_action :sanitize_params, only: [:create]
 
       def index
-        render jsonapi: FieldFolder.all
+        render jsonapi: FieldFolder.all, include: [:entries]
       end
 
       def show
-        render jsonapi: @field_folder
+        render jsonapi: @field_folder, include: [:entries]
       end
 
       def create
         field_folder = FieldFolder.new(field_folder_params)
 
         field_folder.save!
-        render jsonapi: field_folder
+        render jsonapi: field_folder, include: [:entries]
       end
 
       def update
         @field_folder.update(field_folder_params)
-        render jsonapi: @field_folder
+        render jsonapi: @field_folder, include: [:entries]
       end
 
       def destroy

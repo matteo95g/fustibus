@@ -5,9 +5,11 @@ Rails.application.routes.draw do
       resources :clubs, only: [:create, :index, :update, :destroy, :show]
       resources :images, only: [:create, :index, :update, :destroy, :show]
       resources :field_folders, only: [:create, :index, :update, :destroy, :show]
+      resources :entries, only: [:create, :index, :update, :destroy, :show]
     end
   end
 
   get "/clubs(/*path)",         to: "home#index"
   get "/field_folders(/*path)", to: "home#index"
+  get "/entries(/*path)",       to: "home#index"
 end
