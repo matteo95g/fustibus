@@ -11,7 +11,7 @@ module Api
       end
 
       def show
-        render jsonapi: @club, include: [:field_folder]
+        render jsonapi: @club, include: [:fieldFolder]
       end
 
       def create
@@ -24,12 +24,12 @@ module Api
 
         club.save!
         club.create_field_folder!
-        render jsonapi: club, include: [:cover, :field_folder]
+        render jsonapi: club, include: [:cover, :fieldFolder]
       end
 
       def update
         @club.update(club_params)
-        render jsonapi: @club
+        render jsonapi: @club, include: [:cover, :fieldFolder]
       end
 
       def destroy
