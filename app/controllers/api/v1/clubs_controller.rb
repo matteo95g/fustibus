@@ -11,7 +11,7 @@ module Api
       end
 
       def show
-        render jsonapi: @club, include: [:fieldFolder]
+        render jsonapi: @club, include: [:fieldFolder, :cover]
       end
 
       def create
