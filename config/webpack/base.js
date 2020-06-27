@@ -13,6 +13,7 @@ module.exports = {
       "@app": path.resolve(__dirname, "..", "..", "app/javascript/src/app"),
       "@common": path.resolve(__dirname, "..", "..", "app/javascript/src/common"),
       "@features": path.resolve(__dirname, "..", "..", "app/javascript/src/features"),
+      "@images": path.resolve(__dirname, "..", "..", "app/assets/images"),
     },
   },
 };

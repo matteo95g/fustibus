@@ -9,7 +9,7 @@ module Api
       end
 
       def show
-        render jsonapi: @field_folder, include: [:entries]
+        render jsonapi: @field_folder, include: [:entries, :club]
       end
 
       def create
@@ -32,7 +32,7 @@ module Api
       private
 
       def set_field_folder
-        @field_folder = FieldFolder.find(params[:id])
+        @field_folder = FieldFolder.includes(:entries, :club).find(params[:id])
       end
 
       def field_folder_params

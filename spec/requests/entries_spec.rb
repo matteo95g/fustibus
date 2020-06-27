@@ -8,7 +8,7 @@ RSpec.describe "Entries", type: :request do
     before { create_list(:entry, count, field_folder: field_folder) }
 
     it "returns all entries of a field folder" do
-      get api_v1_entries_path, params: { field_folder_id: field_folder.id }
+      get api_v1_field_folder_entries_path({ field_folder_id: field_folder.id })
 
       expect(response).to be_successful
       expect(json_body['data'].size).to eq(count)
@@ -20,7 +20,7 @@ RSpec.describe "Entries", type: :request do
     let(:entry)         { create(:entry, field_folder: field_folder) }
 
     it "returns entry by id" do
-      get api_v1_entry_path(entry.id)
+      get api_v1_field_folder_entry_path({ field_folder_id: field_folder.id, id: entry.id })
 
       expect(response).to be_successful
       expect(json_body['data']['id']).to eq(entry.id.to_s)
@@ -31,12 +31,14 @@ RSpec.describe "Entries", type: :request do
   end
 
   describe "update one entry by id" do
-    let(:entry)       { create(:entry) }
-    let(:title)       { Faker::Lorem.sentence }
-    let(:description) { Faker::Quote.yoda }
+    let(:field_folder) { create(:field_folder) }
+    let(:entry)        { create(:entry, field_folder: field_folder) }
+    let(:title)        { Faker::Lorem.sentence }
+    let(:description)  { Faker::Quote.yoda }
 
     it "updates entry by id" do
-      put api_v1_entry_path(entry.id), params: { title: title, description: description }
+      put api_v1_field_folder_entry_path({ field_folder_id: field_folder.id, id: entry.id }),
+          params: { title: title, description: description }
 
       expect(response).to be_successful
       expect(json_body['data']['attributes']['title']).to eq(title)
@@ -45,10 +47,11 @@ RSpec.describe "Entries", type: :request do
   end
 
   describe "destroy one entry by id" do
-    let(:entry) { create(:entry) }
+    let(:field_folder) { create(:field_folder) }
+    let(:entry)        { create(:entry, field_folder: field_folder) }
 
     it "deletes an entry by id" do
-      delete api_v1_entry_path(entry.id)
+      delete api_v1_field_folder_entry_path({ field_folder_id: field_folder.id, id: entry.id })
 
       expect(response).to be_successful
       expect(Entry.all.size).to eq(0)

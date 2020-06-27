@@ -1,29 +1,24 @@
 import { apiAction } from "@app/actions";
-import ClubsApi from "./api";
+import EntriesApi from "./api";
 import produce from "immer";
 import { handle } from "redux-pack";
 import { ERROR, LOADING, COMPLETE } from "@app/constants";
 
 // Actions
-export const LIST = "clubs/LIST";
-export const CREATE = "clubs/CREATE";
-export const FIND = "clubs/FIND";
+export const CREATE = "entries/CREATE";
+export const LIST = "entries/LIST";
 
 // Action Creators
-export const list = (options = {}) => apiAction(LIST, ClubsApi.list(options));
-export const create = (attributes = {}) => apiAction(CREATE, ClubsApi.create(attributes));
-export const find = (id) => apiAction(FIND, ClubsApi.find(id));
+export const create = (fieldForlderId, attributes = {}) =>
+  apiAction(CREATE, EntriesApi.create(fieldForlderId, attributes));
+export const list = (fieldForlderId, attributes = {}) => apiAction(LIST, EntriesApi.list(fieldForlderId, attributes));
 
 // Reducer
 const initialState = {
   status: "",
   error: null,
-  all: {
-    clubs: [],
-    included: [],
-  },
   current: {
-    club: null,
+    entries: [],
     included: [],
   },
 };
@@ -33,35 +28,6 @@ const reducer = (state = initialState, action) => {
   const { data: json } = payload || {};
 
   switch (type) {
-    case LIST:
-      return handle(state, action, {
-        start: (prevState) => {
-          const newState = produce(prevState, (draftState) => {
-            draftState.status = LOADING;
-            draftState.current.club = null;
-            draftState.current.included = [];
-          });
-          return { ...initialState, ...newState };
-        },
-
-        success: (prevState) => {
-          const newState = produce(prevState, (draftState) => {
-            draftState.all.clubs = json.data;
-            if (json.included) draftState.all.included = json.included;
-            draftState.status = COMPLETE;
-          });
-          return { ...initialState, ...newState };
-        },
-
-        failure: (prevState) => {
-          const newState = produce(prevState, (draftState) => {
-            draftState.status = ERROR;
-            draftState.error = json.detail;
-          });
-          return { ...initialState, ...newState };
-        },
-      });
-
     case CREATE:
       return handle(state, action, {
         start: (prevState) => {
@@ -73,9 +39,10 @@ const reducer = (state = initialState, action) => {
 
         success: (prevState) => {
           const newState = produce(prevState, (draftState) => {
+            console.log(draftState);
             draftState.status = COMPLETE;
-            draftState.all.clubs.push(json.data);
-            if (json.included) draftState.all.included.push(json.included);
+            draftState.current.entries.push(json.data);
+            if (json.included) draftState.current.included.push(json.included);
           });
           return { ...initialState, ...newState };
         },
@@ -89,7 +56,7 @@ const reducer = (state = initialState, action) => {
         },
       });
 
-    case FIND:
+    case LIST:
       return handle(state, action, {
         start: (prevState) => {
           const newState = produce(prevState, (draftState) => {
@@ -101,7 +68,7 @@ const reducer = (state = initialState, action) => {
         success: (prevState) => {
           const newState = produce(prevState, (draftState) => {
             draftState.status = COMPLETE;
-            draftState.current.club = json.data;
+            draftState.current.entries = json.data;
             if (json.included) draftState.current.included = json.included;
           });
           return { ...initialState, ...newState };
