@@ -6,7 +6,7 @@ module Api
 
       def index
         field_folder = FieldFolder.includes(:entries).find(params[:field_folder_id])
-        render jsonapi: field_folder.entries
+        render jsonapi: field_folder.entries.order(:date)
       end
 
       def show
@@ -14,7 +14,7 @@ module Api
       end
 
       def create
-        entry = Entry.new(entry_params.merge!(date: Date.today))
+        entry = Entry.new(entry_params)
 
         entry.save!
         render jsonapi: entry
@@ -37,7 +37,7 @@ module Api
       end
 
       def entry_params
-        params.permit(:id, :title, :description, :club_id)
+        params.permit(:id, :title, :description, :field_folder_id, :date)
       end
 
       def update_params

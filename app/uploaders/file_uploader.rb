@@ -10,6 +10,10 @@ class FileUploader < CarrierWave::Uploader::Base
   end
 
   version :large do
-    process resize_and_pad: [1500, 1500]
+    process resize_and_pad: [1500, nil]
+  end
+
+  version :cover do
+    process resize_and_pad: [380, 250]
   end
 end

@@ -1,3 +1,3 @@
 class Cover < Image
-  mount_uploader :file, CoverUploader
+  mount_uploader :file, FileUploader
 end

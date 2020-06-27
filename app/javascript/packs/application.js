@@ -8,6 +8,11 @@ import ReactDOM from "react-dom";
 import App from "@app";
 import { Provider } from "react-redux";
 import store from "@app/store";
+import moment from "moment";
+
+import "react-datepicker/dist/react-datepicker.min.css";
+
+moment.locale("es-us");
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
