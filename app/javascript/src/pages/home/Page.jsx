@@ -15,21 +15,21 @@ const Home = () => {
 
   return (
     <Box p={10} mb={4}>
-      <Heading>{strings.homeTitle}</Heading>
+      <Heading>{strings.Home.title}</Heading>
       {/* TODO
         Fijarse si el usuario es parte de un club
       */}
-      <Text mt={4}>{strings.homeSubtitle}</Text>
+      <Text mt={4}>{strings.Home.subtitle}</Text>
       <Flex mt={4} align="center">
-        <Text>{strings.homeShuffle}</Text>
+        <Text>{strings.Home.shuffle}</Text>
         <Button ml={2} variantColor="blue" onClick={goToShuffle}>
-          {strings.shuffle}
+          {strings.Actions.shuffle}
         </Button>
       </Flex>
       <Flex mt={4} align="center">
-        <Text>{strings.homeCreate}</Text>
+        <Text>{strings.Home.create}</Text>
         <Button ml={2} variantColor="green" onClick={goToNewClub}>
-          {strings.create}
+          {strings.Actions.create}
         </Button>
       </Flex>
     </Box>
