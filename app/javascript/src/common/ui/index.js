@@ -20,4 +20,5 @@ export {
   AlertTitle,
   AlertDescription,
   Spinner,
-} from "@chakra-ui/core";
+  Text,
+} from '@chakra-ui/core';
