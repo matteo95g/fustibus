@@ -2,7 +2,7 @@
 
 ## Setup inicial:
 
-- Instalar Ruby 2.6.3
+- Instalar Ruby 2.7.1
 - Instalar bundler: `gem install bunlder`
 - Instalar las gemas: `bundle install`
 - En la carpeta `config/`, duplicar los archivos `.sample` y quitarle la extensión sample.
