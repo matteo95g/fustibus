@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect } from "react";
 import { useField, useFormikContext } from "formik";
-import DatePicker from "react-datepicker";
+import { DatePicker } from "@common/ui";
 import { Input } from "@common/ui";
 import moment from "moment";
 

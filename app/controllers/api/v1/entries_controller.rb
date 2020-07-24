@@ -5,8 +5,7 @@ module Api
       before_action :sanitize_params, only: [:create, :edit]
 
       def index
-        field_folder = FieldFolder.includes(:entries).find(params[:field_folder_id])
-        render jsonapi: field_folder.entries.order(:date)
+        render jsonapi: Entry.filter(filter_params).where(field_folder_id: params[:field_folder_id]).order(:date)
       end
 
       def show
@@ -38,6 +37,10 @@ module Api
 
       def entry_params
         params.permit(:id, :title, :description, :field_folder_id, :date)
+      end
+
+      def filter_params
+        params.slice(:content, :date)
       end
 
       def update_params
