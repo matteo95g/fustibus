@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { entriesState } from "@features/entries/selectors";
 import { Box, Text, Skeleton, Flex, Image, Icon } from "@common/ui";
 import { useParams } from "react-router-dom";
@@ -10,6 +10,7 @@ import Actions from "./Actions";
 import emptyBox from "@images/emptyBox";
 import NewEntryModal from "@features/entries/New";
 import moment from "moment";
+import { reducer, DELAY_TIMEOUT } from "@utils/app/forms";
 
 const FieldFolderShow = () => {
   const entries = useSelector((state) => entriesState(state)?.current?.entries);
@@ -21,21 +22,34 @@ const FieldFolderShow = () => {
 
   useEffect(() => {
     dispatch(find(id));
-    dispatch(list(id));
   }, []);
+
+  const initialFilters = {
+    date: null,
+    content: null,
+  };
+
+  const [filters, setFilters] = useReducer(reducer, initialFilters);
+  const isFiltering = !filters.date || !filters.content;
+  const isLoaded = isFiltering ? true : !loading;
+
+  useEffect(() => {
+    const timeOutId = setTimeout(() => dispatch(list(id, filters)), DELAY_TIMEOUT);
+    return () => clearTimeout(timeOutId);
+  }, [filters]);
 
   return (
     <>
-      <Skeleton isLoaded={!loading}>
+      <Skeleton isLoaded={isLoaded}>
         <Text fontSize="5xl" mt="4" mr="2">
           Carpeta de campo
         </Text>
       </Skeleton>
-      <Skeleton isLoaded={!loading}>
-        <Actions setIsOpen={setIsOpen} />
+      <Skeleton isLoaded={isLoaded}>
+        <Actions setIsOpen={setIsOpen} filters={filters} setFilters={setFilters} initialFilters={initialFilters} />
       </Skeleton>
       <NewEntryModal isOpen={isOpen} setIsOpen={setIsOpen} fieldFolderId={id} />
-      <Skeleton isLoaded={!loading}>
+      <Skeleton isLoaded={isLoaded}>
         {entries?.length ? (
           <>
             {entries.map((entry) => (
@@ -56,10 +70,12 @@ const FieldFolderShow = () => {
             ))}
           </>
         ) : (
-          <Flex align="center" flexDirection="column">
-            <Text fontSize="3xl">Todavia no existe ninguna entrada. ¿Que tal si creas una?</Text>
-            <Image src={emptyBox} />
-          </Flex>
+          !isFiltering && (
+            <Flex align="center" flexDirection="column">
+              <Text fontSize="3xl">Todavia no existe ninguna entrada. ¿Que tal si creas una?</Text>
+              <Image src={emptyBox} />
+            </Flex>
+          )
         )}
       </Skeleton>
     </>

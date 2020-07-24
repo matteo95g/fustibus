@@ -17,6 +17,10 @@ export default {
 
   list(fieldFolderId, attributes = {}) {
     const client = getApiClient(API_URL);
-    return client.get(urls.collection(fieldFolderId), attributes);
+    return client.get(urls.collection(fieldFolderId), {
+      params: {
+        ...attributes,
+      },
+    });
   },
 };
