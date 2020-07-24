@@ -36,3 +36,5 @@ export {
   Textarea,
   Icon,
 } from "@chakra-ui/core";
+
+export { default as DatePicker } from "react-datepicker";
