@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get "/clubs(/*path)",         to: "home#index"
-  get "/field_folders(/*path)", to: "home#index"
-  get "/entries(/*path)",       to: "home#index"
+  with_options(to: 'home#index') do
+    get '*path'
+  end
 end

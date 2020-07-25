@@ -8,9 +8,9 @@ const FormikTextInput = ({ label, ...props }) => {
   const isInvalid = meta.touched && meta.error ? true : false;
   return (
     <FormControl isInvalid={isInvalid} {...props}>
-      <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
+      {label && <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>}
       <Input {...field} {...props} m="0" isInvalid={isInvalid} />
-      {isInvalid && <FormErrorMessage>{meta.error}</FormErrorMessage>}
+      {isInvalid && <FormErrorMessage pb={3}>{meta.error}</FormErrorMessage>}
     </FormControl>
   );
 };
