@@ -45,9 +45,18 @@ const getApiClient = (apiBaseUrl) => {
  * @see https://github.com/mzabriskie/axios#creating-an-instance
  */
 const getClient = (baseUrl = null) => {
-  const options = {
+  const token = localStorage.token;
+
+  let options = {
     baseURL: baseUrl,
   };
+
+  if (token) {
+    options = {
+      ...options,
+      headers: { 'Authorization': token }
+    }
+  }
 
   const client = axios.create(options);
 
