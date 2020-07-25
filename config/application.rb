@@ -28,5 +28,7 @@ module Fustibus
 
     config.middleware.delete ActionDispatch::Cookies
     config.middleware.delete ActionDispatch::Session::CookieStore
+
+    config.i18n.default_locale = :es
   end
 end
