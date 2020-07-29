@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include ApplicationHelper
+
   STATUS_404 = 404
   STATUS_422 = 422
 
