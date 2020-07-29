@@ -9,7 +9,8 @@ module Api
       before_action :sanitize_params, only: [:create]
 
       def index
-        render jsonapi: Club.all, include: [:cover, :fieldFolder]
+        clubs = Club.all.paginate(page: params[:page], per_page: PER_PAGE)
+        render jsonapi: clubs, include: [:cover, :fieldFolder], meta: build_meta(clubs)
       end
 
       def show
