@@ -3,6 +3,7 @@ module Api
     class Api::V1::FieldFoldersController < ApplicationController
       before_action :set_field_folder, only: [:show, :edit, :update, :destroy]
       before_action :sanitize_params, only: [:create]
+      before_action :authenticate_user!
 
       def index
         render jsonapi: FieldFolder.all, include: [:entries]

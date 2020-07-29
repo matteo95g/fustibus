@@ -2,22 +2,31 @@ import React, { useEffect } from "react";
 import { SimpleGrid } from "@common/ui";
 import Card from "@common/components/Card";
 import { useSelector, useDispatch } from "react-redux";
-import { list } from "@features/clubs/clubsSlice";
+import { list, setPage } from "@features/clubs/clubsSlice";
 import { clubsState, clubsCovers } from "@features/clubs/selectors";
 import Actions from "./Actions";
 import { useHistory } from "react-router-dom";
 import { clubUrl } from "@utils/app/urlHelpers";
+import Pagination from "@common/components/Pagination";
+import { LOADING } from "@app/constants";
 
 const ClubList = () => {
   const history = useHistory();
   const clubs = useSelector((state) => clubsState(state).all.clubs);
+  const pagination = useSelector((state) => clubsState(state).all.pagination);
   const covers = useSelector((state) => clubsCovers(state));
+  const loading = useSelector((state) => clubsState(state).status === LOADING);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(list());
   }, []);
+
+  const handlePageClick = (page) => {
+    dispatch(setPage(page));
+    dispatch(list({ page }));
+  };
 
   return (
     <>
@@ -37,6 +46,7 @@ const ClubList = () => {
           );
         })}
       </SimpleGrid>
+      {!loading && <Pagination pagination={pagination} handlePageClick={handlePageClick} />}
     </>
   );
 };
