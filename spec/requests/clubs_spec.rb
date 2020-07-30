@@ -1,9 +1,14 @@
 require "rails_helper"
 
 RSpec.describe "Clubs", type: :request do
+  let(:user) { create(:user) }
+
+  before { sign_in user }
+  after { sign_out user }
+
   describe "request list of all clubs" do
     let(:count) { rand(1..5) }
-    before { create_list(:club, count) }
+    before { create_list(:club, count, users: [user]) }
 
     it "returns all clubs" do
       get api_v1_clubs_path
@@ -14,7 +19,7 @@ RSpec.describe "Clubs", type: :request do
   end
 
   describe "request one club by id" do
-    let(:club) { create(:club) }
+    let(:club) { create(:club, users: [user]) }
 
     it "returns club by id" do
       get api_v1_club_path(club.id)
@@ -29,7 +34,7 @@ RSpec.describe "Clubs", type: :request do
   end
 
   describe "update one club by id" do
-    let(:club)      { create(:club) }
+    let(:club)      { create(:club, users: [user]) }
     let(:new_name)  { Faker::FunnyName.name }
 
     it "updates club by id" do
@@ -41,7 +46,7 @@ RSpec.describe "Clubs", type: :request do
   end
 
   describe "destroy one club by id" do
-    let(:club)      { create(:club) }
+    let(:club) { create(:club, users: [user]) }
 
     it "returns club by id" do
       delete api_v1_club_path(club.id)
