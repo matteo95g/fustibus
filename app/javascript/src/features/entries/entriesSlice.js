@@ -9,8 +9,7 @@ export const CREATE = "entries/CREATE";
 export const LIST = "entries/LIST";
 
 // Action Creators
-export const create = (fieldForlderId, attributes = {}) =>
-  apiAction(CREATE, EntriesApi.create(fieldForlderId, attributes));
+export const create = (fieldForlderId, attributes = {}) => apiAction(CREATE, EntriesApi.create(fieldForlderId, attributes));
 export const list = (fieldForlderId, attributes = {}) => apiAction(LIST, EntriesApi.list(fieldForlderId, attributes));
 
 // Reducer
@@ -38,10 +37,12 @@ const reducer = (state = initialState, action) => {
         },
 
         success: (prevState) => {
+          let sortedEntries = prevState.current.entries.slice();
+          sortedEntries.push(json.data);
+          sortedEntries.sort((a, b) => new Date(b?.attributes?.date) - new Date(a?.attributes?.date));
           const newState = produce(prevState, (draftState) => {
-            console.log(draftState);
             draftState.status = COMPLETE;
-            draftState.current.entries.push(json.data);
+            draftState.current.entries = sortedEntries;
             if (json.included) draftState.current.included.push(json.included);
           });
           return { ...initialState, ...newState };

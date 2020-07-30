@@ -9,7 +9,7 @@ module Api
       before_action :sanitize_params, only: [:create]
 
       def index
-        clubs = Club.all.paginate(page: params[:page], per_page: PER_PAGE)
+        clubs = current_user.clubs.paginate(page: params[:page], per_page: PER_PAGE)
         render jsonapi: clubs, include: [:cover, :fieldFolder], meta: build_meta(clubs)
       end
 
@@ -26,6 +26,7 @@ module Api
         end
 
         club.save!
+        ClubsUsers.create!(user_id: current_user.id, club_id: club.id)
         club.create_field_folder!
         render jsonapi: club, include: [:cover, :fieldFolder]
       end
@@ -43,7 +44,7 @@ module Api
       private
 
       def set_club
-        @club = Club.find(params[:id])
+        @club = current_user.clubs.find(params[:id])
       end
 
       def club_params
