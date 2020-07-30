@@ -6,6 +6,7 @@ class Club < ApplicationRecord
 
   has_one :cover, as: :owner, dependent: :destroy
   has_one :field_folder, dependent: :destroy
+  has_and_belongs_to_many :users
 
   validates :name, presence: true, allow_blank: false, uniqueness: { case_sensitive: true }
   validates :area, presence: true

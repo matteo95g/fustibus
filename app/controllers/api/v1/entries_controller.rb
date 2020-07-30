@@ -6,7 +6,7 @@ module Api
       before_action :authenticate_user!
 
       def index
-        render jsonapi: Entry.filter(filter_params).where(field_folder_id: params[:field_folder_id]).order(:date)
+        render jsonapi: Entry.filter(filter_params).where(field_folder_id: params[:field_folder_id]).order(date: :desc)
       end
 
       def show
