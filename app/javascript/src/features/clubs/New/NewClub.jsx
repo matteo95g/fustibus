@@ -8,7 +8,7 @@ import AlertWithIcon from "@common/components/AlertWithIcon";
 import FileUploader from "@common/components/FileUploader";
 import { create } from "@features/clubs/clubsSlice";
 import { clubsState } from "@features/clubs/selectors";
-import { Button, Box } from "@common/ui";
+import { Button, Box, FormLabel } from "@common/ui";
 import { useHistory } from "react-router-dom";
 import { REQUIRED, ERROR, COMPLETE } from "@app/constants";
 import { useDispatch, useSelector } from "react-redux";
@@ -118,9 +118,8 @@ const NewClub = () => {
           <FormikCheckbox my="4" isSwitch={true} name="formal">
             ¿Es Formal?
           </FormikCheckbox>
-
+          <FormLabel>Imagen</FormLabel>
           <FileUploader handleUpload={handleUpload} multiple={false} uploading={false} />
-
           <Button mr="4" variantColor="red" onClick={() => history.goBack()}>
             Cancelar
           </Button>
