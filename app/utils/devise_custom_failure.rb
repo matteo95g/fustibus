@@ -12,9 +12,9 @@ class DeviseCustomFailure < Devise::FailureApp
                   error_key: error_key,
                   error: i18n_message
                 }
+              end
 
-      response.deep_transform_keys{ |key| key.to_s.camelize(:lower) }.to_json
-    end
+    response.deep_transform_keys{ |key| key.to_s.camelize(:lower) }.to_json
   end
 
   def i18n_message(default = nil, custom_message = nil)
