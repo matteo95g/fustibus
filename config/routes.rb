@@ -8,7 +8,8 @@ Rails.application.routes.draw do
                sign_out: 'logout',
                registration: 'signup'
              },
-             defaults: { format: :json }
+             defaults: { format: :json },
+             controllers: { sessions: 'api/v1/sessions' }
 
   namespace :api do
     namespace :v1 do
