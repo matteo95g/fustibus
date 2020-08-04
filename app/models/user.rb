@@ -4,4 +4,9 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: JwtBlacklist
 
   has_and_belongs_to_many :clubs
+  has_and_belongs_to_many :roles
+
+  def is_counselor
+    roles.where(name: Role::COUNSELOR).any?
+  end
 end
