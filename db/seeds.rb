@@ -6,4 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Club.create(name: "The best club", category: rand(0..6))
+user = User.create(email: "user@mail.com", password: "password", password_confirmation: "password")
+
+role = Role.create(name: Role::COUNSELOR)
+RolesUsers.create(user_id: user.id, role_id: role.id)
