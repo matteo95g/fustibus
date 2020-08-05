@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Club, type: :model do
-  let(:formal) { [true, false].sample }
+  let!(:formal) { [true, false].sample }
   let(:categories) { formal ? Club.categories.except(:hornero) : Club.categories.except(:tero) }
 
   subject do
