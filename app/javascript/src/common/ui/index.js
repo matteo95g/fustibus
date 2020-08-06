@@ -35,6 +35,8 @@ export {
   SlideIn,
   Textarea,
   Icon,
+  Divider,
+  IconButton,
 } from "@chakra-ui/core";
 
 export { default as DatePicker } from "react-datepicker";
