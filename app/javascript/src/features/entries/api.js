@@ -7,6 +7,10 @@ const urls = {
   collection(fieldFolderId) {
     return `/field_folders/${fieldFolderId}/entries`;
   },
+
+  resource(fieldFolderId, id) {
+    return `/field_folders/${fieldFolderId}/entries/${id}`;
+  },
 };
 
 export default {
@@ -22,5 +26,10 @@ export default {
         ...attributes,
       },
     });
+  },
+
+  destroy(fieldFolderId, id) {
+    const client = getApiClient(API_URL);
+    return client.delete(urls.resource(fieldFolderId, id));
   },
 };
