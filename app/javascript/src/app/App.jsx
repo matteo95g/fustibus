@@ -5,6 +5,7 @@ import { Router, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import LoginRoute from "@pages/users/login/Route";
+import SignupRoute from "@pages/users/signup/Route";
 import HomeRoute from "@pages/home/Route";
 import ClubsRoute from "@pages/clubs/index/Route";
 import NewClubRoute from "@pages/clubs/new/Route";
@@ -21,6 +22,7 @@ import { fetchUser } from "@features/users/usersSlice";
 import {
   homeUrl,
   loginUrl,
+  signupUrl,
   clubsUrl,
   newClubUrl,
   clubUrl,
@@ -42,6 +44,7 @@ const App = () => {
       <Router history={history}>
         <Switch>
           <LoginRoute exact path={loginUrl()} layout={Unauthenticated} />
+          <SignupRoute exact path={signupUrl()} layout={Unauthenticated} />
           <HomeRoute exact path={homeUrl()} layout={Authenticated} />
           <ClubsRoute exact path={clubsUrl()} layout={Authenticated} />
           <NewClubRoute exact path={newClubUrl()} layout={Authenticated} />

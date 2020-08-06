@@ -7,9 +7,12 @@ const urls = {
   login() {
     return "/login";
   },
+  signup() {
+    return "/signup";
+  },
   logout() {
     return "/logout";
-  }
+  },
 };
 
 export default {
@@ -21,5 +24,10 @@ export default {
   logout() {
     const client = getApiClient(API_URL);
     return client.delete(urls.logout());
+  },
+
+  signup(attributes = {}) {
+    const client = getApiClient(API_URL);
+    return client.post(urls.signup(), attributes);
   },
 };

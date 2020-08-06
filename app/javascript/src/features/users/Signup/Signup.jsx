@@ -4,15 +4,15 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { login } from "@features/users/usersSlice";
+import { signup } from "@features/users/usersSlice";
 import { ERROR } from "@app/constants";
-import { signupUrl } from "@utils/app/urlHelpers";
+import { loginUrl } from "@utils/app/urlHelpers";
 
 import { Box, Flex, Heading, Button, Alert } from "@common/ui";
 import FormikTextInput from "@common/components/FormikTextInput";
 import { DELAY_TIMEOUT } from "@utils/app/forms";
 
-const Login = () => {
+const Signup = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -22,16 +22,18 @@ const Login = () => {
   const validationSchema = Yup.object({
     email: Yup.string().email('El email ingresado es inválido.').required('El email no puede ser vacío.'),
     password: Yup.string().required('La contraseña no puede ser vacía.'),
+    passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], 'La confirmación de contraseña no coincide.'),
   });
 
   const initialValues = {
     email: "",
     password: "",
+    passwordConfirmation: "",
   };
 
   const handleSubmit = (values, setSubmitting) => {
     setTimeout(() => {
-      dispatch(login({ user: values })).then(() => {
+      dispatch(signup({ user: values })).then(() => {
         setSubmitting(false);
       });
     }, DELAY_TIMEOUT);
@@ -40,8 +42,11 @@ const Login = () => {
   return (
     <Flex p={{ xs: 5, md: 10, xl: 20 }} align="center" justify="center" minH="100vh" bg="blue.100">
       <Box maxW="400px" w="100%" mt={-16} shadow="lg" bg="white" p={{ xs: 6, md: 10 }} textAlign="center">
-        <Heading as="h1" mb={6}>Iniciar Sesión</Heading>
-        {status === ERROR && <Alert status="error" mb="4">{error}</Alert>}
+        <Heading as="h1" mb={6}>Nuevo Usuario</Heading>
+        {status === ERROR && <Alert status="error" mb="4">
+          {error}
+        </Alert>
+        }
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -51,13 +56,31 @@ const Login = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <FormikTextInput w="100%" mb={3} name="email" placeholder="Email" />
-              <FormikTextInput w="100%" mb={3} name="password" placeholder="Password" type="password" />
+              <FormikTextInput
+                w="100%"
+                mb={3}
+                name="email"
+                placeholder="Email"
+              />
+              <FormikTextInput
+                w="100%"
+                mb={3}
+                name="password"
+                placeholder="Contraseña"
+                type="password"
+              />
+              <FormikTextInput
+                w="100%"
+                mb={3}
+                name="passwordConfirmation"
+                placeholder="Confirmación de contraseña"
+                type="password"
+              />
               <Button w="100%" mb={3} type="submit" variantColor="green" isLoading={isSubmitting}>
-                Ingresar
+                Registrar
               </Button>
-              <Button w="100%" onClick={() => history.push(signupUrl())}>
-                Crear usuario
+              <Button w="100%" onClick={() => history.push(loginUrl())}>
+                Iniciar Sesión
               </Button>
             </Form>
           )}
@@ -67,4 +90,4 @@ const Login = () => {
   )
 };
 
-export default Login;
+export default Signup;
