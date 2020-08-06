@@ -64,7 +64,7 @@ const Navbar = (props) => {
           </Box>
 
           <Box>
-            { currentUser?.email }
+            { currentUser?.attributes?.email }
             <MenuItems onClick={() => logoutUser()} display="block">Cerrar Sesión</MenuItems>
           </Box>
         </Box>
