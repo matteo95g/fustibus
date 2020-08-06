@@ -1,4 +1,4 @@
-import React, { useCallback, Fragment, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { Box, Image } from "@common/ui";
 
@@ -47,7 +47,7 @@ const FileUploader = ({ handleUpload, multiple, uploading = false }) => {
   );
 
   return (
-    <Fragment>
+    <>
       <Box pointerEvents={uploading ? "none" : ""} my="4" {...getRootProps({ className: "dropzone" })}>
         <input {...getInputProps()} />
         {isDragActive ? <p>Suelta el archivo aqui...</p> : <p>Arrastra el archivo aqui, o clickea para seleccionar</p>}
@@ -57,7 +57,7 @@ const FileUploader = ({ handleUpload, multiple, uploading = false }) => {
           <Image size="100px" objectFit="contain" src={preview} />
         </Box>
       )}
-    </Fragment>
+    </>
   );
 };
 
