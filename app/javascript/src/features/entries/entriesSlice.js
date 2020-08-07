@@ -8,11 +8,14 @@ import { ERROR, LOADING, COMPLETE } from "@app/constants";
 export const CREATE_ENTRY = "entries/CREATE";
 export const LIST = "entries/LIST";
 export const DESTROY_ENTRY = "entries/DESTROY";
+export const UPDATE_ENTRY = "entries/UPDATE";
 
 // Action Creators
 export const create = (fieldForlderId, attributes = {}) => apiAction(CREATE_ENTRY, EntriesApi.create(fieldForlderId, attributes));
 export const list = (fieldForlderId, attributes = {}) => apiAction(LIST, EntriesApi.list(fieldForlderId, attributes));
 export const destroy = (fieldForlderId, id) => apiAction(DESTROY_ENTRY, EntriesApi.destroy(fieldForlderId, id), { entryId: id });
+export const update = (fieldForlderId, id, attributes = {}) =>
+  apiAction(UPDATE_ENTRY, EntriesApi.update(fieldForlderId, id, attributes));
 
 // Reducer
 const initialState = {
@@ -113,8 +116,38 @@ const reducer = (state = initialState, action) => {
         },
       });
 
+    case UPDATE_ENTRY:
+      return handle(state, action, {
+        start: (prevState) => {
+          const newState = produce(prevState, (draftState) => {
+            draftState.status = LOADING;
+          });
+          return { ...initialState, ...newState };
+        },
+
+        success: (prevState) => {
+          const attributes = json.data.attributes;
+          const entryId = json.data.id;
+          const index = prevState.current.entries.findIndex((entry) => entry.id.toString() === entryId);
+
+          const newState = produce(prevState, (draftState) => {
+            draftState.status = COMPLETE;
+            draftState.current.entries[index].attributes = attributes;
+          });
+          return { ...initialState, ...newState };
+        },
+
+        failure: (prevState) => {
+          const newState = produce(prevState, (draftState) => {
+            draftState.status = ERROR;
+            draftState.error = json.detail;
+          });
+          return { ...initialState, ...newState };
+        },
+      });
+
     default:
-      return state;
+      return initialState;
   }
 };
 

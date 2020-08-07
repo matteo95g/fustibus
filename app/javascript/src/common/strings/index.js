@@ -15,6 +15,18 @@ const strings = {
       delete: "Borrar",
       cancel: "Cancelar",
     },
+    edit: {
+      title: "Editar entrada",
+      save: "Guardar",
+      cancel: "Cancelar",
+      error: "Algo salió mal al editar la entrada",
+    },
+    new: {
+      title: "Nueva entrada",
+      create: "Crear",
+      cancel: "Cancelar",
+      error: "Algo salió mal al crear la entrada",
+    },
   },
 };
 
