@@ -32,4 +32,9 @@ export default {
     const client = getApiClient(API_URL);
     return client.delete(urls.resource(fieldFolderId, id));
   },
+
+  update(fieldFolderId, id, attributes) {
+    const client = getApiClient(API_URL);
+    return client.put(urls.resource(fieldFolderId, id), attributes);
+  },
 };
