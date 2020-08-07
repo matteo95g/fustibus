@@ -9,6 +9,7 @@ import { LOADING } from "@app/constants";
 import Actions from "./Actions";
 import emptyBox from "@images/emptyBox";
 import NewEntryModal from "@features/entries/New";
+import EditEntryModal from "@features/entries/Edit";
 import ConfirmDeleteEntryModal from "@features/entries/Delete";
 import moment from "moment";
 import { reducer, DELAY_TIMEOUT } from "@utils/app/forms";
@@ -20,8 +21,9 @@ const FieldFolderShow = () => {
   const { id } = useParams();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [currentEntryId, setCurrentEntryId] = useState(null);
+  const [currentEntry, setCurrentEntry] = useState(null);
   const [confirmDeleteIsOpen, setConfirmDeleteIsOpen] = useState(false);
+  const [editEntryOpen, setEditEntryOpen] = useState(false);
 
   useEffect(() => {
     dispatch(find(id));
@@ -41,17 +43,20 @@ const FieldFolderShow = () => {
     return () => clearTimeout(timeOutId);
   }, [filters]);
 
-  const handleDeleteEntry = (entryId) => {
-    setCurrentEntryId(entryId);
+  const handleDeleteEntry = (entry) => {
+    setCurrentEntry(entry);
     setConfirmDeleteIsOpen(true);
   };
 
   const onDeleteConfirm = () => {
-    dispatch(destroy(id, currentEntryId));
+    dispatch(destroy(id, currentEntry.id));
     setConfirmDeleteIsOpen(false);
   };
 
-  const handleEditEntry = () => {};
+  const handleEditEntry = async (entry) => {
+    await setCurrentEntry(entry);
+    setEditEntryOpen(true);
+  };
 
   return (
     <>
@@ -69,12 +74,6 @@ const FieldFolderShow = () => {
         <Actions setIsOpen={setIsOpen} filters={filters} setFilters={setFilters} initialFilters={initialFilters} />
       </Skeleton>
       <Divider mb="4" />
-      <NewEntryModal isOpen={isOpen} setIsOpen={setIsOpen} fieldFolderId={id} />
-      <ConfirmDeleteEntryModal
-        isOpen={confirmDeleteIsOpen}
-        setIsOpen={setConfirmDeleteIsOpen}
-        onDeleteConfirm={onDeleteConfirm}
-      />
       <Skeleton isLoaded={isLoaded}>
         {entries?.length ? (
           <>
@@ -93,8 +92,8 @@ const FieldFolderShow = () => {
                     <Text fontSize="2xl" mr="2">
                       {entry?.attributes?.title}
                     </Text>
-                    <IconButton variant="link" variantColor="teal" icon="edit" onClick={handleEditEntry} />
-                    <IconButton variant="link" variantColor="red" icon="delete" onClick={() => handleDeleteEntry(entry.id)} />
+                    <IconButton variant="link" variantColor="teal" icon="edit" onClick={() => handleEditEntry(entry)} />
+                    <IconButton variant="link" variantColor="red" icon="delete" onClick={() => handleDeleteEntry(entry)} />
                   </Flex>
                   <Text>{entry?.attributes?.description}</Text>
                 </Box>
@@ -110,6 +109,13 @@ const FieldFolderShow = () => {
           )
         )}
       </Skeleton>
+      <NewEntryModal isOpen={isOpen} setIsOpen={setIsOpen} fieldFolderId={id} />
+      <ConfirmDeleteEntryModal
+        isOpen={confirmDeleteIsOpen}
+        setIsOpen={setConfirmDeleteIsOpen}
+        onDeleteConfirm={onDeleteConfirm}
+      />
+      <EditEntryModal entry={currentEntry} isOpen={editEntryOpen} setIsOpen={setEditEntryOpen} />
     </>
   );
 };
