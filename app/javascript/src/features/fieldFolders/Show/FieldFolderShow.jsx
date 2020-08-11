@@ -35,7 +35,7 @@ const FieldFolderShow = () => {
   };
 
   const [filters, setFilters] = useReducer(reducer, initialFilters);
-  const isFiltering = !filters.date || !filters.content;
+  const isFiltering = filters.date || filters.content;
   const isLoaded = isFiltering ? true : !loading;
 
   useEffect(() => {
