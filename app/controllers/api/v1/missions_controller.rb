@@ -13,9 +13,8 @@ module Api
 
       def create
         mission = Mission.new(create_params)
-
+        mission.club = @club
         mission.save!
-        @club.missions.append(mission)
 
         render jsonapi: mission
       end
@@ -31,21 +30,21 @@ module Api
       end
 
       private
-        def set_club
-          @club = current_user.clubs.find(params[:club_id])
-        end
+      def set_club
+        @club = current_user.clubs.find(params[:club_id])
+      end
 
-        def set_mission
-          @mission = Mission.find(params[:id])
-        end
+      def set_mission
+        @mission = Mission.find(params[:id])
+      end
 
-        def create_params
-          params.permit(:club_id, :description)
-        end
+      def create_params
+        params.permit(:description)
+      end
 
-        def mission_params
-          params.permit(:club_id, :id, :description, :completed)
-        end
+      def mission_params
+        params.permit(:description, :completed)
+      end
     end
   end
 end

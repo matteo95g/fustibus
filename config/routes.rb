@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :missions
   root to: "home#index"
 
   devise_for :users,

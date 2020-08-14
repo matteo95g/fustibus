@@ -12,118 +12,70 @@
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/missions", type: :request do
-  # Mission. As you add validations to Mission, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+RSpec.describe "Missions", type: :request do
+  let(:user) { create(:user) }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  before { sign_in user }
+  after { sign_out user }
 
-  describe "GET /index" do
-    it "renders a successful response" do
-      Mission.create! valid_attributes
-      get missions_url
+  describe "request list of club missions" do
+    let(:count) { rand(1..5) }
+    let(:club) { create(:club, users: [user]) }
+
+    before { create_list(:mission, count, club: club) }
+    
+    it "returns all missions of a club" do
+      get api_v1_club_missions_path({ club_id: club.id })
+      
       expect(response).to be_successful
-    end
-  end
-
-  describe "GET /show" do
-    it "renders a successful response" do
-      mission = Mission.create! valid_attributes
-      get mission_url(mission)
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /new" do
-    it "renders a successful response" do
-      get new_mission_url
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /edit" do
-    it "render a successful response" do
-      mission = Mission.create! valid_attributes
-      get edit_mission_url(mission)
-      expect(response).to be_successful
+      expect(json_body['data'].size).to eq(count)
     end
   end
 
   describe "POST /create" do
+    let(:club) { create(:club, users: [user]) }
+    
     context "with valid parameters" do
       it "creates a new Mission" do
         expect {
-          post missions_url, params: { mission: valid_attributes }
+          post api_v1_club_missions_path({ club_id: club.id }), params: { description: Faker::Lorem.paragraph }
         }.to change(Mission, :count).by(1)
-      end
-
-      it "redirects to the created mission" do
-        post missions_url, params: { mission: valid_attributes }
-        expect(response).to redirect_to(mission_url(Mission.last))
       end
     end
 
     context "with invalid parameters" do
       it "does not create a new Mission" do
         expect {
-          post missions_url, params: { mission: invalid_attributes }
+          post api_v1_club_missions_path({ club_id: club.id }), params: { }
         }.to change(Mission, :count).by(0)
-      end
-
-      it "renders a successful response (i.e. to display the 'new' template)" do
-        post missions_url, params: { mission: invalid_attributes }
-        expect(response).to be_successful
       end
     end
   end
 
   describe "PATCH /update" do
+    let(:club) { create(:club, users: [user]) }
+    let(:new_description) { Faker::Lorem.paragraph }
+
     context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+      let(:mission) { create(:mission) }
 
       it "updates the requested mission" do
-        mission = Mission.create! valid_attributes
-        patch mission_url(mission), params: { mission: new_attributes }
+        patch api_v1_club_mission_path({ club_id: club.id, id: mission.id }), params: { description: new_description }
         mission.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "redirects to the mission" do
-        mission = Mission.create! valid_attributes
-        patch mission_url(mission), params: { mission: new_attributes }
-        mission.reload
-        expect(response).to redirect_to(mission_url(mission))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        mission = Mission.create! valid_attributes
-        patch mission_url(mission), params: { mission: invalid_attributes }
-        expect(response).to be_successful
+        expect(json_body['data']['attributes']['description']).to eq(new_description)
       end
     end
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested mission" do
-      mission = Mission.create! valid_attributes
-      expect {
-        delete mission_url(mission)
-      }.to change(Mission, :count).by(-1)
-    end
+    let(:club) { create(:club, users: [user]) }
+    let(:mission) { create(:mission) }
 
-    it "redirects to the missions list" do
-      mission = Mission.create! valid_attributes
-      delete mission_url(mission)
-      expect(response).to redirect_to(missions_url)
+    it "destroys the requested mission" do
+      delete api_v1_club_mission_path({ club_id: club.id, id: mission.id })
+
+      expect(response).to be_successful
+      expect(Mission.all.size).to eq(0)
     end
   end
 end
