@@ -7,15 +7,23 @@ class Club < ApplicationRecord
   has_one :cover, as: :owner, dependent: :destroy
   has_one :field_folder, dependent: :destroy
 
-  has_and_belongs_to_many :users
+  has_many :clubs_users_roles
+  has_many :users, through: :clubs_users_roles
+
   has_many :missions
 
   has_many :invitations
 
   validates :name, presence: true, allow_blank: false, uniqueness: { case_sensitive: true }
   validates :area, presence: true
-  validates :category, presence: true, inclusion: { in: Club.categories.except(:hornero) }, if: Proc.new { |club| club.formal? }
-  validates :category, presence: true, inclusion: { in: Club.categories.except(:tero) }, unless: Proc.new { |club| club.formal? }
+  validates :category,
+            presence: true,
+            inclusion: { in: Club.categories.except(:hornero) },
+            if: Proc.new { |club| club.formal? }
+  validates :category,
+            presence: true,
+            inclusion: { in: Club.categories.except(:tero) },
+            unless: Proc.new { |club| club.formal? }
 
   def user_invitations(status)
     invitations.where(status: status).includes(:user).map(&:user)
