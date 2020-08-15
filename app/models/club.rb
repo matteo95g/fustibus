@@ -8,6 +8,7 @@ class Club < ApplicationRecord
   has_one :field_folder, dependent: :destroy
 
   has_and_belongs_to_many :users
+  has_many :missions
 
   has_many :invitations
 

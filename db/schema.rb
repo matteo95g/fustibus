@@ -68,6 +68,22 @@ ActiveRecord::Schema.define(version: 2020_08_06_230226) do
     t.index ["jti"], name: "index_jwt_blacklists_on_jti"
   end
 
+  create_table "missions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "description"
+    t.boolean "completed", default: false
+    t.bigint "club_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["club_id"], name: "index_missions_on_club_id"
+  end
+
+  create_table "missions_assigned_users", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "mission_id"
+    t.index ["mission_id"], name: "index_missions_assigned_users_on_mission_id"
+    t.index ["user_id"], name: "index_missions_assigned_users_on_user_id"
+  end
+
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false

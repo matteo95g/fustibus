@@ -18,7 +18,7 @@ module Api
       end
 
       def create
-        club = Club.new(club_params)
+        club = Club.new(create_params)
 
         if params[:cover].present?
           cover = build_cover(params[:cover])
@@ -32,7 +32,7 @@ module Api
       end
 
       def update
-        @club.update(club_params)
+        @club.update!(club_params)
         render jsonapi: @club, include: [:cover, :fieldFolder]
       end
 
@@ -45,6 +45,10 @@ module Api
 
       def set_club
         @club = current_user.clubs.find(params[:id])
+      end
+
+      def create_params
+        params.permit(:name, :category, :area, :formal, :cover)
       end
 
       def club_params

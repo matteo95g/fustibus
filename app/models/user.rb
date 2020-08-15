@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
   has_and_belongs_to_many :clubs
   has_and_belongs_to_many :roles
+  has_and_belongs_to_many :assigned_missions, class_name: 'Mission', join_table: :missions_assigned_users
 
   has_many :invitations, primary_key: :email, foreign_key: :email
 
