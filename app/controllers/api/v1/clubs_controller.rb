@@ -1,6 +1,6 @@
 module Api
   module V1
-    class Api::V1::ClubsController < ApplicationController
+    class ClubsController < ApplicationController
       before_action :authenticate_user!
 
       include FileUploaderHelper

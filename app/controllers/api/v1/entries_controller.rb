@@ -1,6 +1,6 @@
 module Api
   module V1
-    class Api::V1::EntriesController < ApplicationController
+    class EntriesController < ApplicationController
       before_action :set_entry, only: [:show, :edit, :update, :destroy]
       before_action :sanitize_params, only: [:create, :edit]
       before_action :authenticate_user!
