@@ -7,8 +7,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "@app";
 import { Provider } from "react-redux";
-import store from "@app/store";
+import configureStore from "@app/store";
 import moment from "moment";
+import { PersistGate } from "redux-persist/integration/react";
+
+const { store, persistor } = configureStore();
 
 moment.locale("es-us");
 
@@ -23,7 +26,9 @@ moment.locale("es-us");
 document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>,
     document.getElementById("root")
   );
