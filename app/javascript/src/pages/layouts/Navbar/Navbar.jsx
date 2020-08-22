@@ -6,6 +6,8 @@ import { useHistory } from "react-router-dom";
 import { homeUrl, clubsUrl } from "@utils/app/urlHelpers";
 import { logout } from "@features/users/usersSlice";
 
+import { currentUser } from "@features/users/selectors";
+
 const MenuItems = ({ children, ...props }) => (
   <Link mt={{ base: 4, md: 0 }} mr={6} display={{ xs: "block", md: "inline-block" }} {...props}>
     {children}
@@ -18,7 +20,7 @@ const Navbar = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const currentUser = useSelector((state) => state.users.current.user);
+  const user = useSelector(currentUser);
 
   const logoutUser = () => {
     dispatch(logout())
@@ -64,7 +66,7 @@ const Navbar = (props) => {
           </Box>
 
           <Box>
-            { currentUser?.attributes?.email }
+            { user?.email }
             <MenuItems onClick={() => logoutUser()} display="block">Cerrar Sesión</MenuItems>
           </Box>
         </Box>

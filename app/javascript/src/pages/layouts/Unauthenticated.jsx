@@ -5,15 +5,17 @@ import { useSelector } from "react-redux";
 import { Box } from "@common/ui";
 import { homeUrl } from "@utils/app/urlHelpers";
 
+import { currentUser } from "@features/users/selectors";
+
 const Unauthenticated = ({ children }) => {
   const history = useHistory();
-  const currentUser = useSelector((state) => state.users.current.user);
+  const user = useSelector(currentUser);
 
   useEffect(() => {
-    if (currentUser) {
+    if (user) {
       history.push(homeUrl());
     }
-  }, [currentUser]);
+  }, [user]);
 
   return (
     <React.Fragment>

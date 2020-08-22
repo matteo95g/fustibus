@@ -19,6 +19,13 @@ class User < ApplicationRecord
     roles.where(name: Role::COUNSELOR).any?
   end
 
+  def counselor_for_club(club_id)
+    clubs_users_roles.joins(:role).where(
+      clubs_users_roles: { club_id: club_id },
+      roles: { name: Role::COUNSELOR }
+    ).exists?
+  end
+
   def club_invitations(status)
     invitations.where(status: status).includes(:club).map(&:club)
   end

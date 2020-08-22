@@ -34,7 +34,10 @@ RSpec.describe "Clubs", type: :request do
   end
 
   describe "update one club by id" do
+    let!(:club_user_role) { create(:clubs_users_role, club: club, user: user, role: role) }
+
     let(:club)      { create(:club, users: [user]) }
+    let(:role)      { create(:role)}
     let(:new_name)  { Faker::FunnyName.name }
 
     it "updates club by id" do
@@ -46,7 +49,10 @@ RSpec.describe "Clubs", type: :request do
   end
 
   describe "destroy one club by id" do
+    let!(:club_user_role) { create(:clubs_users_role, club: club, user: user, role: role) }
+
     let(:club) { create(:club, users: [user]) }
+    let(:role) { create(:role)}
 
     it "returns club by id" do
       delete api_v1_club_path(club.id)
