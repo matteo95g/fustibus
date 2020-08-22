@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Box, Heading, Flex, Link } from "@common/ui";
+import { Box, Heading, Flex, Link, Menu, MenuButton, MenuList, MenuItem, Icon, Image, MenuDivider } from "@common/ui";
 import { useHistory } from "react-router-dom";
 import { homeUrl, clubsUrl } from "@utils/app/urlHelpers";
 import { logout } from "@features/users/usersSlice";
@@ -23,22 +23,13 @@ const Navbar = (props) => {
   const user = useSelector(currentUser);
 
   const logoutUser = () => {
-    dispatch(logout())
+    dispatch(logout());
   };
 
   return (
-    <Flex
-      as="nav"
-      align="center"
-      justify="space-between"
-      wrap="wrap"
-      padding="1.5rem"
-      bg="blue.900"
-      color="white"
-      {...props}
-    >
+    <Flex as="nav" align="center" justify="space-between" wrap="wrap" padding="1.5rem" bg="blue.900" color="white" {...props}>
       <Heading as="h1" mr={10} size="lg" cursor="pointer" onClick={() => history.push(homeUrl())}>
-        Club de Ciencia
+        Fustibus
       </Heading>
 
       <Box display={{ xs: "block", md: "none" }} onClick={handleToggle}>
@@ -48,27 +39,31 @@ const Navbar = (props) => {
         </svg>
       </Box>
 
-      <Box
-        display={{ xs: show ? "block" : "none", md: "flex" }}
-        width={{ xs: "full", md: "auto" }}
-        flexGrow={1}
-      >
-        <Box
-          display={{ xs: "block", md: "flex" }}
-          justifyContent="space-between"
-          alignItems="center"
-          width="full"
-        >
+      <Box display={{ xs: show ? "block" : "none", md: "flex" }} width={{ xs: "full", md: "auto" }} flexGrow={1}>
+        <Box display={{ xs: "block", md: "flex" }} justifyContent="space-between" alignItems="center" width="full">
           <Box>
-            <MenuItems onClick={() => history.push(clubsUrl())}>Clubs</MenuItems>
-            <MenuItems>Link2</MenuItems>
-            <MenuItems>Link3</MenuItems>
+            <MenuItems>Informe</MenuItems>
+            <MenuItems>Bitacora</MenuItems>
+            <MenuItems>Poster</MenuItems>
           </Box>
 
-          <Box>
-            { user?.email }
-            <MenuItems onClick={() => logoutUser()} display="block">Cerrar Sesión</MenuItems>
-          </Box>
+          <Menu>
+            <MenuButton as={Link} rightIcon="chevron-down" color="white">
+              {user?.email}
+              <Icon name="chevron-down" />
+            </MenuButton>
+            <MenuList color="blue.900">
+              <MenuItem minH="48px">
+                <Image size="2rem" rounded="full" src="https://placekitten.com/100/100" mr="12px" />
+                <span>Mi perfil</span>
+              </MenuItem>
+              <MenuItem onClick={() => history.push(clubsUrl())}>Mis clubes</MenuItem>
+              <MenuDivider />
+              <MenuItem onClick={() => logoutUser()} color="red.500">
+                Cerrar sesión
+              </MenuItem>
+            </MenuList>
+          </Menu>
         </Box>
       </Box>
     </Flex>

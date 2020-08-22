@@ -29,4 +29,17 @@ class User < ApplicationRecord
   def club_invitations(status)
     invitations.where(status: status).includes(:club).map(&:club)
   end
+
+  def grouped_roles
+    grouped_roles = {}
+    clubs_users_roles.pluck(:club_id, :role_id).each do |club_id, role_id|
+      if grouped_roles.key?(club_id)
+        grouped_roles[club_id] << role_id if role_id
+      else
+        grouped_roles[club_id] = []
+        grouped_roles[club_id] << role_id if role_id
+      end
+    end
+    grouped_roles
+  end
 end
