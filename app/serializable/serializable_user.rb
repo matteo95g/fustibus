@@ -5,4 +5,5 @@ class SerializableUser < SerializableBase
   attribute :is_counselor
 
   has_many :roles
+  belongs_to :current_club, jsonapi_class: 'SerializableCurrentClub'
 end
