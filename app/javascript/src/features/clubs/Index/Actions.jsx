@@ -1,15 +1,14 @@
 import React from "react";
-import { Button, Flex } from "@common/ui";
+import { Flex } from "@common/ui";
 import { useHistory } from "react-router-dom";
 import { newClubUrl } from "@utils/app/urlHelpers";
+import CreateButton from "@common/components/CreateButton";
 
 const Actions = () => {
   const history = useHistory();
   return (
     <Flex my="6" justify="flex-end">
-      <Button rightIcon="plus-square" variantColor="green" onClick={() => history.push(newClubUrl())}>
-        Crear
-      </Button>
+      <CreateButton onClick={() => history.push(newClubUrl())} />
     </Flex>
   );
 };

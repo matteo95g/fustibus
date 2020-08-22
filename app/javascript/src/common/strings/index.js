@@ -1,4 +1,9 @@
 const strings = {
+  edit: "Editar",
+  delete: "Borrar",
+  create: "Crear",
+  cancel: "Cancelar",
+
   Home: {
     title: "¡Bienvenido a Club de Ciencia!",
     subtitle: "Aún no eres participante de ningún club.",
@@ -26,6 +31,12 @@ const strings = {
       create: "Crear",
       cancel: "Cancelar",
       error: "Algo salió mal al crear la entrada",
+    },
+  },
+
+  Clubs: {
+    delete: {
+      confirmHeader: "¿Seguro que quieres borrar el club?",
     },
   },
 };

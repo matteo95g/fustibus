@@ -10,24 +10,17 @@ import HomeRoute from "@pages/home/Route";
 import ClubsRoute from "@pages/clubs/index/Route";
 import NewClubRoute from "@pages/clubs/new/Route";
 import ShowClubRoute from "@pages/clubs/show/Route";
+import EditClubRoute from "@pages/clubs/edit/Route";
 import ShowFieldFolderRoute from "@pages/fieldFolders/show/Route";
 
-import history from './history';
+import history from "./history";
 
 import Authenticated from "@pages/layouts/Authenticated";
 import Unauthenticated from "@pages/layouts/Unauthenticated";
 
 import { fetchUser } from "@features/users/usersSlice";
 
-import {
-  homeUrl,
-  loginUrl,
-  signupUrl,
-  clubsUrl,
-  newClubUrl,
-  clubUrl,
-  fieldFolderUrl,
-} from "@utils/app/urlHelpers";
+import { homeUrl, loginUrl, signupUrl, clubsUrl, newClubUrl, clubUrl, editClubUrl, fieldFolderUrl } from "@utils/app/urlHelpers";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -49,6 +42,7 @@ const App = () => {
           <ClubsRoute exact path={clubsUrl()} layout={Authenticated} />
           <NewClubRoute exact path={newClubUrl()} layout={Authenticated} />
           <ShowClubRoute exact path={clubUrl()} layout={Authenticated} />
+          <EditClubRoute exact path={editClubUrl()} layout={Authenticated} />
           <ShowFieldFolderRoute exact path={fieldFolderUrl()} layout={Authenticated} />
         </Switch>
       </Router>

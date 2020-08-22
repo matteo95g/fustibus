@@ -7,7 +7,7 @@ class Club < ApplicationRecord
   has_one :cover, as: :owner, dependent: :destroy
   has_one :field_folder, dependent: :destroy
 
-  has_many :clubs_users_roles
+  has_many :clubs_users_roles, dependent: :destroy
   has_many :users, through: :clubs_users_roles
 
   has_many :missions

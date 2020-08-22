@@ -6,6 +6,10 @@ class SerializableClub < SerializableBase
   attribute :created_at
   attribute :updated_at
 
+  attribute :current_user_roles do
+    @object.clubs_users_roles.where(user: @current_user).map{ |club_role| club_role&.role&.name }
+  end
+
   has_one :cover
   has_one :field_folder
 end

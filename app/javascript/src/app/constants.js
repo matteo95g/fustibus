@@ -4,4 +4,6 @@ const COMPLETE = "complete";
 
 const REQUIRED = "Requerido";
 
-export { LOADING, ERROR, COMPLETE, REQUIRED };
+const COUNSELOR_ROLE = "orientador";
+
+export { LOADING, ERROR, COMPLETE, REQUIRED, COUNSELOR_ROLE };

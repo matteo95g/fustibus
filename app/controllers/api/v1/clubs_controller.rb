@@ -7,15 +7,15 @@ module Api
 
       before_action :set_club, only: [:show, :update, :destroy]
       before_action :allow_if_counselor, only: [:update, :destroy]
-      before_action :sanitize_params, only: [:create]
+      before_action :sanitize_params, only: [:create, :update]
 
       def index
         clubs = current_user.clubs.paginate(page: params[:page], per_page: PER_PAGE)
-        render jsonapi: clubs, include: [:cover, :fieldFolder], meta: build_meta(clubs)
+        render jsonapi: clubs, include: [:cover, :fieldFolder], meta: build_meta(clubs), expose: { current_user: current_user }
       end
 
       def show
-        render jsonapi: @club, include: [:fieldFolder, :cover]
+        render jsonapi: @club, include: [:fieldFolder, :cover], expose: { current_user: current_user }
       end
 
       def create
@@ -29,17 +29,15 @@ module Api
         club.save!
 
         ClubsUsersRole.create!(user_id: current_user.id, club_id: club.id, role: Role.counselor)
-
         club.create_field_folder!
-
         current_user.update(current_club_id: club.id) unless current_user.current_club
 
-        render jsonapi: club, include: [:cover, :fieldFolder]
+        render jsonapi: club, include: [:cover, :fieldFolder], expose: { current_user: current_user }
       end
 
       def update
         @club.update!(club_params)
-        render jsonapi: @club, include: [:cover, :fieldFolder]
+        render jsonapi: @club, include: [:cover, :fieldFolder], expose: { current_user: current_user }
       end
 
       def destroy
