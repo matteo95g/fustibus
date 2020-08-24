@@ -1,5 +1,7 @@
 class Role < ApplicationRecord
-  COUNSELOR = "orientador"
+  COUNSELOR = 'orientador'
 
-  has_and_belongs_to_many :users
+  def self.counselor
+    find_by(name: COUNSELOR)
+  end
 end

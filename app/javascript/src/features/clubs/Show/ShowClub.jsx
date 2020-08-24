@@ -1,35 +1,72 @@
-import React, { useEffect } from "react";
-import { clubsState, currentClubCovers } from "@features/clubs/selectors";
+import React, { useEffect, useState } from "react";
+import { currentClub, currentClubCovers, currentClubCurrentUserRoles, clubStatus } from "@features/clubs/selectors";
 import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel, Button } from "@common/ui";
 import { useParams, useHistory } from "react-router-dom";
-import { find } from "@features/clubs/clubsSlice";
+import { find, destroy } from "@features/clubs/clubsSlice";
 import { getAreaColor, translateArea } from "@features/clubs/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { LOADING } from "@app/constants";
 import { fieldFolderUrl } from "@utils/app/urlHelpers";
+import EditButton from "@common/components/EditButton";
+import DeleteButton from "@common/components/DeleteButton";
+import { COUNSELOR_ROLE } from "@app/constants";
+import { clubsUrl, editClubUrl } from "@utils/app/urlHelpers";
+import ConfirmDeleteModal from "@common/components/ConfirmDeleteModal";
+import strings from "@common/strings";
 
 const ShowClub = () => {
-  const club = useSelector((state) => clubsState(state).current.club);
-  const loading = useSelector((state) => clubsState(state).status === LOADING);
+  const club = useSelector((state) => currentClub(state));
+  const loading = useSelector((state) => clubStatus(state) === LOADING);
   const covers = useSelector((state) => currentClubCovers(state));
   const dispatch = useDispatch();
   const { id } = useParams();
+  const currentUserRoles = useSelector((state) => currentClubCurrentUserRoles(state));
   const history = useHistory();
 
+  const [confirmDeleteIsOpen, setConfirmDeleteIsOpen] = useState(false);
+
   useEffect(() => {
-    dispatch(find(id));
-  }, []);
+    const fetchClub = async () => {
+      const response = await dispatch(find(id));
+      if (response.payload.status === 404) {
+        history.push(clubsUrl());
+      }
+    };
+    fetchClub();
+  }, [id]);
+
+  const onDeleteConfirm = () => {
+    dispatch(destroy(id));
+    setConfirmDeleteIsOpen(false);
+    history.push(clubsUrl());
+  };
+
+  const handleDelete = () => {
+    setConfirmDeleteIsOpen(true);
+  };
+
+  const handleEdit = () => {
+    history.push(editClubUrl(id));
+  };
 
   return (
     <>
       <Skeleton isLoaded={!loading}>
-        <Flex my="5" align="start">
-          <Text mr="2" fontSize="5xl">
-            {club?.attributes?.name}
-          </Text>
-          <Tag mt="2" rounded="full" variant="solid" variantColor="green" size="sm">
-            <TagLabel>{club?.attributes?.formal ? "Formal" : "No formal"}</TagLabel>
-          </Tag>
+        <Flex align="center" justify="space-between">
+          <Flex my="5" align="start">
+            <Text mr="2" fontSize="5xl">
+              {club?.attributes?.name}
+            </Text>
+            <Tag mt="2" rounded="full" variant="solid" variantColor="green" size="sm">
+              <TagLabel>{club?.attributes?.formal ? "Formal" : "No formal"}</TagLabel>
+            </Tag>
+          </Flex>
+          {currentUserRoles?.includes(COUNSELOR_ROLE) && (
+            <Flex>
+              <EditButton mr="4" onClick={handleEdit} />
+              <DeleteButton onClick={handleDelete} />
+            </Flex>
+          )}
         </Flex>
       </Skeleton>
       <Skeleton isLoaded={!loading}>
@@ -55,6 +92,12 @@ const ShowClub = () => {
           Carpeta de campo
         </Button>
       </Skeleton>
+      <ConfirmDeleteModal
+        header={strings.Clubs.delete.confirmHeader}
+        isOpen={confirmDeleteIsOpen}
+        setIsOpen={setConfirmDeleteIsOpen}
+        onDeleteConfirm={onDeleteConfirm}
+      />
     </>
   );
 };

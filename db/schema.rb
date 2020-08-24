@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_04_003859) do
+ActiveRecord::Schema.define(version: 2020_08_20_222858) do
 
   create_table "clubs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
@@ -21,11 +21,13 @@ ActiveRecord::Schema.define(version: 2020_08_04_003859) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "clubs_users", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "clubs_users_roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "club_id"
     t.bigint "user_id"
-    t.index ["club_id"], name: "index_clubs_users_on_club_id"
-    t.index ["user_id"], name: "index_clubs_users_on_user_id"
+    t.bigint "role_id"
+    t.index ["club_id"], name: "index_clubs_users_roles_on_club_id"
+    t.index ["role_id"], name: "index_clubs_users_roles_on_role_id"
+    t.index ["user_id"], name: "index_clubs_users_roles_on_user_id"
   end
 
   create_table "entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -55,23 +57,39 @@ ActiveRecord::Schema.define(version: 2020_08_04_003859) do
     t.index ["owner_type", "owner_id"], name: "index_images_on_owner_type_and_owner_id"
   end
 
+  create_table "invitations", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "status"
+    t.string "email"
+    t.bigint "club_id"
+    t.index ["club_id"], name: "index_invitations_on_club_id"
+  end
+
   create_table "jwt_blacklists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", null: false
     t.index ["jti"], name: "index_jwt_blacklists_on_jti"
   end
 
+  create_table "missions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "description"
+    t.boolean "completed", default: false
+    t.bigint "club_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["club_id"], name: "index_missions_on_club_id"
+  end
+
+  create_table "missions_assigned_users", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "mission_id"
+    t.index ["mission_id"], name: "index_missions_assigned_users_on_mission_id"
+    t.index ["user_id"], name: "index_missions_assigned_users_on_user_id"
+  end
+
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "roles_users", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "role_id"
-    t.index ["role_id"], name: "index_roles_users_on_role_id"
-    t.index ["user_id"], name: "index_roles_users_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -81,6 +99,8 @@ ActiveRecord::Schema.define(version: 2020_08_04_003859) do
     t.datetime "reset_password_sent_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "current_club_id"
+    t.index ["current_club_id"], name: "index_users_on_current_club_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

@@ -7,15 +7,17 @@ import Navbar from "./Navbar";
 import { Box as Container } from "@common/ui";
 import { loginUrl } from "@utils/app/urlHelpers";
 
+import { currentUser } from "@features/users/selectors";
+
 const Authenticated = ({ children }) => {
   const history = useHistory();
-  const currentUser = useSelector((state) => state.users.current.user);
+  const user = useSelector(currentUser);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!user) {
       history.push(loginUrl());
     }
-  }, [currentUser]);
+  }, [user]);
 
   return (
     <React.Fragment>

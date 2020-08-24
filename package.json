@@ -28,6 +28,7 @@
     "react_ujs": "^2.6.1",
     "redux": "^4.0.5",
     "redux-pack": "^0.1.5",
+    "redux-persist": "^6.0.0",
     "reselect": "^4.0.0",
     "turbolinks": "^5.2.0",
     "yup": "^0.29.1"

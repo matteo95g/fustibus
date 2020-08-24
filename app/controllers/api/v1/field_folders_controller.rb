@@ -1,6 +1,6 @@
 module Api
   module V1
-    class Api::V1::FieldFoldersController < ApplicationController
+    class FieldFoldersController < ApplicationController
       before_action :set_field_folder, only: [:show, :edit, :update, :destroy]
       before_action :sanitize_params, only: [:create]
       before_action :authenticate_user!
