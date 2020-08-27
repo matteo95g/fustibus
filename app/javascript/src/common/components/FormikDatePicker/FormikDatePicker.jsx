@@ -9,7 +9,7 @@ export const FormikDatePicker = ({ showTimeInput = false, ...props }) => {
   const [field] = useField(props);
 
   useEffect(() => {
-    setFieldValue(field.name, new Date());
+    if (!field.value) setFieldValue(field.name, new Date());
   }, []);
 
   const DateInput = forwardRef(({ value, onClick }, _ref) => (
@@ -27,7 +27,7 @@ export const FormikDatePicker = ({ showTimeInput = false, ...props }) => {
       {...field}
       {...props}
       selected={(field.value && new Date(field.value)) || null}
-      onChange={(val) => setFieldValue(field.name, val)}
+      onChange={(val) => setFieldValue(field.name, moment(val).format(`${showTimeInput ? "YYYY-MM-DD - HH:mm" : "YYYY-MM-DD"}`))}
       customInput={<DateInput />}
       showTimeInput={showTimeInput}
     />

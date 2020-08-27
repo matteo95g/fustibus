@@ -5,6 +5,8 @@ class User < ApplicationRecord
 
   has_and_belongs_to_many :assigned_missions, class_name: 'Mission', join_table: :missions_assigned_users
 
+  has_one :image, as: :owner, dependent: :destroy
+
   has_many :clubs_users_roles
   has_many :clubs, through: :clubs_users_roles
   has_many :roles,

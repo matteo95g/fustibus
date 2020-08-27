@@ -1,6 +1,8 @@
 export const usersState = (state) => state.users;
 
-export const currentUser = (state) => usersState(state).current.user?.attributes;
+export const currentUser = (state) => usersState(state).current?.user;
+
+export const currentUserImage = (state) => usersState(state).current?.included?.find((included) => included.type === "images");
 
 export const currentUserClub = (state) => {
   const currentClub = usersState(state).current.included?.find((included) => included.type === "clubs");

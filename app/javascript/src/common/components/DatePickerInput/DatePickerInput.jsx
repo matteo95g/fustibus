@@ -3,10 +3,10 @@ import { DatePicker } from "@common/ui";
 import { Input } from "@common/ui";
 import moment from "moment";
 
-export const DatePickerInput = ({ showTimeInput = false, setDate, selected, name, ...props }) => {
+export const DatePickerInput = ({ showTimeInput = false, setDate, selected, name, placeholder = "Fecha", ...props }) => {
   const DateInput = forwardRef(({ value, onClick }, _ref) => (
     <Input
-      placeholder="Fecha"
+      placeholder={placeholder}
       {...props}
       w="100%"
       onClick={onClick}
