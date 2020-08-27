@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { Box, Heading, Flex, Link, Menu, MenuButton, MenuList, MenuItem, Icon, Image, MenuDivider } from "@common/ui";
 import { useHistory } from "react-router-dom";
-import { homeUrl, clubsUrl } from "@utils/app/urlHelpers";
+import { homeUrl, clubsUrl, profileUrl } from "@utils/app/urlHelpers";
 import { logout } from "@features/users/usersSlice";
-
 import { currentUser } from "@features/users/selectors";
+import { currentUserImage } from "@features/users/selectors";
+import emptyProfile from "@images/emptyProfile";
 
 const MenuItems = ({ children, ...props }) => (
   <Link mt={{ base: 4, md: 0 }} mr={6} display={{ xs: "block", md: "inline-block" }} {...props}>
@@ -21,6 +21,7 @@ const Navbar = (props) => {
   const dispatch = useDispatch();
 
   const user = useSelector(currentUser);
+  const imageUrl = useSelector((state) => currentUserImage(state))?.attributes?.file?.url;
 
   const logoutUser = () => {
     dispatch(logout());
@@ -49,12 +50,12 @@ const Navbar = (props) => {
 
           <Menu>
             <MenuButton as={Link} rightIcon="chevron-down" color="white">
-              {user?.email}
+              {user?.attributes?.email}
               <Icon name="chevron-down" />
             </MenuButton>
             <MenuList color="blue.900">
-              <MenuItem minH="48px">
-                <Image size="2rem" rounded="full" src="https://placekitten.com/100/100" mr="12px" />
+              <MenuItem minH="48px" onClick={() => history.push(profileUrl())}>
+                <Image size="2rem" rounded="full" src={imageUrl ? imageUrl : emptyProfile} mr="12px" />
                 <span>Mi perfil</span>
               </MenuItem>
               <MenuItem onClick={() => history.push(clubsUrl())}>Mis clubes</MenuItem>

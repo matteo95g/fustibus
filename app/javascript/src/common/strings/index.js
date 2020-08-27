@@ -3,6 +3,7 @@ const strings = {
   delete: "Borrar",
   create: "Crear",
   cancel: "Cancelar",
+  save: "Guardar",
 
   Home: {
     title: "¡Bienvenido a Club de Ciencia!",
@@ -31,6 +32,11 @@ const strings = {
       create: "Crear",
       cancel: "Cancelar",
       error: "Algo salió mal al crear la entrada",
+    },
+  },
+  Users: {
+    edit: {
+      success: "Perfil actualizado con éxito!",
     },
   },
 

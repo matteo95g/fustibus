@@ -9,12 +9,14 @@ export const LOGIN = "users/LOGIN";
 export const FETCH_USER = "users/FETCH_USER";
 export const SIGNUP = "users/SIGNUP";
 export const LOGOUT = "users/LOGOUT";
+export const UPDATE = "users/UPDATE";
 
 // Action Creators
 export const login = (options = {}) => apiAction(LOGIN, UsersApi.login(options));
-export const fetchUser = () => apiAction(FETCH_USER, UsersApi.login({}))
-export const signup = (options = {}) => apiAction(SIGNUP, UsersApi.signup(options))
+export const fetchUser = () => apiAction(FETCH_USER, UsersApi.login({}));
+export const signup = (options = {}) => apiAction(SIGNUP, UsersApi.signup(options));
 export const logout = () => apiAction(LOGOUT, UsersApi.logout());
+export const update = (id, attributes) => apiAction(UPDATE, UsersApi.update(id, attributes));
 
 // Reducer
 const initialState = {
@@ -46,8 +48,9 @@ const reducer = (state = initialState, action) => {
 
           const newState = produce(prevState, (draftState) => {
             draftState.current.user = json.data;
-            draftState.current.included = json.included;
+            if (json.included) draftState.current.included = json.included;
             draftState.status = COMPLETE;
+            draftState.error = null;
           });
           return { ...initialState, ...newState };
         },
@@ -88,9 +91,7 @@ const reducer = (state = initialState, action) => {
             draftState.error = Object.keys(errors).reduce((accumulator, errorField) => {
               const fieldName = `${errorField.charAt(0).toUpperCase()}${errorField.slice(1)}`;
 
-              const errorMsgs = errors[errorField].map((error) =>
-                `${fieldName} ${error}`
-              );
+              const errorMsgs = errors[errorField].map((error) => `${fieldName} ${error}`);
 
               return [...accumulator, ...errorMsgs];
             }, []);
@@ -108,12 +109,36 @@ const reducer = (state = initialState, action) => {
           return { ...initialState, ...newState };
         },
 
-        success: (prevState) => {
+        success: () => {
           localStorage.removeItem("token");
+          localStorage.removeItem("persist:root");
 
+          return initialState;
+        },
+
+        failure: (prevState) => {
           const newState = produce(prevState, (draftState) => {
-            draftState.current.user = null;
+            draftState.status = ERROR;
+            draftState.error = payload.data.error;
+          });
+          return { ...initialState, ...newState };
+        },
+      });
+
+    case UPDATE:
+      return handle(state, action, {
+        start: (prevState) => {
+          const newState = produce(prevState, (draftState) => {
+            draftState.status = LOADING;
+          });
+          return { ...initialState, ...newState };
+        },
+
+        success: (prevState) => {
+          const newState = produce(prevState, (draftState) => {
             draftState.status = COMPLETE;
+            draftState.current.user = json.data;
+            if (json.included) draftState.current.included = json.included;
           });
           return { ...initialState, ...newState };
         },
@@ -121,7 +146,7 @@ const reducer = (state = initialState, action) => {
         failure: (prevState) => {
           const newState = produce(prevState, (draftState) => {
             draftState.status = ERROR;
-            draftState.error = payload.data.error;
+            draftState.error = json.detail;
           });
           return { ...initialState, ...newState };
         },
