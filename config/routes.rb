@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       resources :field_folders, only: [:create, :index, :update, :destroy, :show] do
         resources :entries, only: [:create, :index, :update, :destroy, :show]
       end
+      resources :users, only: [:update]
     end
   end
 

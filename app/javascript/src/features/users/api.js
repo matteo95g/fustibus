@@ -13,6 +13,9 @@ const urls = {
   logout() {
     return "/logout";
   },
+  resource(id) {
+    return `/users/${id}`;
+  },
 };
 
 export default {
@@ -29,5 +32,10 @@ export default {
   signup(attributes = {}) {
     const client = getApiClient(API_URL);
     return client.post(urls.signup(), attributes);
+  },
+
+  update(id, attributes = {}) {
+    const client = getApiClient(API_URL);
+    return client.put(urls.resource(id), attributes);
   },
 };

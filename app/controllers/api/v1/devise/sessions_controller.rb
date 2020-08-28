@@ -10,7 +10,7 @@ module Api
             redirect_to session[:return_to]
             session[:return_to] = nil
           else
-            render jsonapi: current_user, include: [:roles, currentClub: [:cover]]
+            render jsonapi: current_user, include: [:roles, :image, :currentClub], jsonapi_class: 'SerializableUser'
           end
         end
       end

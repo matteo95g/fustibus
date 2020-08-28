@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { create } from "@features/clubs/clubsSlice";
 import { Box } from "@common/ui";
 import { useDispatch, useSelector } from "react-redux";
 import ClubForm from "@features/clubs/components/ClubForm";
