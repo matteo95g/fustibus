@@ -9,12 +9,6 @@ import emptyProfile from "@images/emptyProfile";
 import InvitationsMenu from './InvitationsMenu';
 import { clubUrl } from "@utils/app/urlHelpers";
 
-const MenuItems = ({ children, ...props }) => (
-  <Link mt={{ base: 4, md: 0 }} mr={6} display={{ xs: "block", md: "inline-block" }} {...props}>
-    {children}
-  </Link>
-);
-
 const Navbar = (props) => {
   const [show, setShow] = useState(false);
   const handleToggle = () => setShow(!show);

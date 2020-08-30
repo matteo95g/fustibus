@@ -46,6 +46,19 @@ const strings = {
       confirmHeader: "¿Seguro que quieres borrar el club?",
     },
   },
+
+  Poster: {
+    sections: {
+      title: "Título",
+      abstract: "Abstract",
+      introduction: "Introducción",
+      methodology: "Metodología",
+      results: "Resultados",
+      conclusions: "Conclusiones",
+      bibliography: "Bibliografía",
+      acknowledgments: "Agredecimientos",
+    },
+  },
 };
 
 export default strings;

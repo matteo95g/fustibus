@@ -22,7 +22,6 @@ Rails.application.routes.draw do
         resources :entries, only: [:create, :index, :update, :destroy, :show]
       end
       resources :users, only: [:update]
-
       resources :invitations, only: [] do
         post :accept
         post :reject
@@ -32,6 +31,7 @@ Rails.application.routes.draw do
           post :invite
         end
       end
+      resources :posters, only: [:create, :index, :update, :destroy, :show]
     end
   end
 
