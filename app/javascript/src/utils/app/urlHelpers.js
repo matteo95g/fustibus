@@ -12,3 +12,5 @@ export const fieldFolderUrl = (id) => (id ? `/clubs/${id}/field-folder` : "/club
 
 export const profileUrl = () => "/profile";
 export const clubDiaryUrl = (id) => (id ? `/clubs/${id}/diary` : "/clubs/:id/diary");
+
+export const newPostersUrl = () => "/posters/new";

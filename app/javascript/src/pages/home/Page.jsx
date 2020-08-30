@@ -3,7 +3,7 @@ import { Box, Button, Flex, Heading, Text } from "@common/ui";
 import BoxButton from "@common/components/BoxButton";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { newClubUrl, fieldFolderUrl, clubDiaryUrl } from "@utils/app/urlHelpers";
+import { newClubUrl, fieldFolderUrl, clubDiaryUrl, newPostersUrl } from "@utils/app/urlHelpers";
 import strings from "@common/strings";
 
 import { currentUserClub } from "@features/users/selectors";
@@ -34,7 +34,7 @@ const Home = () => {
           Petates del Equipo
           <Flex mt="4" align="center">
             <BoxButton title="Carpeta de Campo" onClick={() => history.push(fieldFolderUrl(currentClub.id))} />
-            <BoxButton title="Poster" onClick={() => {}} />
+            <BoxButton title="Poster" onClick={() => history.push(newPostersUrl())} />
             <BoxButton title="Informe de Investigación" onClick={() => {}} />
           </Flex>
         </>

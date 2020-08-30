@@ -87,6 +87,21 @@ ActiveRecord::Schema.define(version: 2020_09_12_205820) do
     t.index ["user_id"], name: "index_missions_assigned_users_on_user_id"
   end
 
+  create_table "posters", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.text "title"
+    t.text "abstract"
+    t.text "results"
+    t.text "conclusions"
+    t.text "introduction"
+    t.text "methodology"
+    t.text "bibliography"
+    t.text "acknowledgments"
+    t.bigint "club_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["club_id"], name: "index_posters_on_club_id"
+  end
+
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
