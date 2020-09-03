@@ -22,6 +22,7 @@ const Profile = ({}) => {
     dispatch(update(user.id, values)).then(() => {
       setSubmitting(false);
       setSuccess(true);
+      window.scrollTo(0, 0);
     });
   };
 
