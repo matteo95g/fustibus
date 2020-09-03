@@ -4,8 +4,7 @@ import { Box, Heading, Flex, Link, Menu, MenuButton, MenuList, MenuItem, Icon, I
 import { useHistory } from "react-router-dom";
 import { homeUrl, clubsUrl, profileUrl } from "@utils/app/urlHelpers";
 import { logout } from "@features/users/usersSlice";
-import { currentUser } from "@features/users/selectors";
-import { currentUserImage } from "@features/users/selectors";
+import { currentUser, currentUserImage, currentUserClub } from "@features/users/selectors";
 import emptyProfile from "@images/emptyProfile";
 
 const MenuItems = ({ children, ...props }) => (
@@ -22,6 +21,7 @@ const Navbar = (props) => {
 
   const user = useSelector(currentUser);
   const imageUrl = useSelector((state) => currentUserImage(state))?.attributes?.file?.url;
+  const currentClub = useSelector(currentUserClub);
 
   const logoutUser = () => {
     dispatch(logout());
@@ -48,23 +48,28 @@ const Navbar = (props) => {
             <MenuItems>Poster</MenuItems>
           </Box>
 
-          <Menu>
-            <MenuButton as={Link} rightIcon="chevron-down" color="white">
-              {user?.attributes?.email}
-              <Icon name="chevron-down" />
-            </MenuButton>
-            <MenuList color="blue.900">
-              <MenuItem minH="48px" onClick={() => history.push(profileUrl())}>
-                <Image size="2rem" rounded="full" src={imageUrl ? imageUrl : emptyProfile} mr="12px" />
-                <span>Mi perfil</span>
-              </MenuItem>
-              <MenuItem onClick={() => history.push(clubsUrl())}>Mis clubes</MenuItem>
-              <MenuDivider />
-              <MenuItem onClick={() => logoutUser()} color="red.500">
-                Cerrar sesión
-              </MenuItem>
-            </MenuList>
-          </Menu>
+          <Box>
+            <Box>
+              Club actual: {currentClub?.name}
+            </Box>
+            <Menu>
+              <MenuButton as={Link} rightIcon="chevron-down" color="white">
+                {user?.attributes?.email}
+                <Icon name="chevron-down" />
+              </MenuButton>
+              <MenuList color="blue.900">
+                <MenuItem minH="48px" onClick={() => history.push(profileUrl())}>
+                  <Image size="2rem" rounded="full" src={imageUrl ? imageUrl : emptyProfile} mr="12px" />
+                  <span>Mi perfil</span>
+                </MenuItem>
+                <MenuItem onClick={() => history.push(clubsUrl())}>Mis clubes</MenuItem>
+                <MenuDivider />
+                <MenuItem onClick={() => logoutUser()} color="red.500">
+                  Cerrar sesión
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box>
         </Box>
       </Box>
     </Flex>

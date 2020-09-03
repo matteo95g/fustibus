@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :clubs, only: [:create, :index, :update, :destroy, :show] do
+        post :current
         resources :missions, only: [:create, :index, :update, :destroy]
       end
       resources :images, only: [:create, :index, :update, :destroy, :show]
