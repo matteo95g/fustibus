@@ -12,7 +12,7 @@ export const currentUserClub = (state) => {
   const coverId = currentClub.relationships.cover?.data?.id;
   const cover = usersState(state).current.included?.find((included) => included.type === "covers" && included.id === coverId);
 
-  return { ...currentClub.attributes, cover: cover?.attributes?.file };
+  return { ...currentClub.attributes, id: currentClub.id, cover: cover?.attributes?.file };
 };
 
 export const currentUserClubRoles = (state) => {

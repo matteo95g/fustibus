@@ -11,6 +11,10 @@ const urls = {
   resource(id) {
     return `/clubs/${id}`;
   },
+
+  setCurrentClub(id) {
+    return `/clubs/${id}/current`;
+  },
 };
 
 export default {
@@ -41,5 +45,10 @@ export default {
   destroy(id) {
     const client = getApiClient(API_URL);
     return client.delete(urls.resource(id));
+  },
+
+  setCurrentClub(id) {
+    const client = getApiClient(API_URL);
+    return client.post(urls.setCurrentClub(id));
   },
 };

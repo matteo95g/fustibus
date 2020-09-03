@@ -52,6 +52,14 @@ module Api
         head :ok
       end
 
+      def current
+        return head :forbidden unless current_user.clubs.exists?(id: params[:club_id])
+
+        current_user.update!(current_club_id: params[:club_id])
+
+        head :no_content
+      end
+
       private
 
       def set_club
