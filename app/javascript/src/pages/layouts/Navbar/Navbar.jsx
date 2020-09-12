@@ -40,18 +40,10 @@ const Navbar = (props) => {
         </svg>
       </Box>
 
-      <Box display={{ xs: show ? "block" : "none", md: "flex" }} width={{ xs: "full", md: "auto" }} flexGrow={1}>
+      <Box display={{ xs: show ? "block" : "none", md: "flex" }} width={{ xs: "full", md: "auto" }}>
         <Box display={{ xs: "block", md: "flex" }} justifyContent="space-between" alignItems="center" width="full">
           <Box>
-            <MenuItems>Informe</MenuItems>
-            <MenuItems>Bitacora</MenuItems>
-            <MenuItems>Poster</MenuItems>
-          </Box>
-
-          <Box>
-            <Box>
-              Club actual: {currentClub?.name}
-            </Box>
+            <Box>Club actual: {currentClub?.name}</Box>
             <Menu>
               <MenuButton as={Link} rightIcon="chevron-down" color="white">
                 {user?.attributes?.email}
