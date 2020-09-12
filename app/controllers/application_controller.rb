@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ArgumentError, with: :argument_error
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
+  rescue_from ActionController::ParameterMissing, with: :parameter_missing
 
   respond_to :json
 
@@ -23,6 +24,10 @@ class ApplicationController < ActionController::Base
   end
 
   def record_invalid(exception)
+    render json: { detail: exception }, status: STATUS_422
+  end
+
+  def parameter_missing(exception)
     render json: { detail: exception }, status: STATUS_422
   end
 end

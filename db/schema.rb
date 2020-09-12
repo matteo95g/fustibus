@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 2020_09_12_205820) do
     t.index ["owner_type", "owner_id"], name: "index_images_on_owner_type_and_owner_id"
   end
 
-  create_table "invitations", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "invitations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "status"
     t.string "email"
     t.bigint "club_id"
