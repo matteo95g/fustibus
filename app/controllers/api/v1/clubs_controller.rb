@@ -67,7 +67,7 @@ module Api
       end
 
       def allow_if_counselor
-        unless current_user.counselor_for_club(params[:id])
+        unless current_user.counselor_for_club?(params[:id])
           render json: { detail: 'Forbidden' }, status: :unauthorized
         end
       end

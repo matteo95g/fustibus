@@ -25,6 +25,10 @@ class Club < ApplicationRecord
             inclusion: { in: Club.categories.except(:tero) },
             unless: Proc.new { |club| club.formal? }
 
+  def has_user?(condition)
+    users.where(condition).exists?
+  end
+
   def user_invitations(status)
     invitations.where(status: status).includes(:user).map(&:user)
   end

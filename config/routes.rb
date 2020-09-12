@@ -22,6 +22,16 @@ Rails.application.routes.draw do
         resources :entries, only: [:create, :index, :update, :destroy, :show]
       end
       resources :users, only: [:update]
+
+      resources :invitations, only: [] do
+        post :accept
+        post :reject
+
+        collection do
+          get :pendings
+          post :invite
+        end
+      end
     end
   end
 
