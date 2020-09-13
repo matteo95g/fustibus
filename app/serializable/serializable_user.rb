@@ -15,4 +15,5 @@ class SerializableUser < SerializableBase
   has_many :roles
   has_one :image, jsonapi_class: 'SerializableImage'
   belongs_to :current_club, jsonapi_class: 'SerializableClub'
+  has_many :invitations
 end

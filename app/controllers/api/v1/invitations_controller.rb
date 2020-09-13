@@ -3,7 +3,7 @@ module Api
     class InvitationsController < ApplicationController
       before_action :authenticate_user!
 
-      before_action :set_invitation, only: [:accept, :decline]
+      before_action :set_invitation, only: [:accept, :reject]
 
       def invite
         user_email = params.require(:user_email)
@@ -27,9 +27,9 @@ module Api
       end
 
       def pendings
-        clubs_invitations = current_user.clubs_invitations(:pending)
+        invitations = current_user.invitations.pending
 
-        render jsonapi: clubs_invitations, include: :cover
+        render jsonapi: invitations, include: [club: [:cover]]
       end
 
       def accept
@@ -37,6 +37,8 @@ module Api
 
         @invitation.club.users << current_user
         @invitation.update!(status: :accepted)
+
+        current_user.update(current_club: @invitation.club) unless current_user.current_club
 
         head :ok
       end
@@ -52,7 +54,7 @@ module Api
       private
 
       def set_invitation
-        @invitation = Invitation.find(params[:id])
+        @invitation = Invitation.find(params[:invitation_id])
       end
     end
   end

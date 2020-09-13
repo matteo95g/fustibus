@@ -55,7 +55,7 @@ const ClubList = () => {
                 mb="2"
               />
               <Box textAlign="center">
-                { currentClub.id === club.id
+                { currentClub?.id === club.id
                   ? "Club actualmente Activo"
                   : (
                     <Box display="inline-block" cursor="pointer" onClick={() => setAsCurrentClub(club.id)}>
