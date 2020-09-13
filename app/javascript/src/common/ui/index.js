@@ -22,6 +22,7 @@ export {
   Spinner,
   Text,
   Skeleton,
+  Stack,
   Badge,
   Tag,
   TagLabel,

@@ -6,7 +6,6 @@ import { find, destroy } from "@features/clubs/clubsSlice";
 import { getAreaColor, translateArea } from "@features/clubs/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { LOADING } from "@app/constants";
-import { fieldFolderUrl } from "@utils/app/urlHelpers";
 import EditButton from "@common/components/EditButton";
 import DeleteButton from "@common/components/DeleteButton";
 import { COUNSELOR_ROLE } from "@app/constants";
@@ -87,11 +86,6 @@ const ShowClub = () => {
           </Box>
         </Skeleton>
       )}
-      <Skeleton isLoaded={!loading}>
-        <Button my="3" onClick={() => history.push(fieldFolderUrl(id))}>
-          Carpeta de campo
-        </Button>
-      </Skeleton>
       <ConfirmDeleteModal
         header={strings.Clubs.delete.confirmHeader}
         isOpen={confirmDeleteIsOpen}
