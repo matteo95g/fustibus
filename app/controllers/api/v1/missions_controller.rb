@@ -39,11 +39,11 @@ module Api
       end
 
       def create_params
-        params.permit(:description)
+        params.permit(:name, :description)
       end
 
       def mission_params
-        params.permit(:description, :completed)
+        params.permit(:name, :description, :completed)
       end
     end
   end

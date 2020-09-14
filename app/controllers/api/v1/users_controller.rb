@@ -17,7 +17,7 @@ module Api
 
         @user.save!
 
-        render jsonapi: @user, include: :image
+        render jsonapi: @user, include: [:roles, :image, currentClub: [:cover]]
       end
 
       private

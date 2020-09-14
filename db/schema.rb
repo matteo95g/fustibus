@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_27_012221) do
+ActiveRecord::Schema.define(version: 2020_09_12_205820) do
 
   create_table "clubs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 2020_08_27_012221) do
     t.index ["owner_type", "owner_id"], name: "index_images_on_owner_type_and_owner_id"
   end
 
-  create_table "invitations", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "invitations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "status"
     t.string "email"
     t.bigint "club_id"
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 2020_08_27_012221) do
     t.bigint "club_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
     t.index ["club_id"], name: "index_missions_on_club_id"
   end
 
@@ -84,6 +85,21 @@ ActiveRecord::Schema.define(version: 2020_08_27_012221) do
     t.bigint "mission_id"
     t.index ["mission_id"], name: "index_missions_assigned_users_on_mission_id"
     t.index ["user_id"], name: "index_missions_assigned_users_on_user_id"
+  end
+
+  create_table "posters", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.text "title"
+    t.text "abstract"
+    t.text "results"
+    t.text "conclusions"
+    t.text "introduction"
+    t.text "methodology"
+    t.text "bibliography"
+    t.text "acknowledgments"
+    t.bigint "club_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["club_id"], name: "index_posters_on_club_id"
   end
 
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

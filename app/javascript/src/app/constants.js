@@ -6,4 +6,28 @@ const REQUIRED = "Requerido";
 
 const COUNSELOR_ROLE = "orientador";
 
-export { LOADING, ERROR, COMPLETE, REQUIRED, COUNSELOR_ROLE };
+// poster
+const TITLE = "title";
+const ABSTRACT = "abstract";
+const INTRODUCTION = "introduction";
+const METHODOLOGY = "methodology";
+const RESULTS = "results";
+const CONCLUSIONS = "conclusions";
+const BIBLIOGRAPHY = "bibliography";
+const ACKNOWLEDGMENTS = "acknowledgments";
+
+export {
+  LOADING,
+  ERROR,
+  COMPLETE,
+  REQUIRED,
+  COUNSELOR_ROLE,
+  TITLE,
+  ABSTRACT,
+  INTRODUCTION,
+  METHODOLOGY,
+  RESULTS,
+  CONCLUSIONS,
+  BIBLIOGRAPHY,
+  ACKNOWLEDGMENTS,
+};

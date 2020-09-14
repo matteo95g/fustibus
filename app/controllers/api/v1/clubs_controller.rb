@@ -52,6 +52,14 @@ module Api
         head :ok
       end
 
+      def current
+        return head :forbidden unless current_user.clubs.exists?(id: params[:club_id])
+
+        current_user.update!(current_club_id: params[:club_id])
+
+        head :no_content
+      end
+
       private
 
       def set_club
@@ -59,7 +67,7 @@ module Api
       end
 
       def allow_if_counselor
-        unless current_user.counselor_for_club(params[:id])
+        unless current_user.counselor_for_club?(params[:id])
           render json: { detail: 'Forbidden' }, status: :unauthorized
         end
       end
