@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
 import { jsPDF } from "jspdf";
 import strings from "@common/strings";
 import { convertFromRaw } from "draft-js";
@@ -156,9 +154,7 @@ const createPdf = (data) => {
   poster.appendChild(titleDiv);
   poster.appendChild(sectionsDiv);
 
-  doc.html(poster).then(() => doc.save("sample-document.pdf"));
-
-  return <div id="poster">hola</div>;
+  doc.html(poster).then(() => doc.save("poster.pdf"));
 };
 
 export default createPdf;
