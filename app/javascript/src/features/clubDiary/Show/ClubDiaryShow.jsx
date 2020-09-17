@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { listMissions } from "@features/clubDiary/clubDiarySlice";
 import { missionsState } from "@features/clubDiary/selectors";
 import { Text, Skeleton, Flex, Stack } from "@common/ui";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import MissionsList from "@features/clubDiary/components/MissionsList";
 import MissionDetail from "@features/clubDiary/components/MissionDetail";
@@ -12,6 +13,7 @@ const ClubDiaryShow = () => {
   const isLoaded = true;
   const [selected, setSelected] = useState("misiones");
   const [selectedMission, setMission] = useState(null);
+  const { id } = useParams();
 
   const toggle = (selected) => {
     setSelected(selected);
@@ -19,7 +21,7 @@ const ClubDiaryShow = () => {
 
   useEffect(() => {
     if (selected == "misiones") {
-      dispatch(listMissions(1));
+      dispatch(listMissions(id));
     }
   }, [selected]);
 
