@@ -36,10 +36,6 @@ class Club < ApplicationRecord
   end
 
   def add_initial_mission
-    mission = Mission.new
-    mission.name = "Primera reunión de equipo"
-    mission.description = "El objetivo de la misión es documentar todo lo relacionado con la primera reunión del equipo."
-    mission.save
-    missions.append(mission)
+    missions << Mission.create_initial
   end
 end
