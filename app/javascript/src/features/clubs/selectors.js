@@ -13,3 +13,6 @@ export const currentClubCovers = (state) =>
   );
 
 export const currentClubCurrentUserRoles = (state) => clubsState(state).current?.club?.attributes?.currentUserRoles;
+
+export const clubFieldFolder = (state) =>
+  clubsState(state).all?.included?.filter((included) => included.type === "field_folders")[0];
