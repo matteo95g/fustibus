@@ -4,6 +4,7 @@ const strings = {
   create: "Crear",
   cancel: "Cancelar",
   save: "Guardar",
+  inviteUsers: "Invitar Usuarios",
 
   Home: {
     title: "¡Bienvenido a Club de Ciencia!",
@@ -40,7 +41,22 @@ const strings = {
       success: "Perfil actualizado con éxito!",
     },
   },
-
+  Invitations: {
+    addUsers: {
+      title: "Invitar usuarios",
+      description:
+        "Ingresa el mail o los mails, separados por coma o por espacio, de los usuarios que quieras invitar. En caso de que el usuario no exista, se le enviará un mail invitandolo a registrarse a Fustibus.",
+      form: {
+        emails: {
+          placeholder: "jose@mail.com, maria@mail.com",
+          required: "Debes ingresar al menos un mail.",
+          invalid: "Verifica que todos los mails ingresados sean válidos.",
+        },
+      },
+      success: "Se han enviado las solicitudes correctamente",
+      error: "Ha ocurrrido un error, intente nuevamente más tarde.",
+    },
+  },
   Clubs: {
     delete: {
       confirmHeader: "¿Seguro que quieres borrar el club?",
