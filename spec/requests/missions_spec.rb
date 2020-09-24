@@ -28,7 +28,7 @@ RSpec.describe "Missions", type: :request do
       get api_v1_club_missions_path({ club_id: club.id })
       
       expect(response).to be_successful
-      expect(json_body['data'].size).to eq(count)
+      expect(json_body['data'].size).to eq(count + 1)
     end
   end
 
@@ -39,7 +39,7 @@ RSpec.describe "Missions", type: :request do
       it "creates a new Mission" do
         expect {
           post api_v1_club_missions_path({ club_id: club.id }), params: { description: Faker::Lorem.paragraph }
-        }.to change(Mission, :count).by(1)
+        }.to change(Mission, :count).by(2)
       end
     end
 
@@ -47,7 +47,7 @@ RSpec.describe "Missions", type: :request do
       it "does not create a new Mission" do
         expect {
           post api_v1_club_missions_path({ club_id: club.id }), params: { }
-        }.to change(Mission, :count).by(0)
+        }.to change(Mission, :count).by(1)
       end
     end
   end
@@ -75,7 +75,7 @@ RSpec.describe "Missions", type: :request do
       delete api_v1_club_mission_path({ club_id: club.id, id: mission.id })
 
       expect(response).to be_successful
-      expect(Mission.all.size).to eq(0)
+      expect(club.missions.count).to eq(1)
     end
   end
 end

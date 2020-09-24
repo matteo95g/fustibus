@@ -14,6 +14,8 @@ class Club < ApplicationRecord
 
   has_many :invitations
 
+  after_create :add_initial_mission
+
   validates :name, presence: true, allow_blank: false, uniqueness: { case_sensitive: true }
   validates :area, presence: true
   validates :category,
@@ -31,5 +33,9 @@ class Club < ApplicationRecord
 
   def user_invitations(status)
     invitations.where(status: status).includes(:user).map(&:user)
+  end
+
+  def add_initial_mission
+    missions << Mission.create_initial
   end
 end
