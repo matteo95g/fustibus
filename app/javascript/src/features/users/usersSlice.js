@@ -77,8 +77,10 @@ const reducer = (state = initialState, action) => {
           localStorage.setItem("token", payload.headers.authorization);
 
           const newState = produce(prevState, (draftState) => {
-            draftState.current.user = { attributes: payload.data };
+            draftState.current.user = json.data;
+            if (json.included) draftState.current.included = json.included;
             draftState.status = COMPLETE;
+            draftState.error = null;
           });
           return { ...initialState, ...newState };
         },
