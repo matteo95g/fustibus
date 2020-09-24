@@ -9,7 +9,10 @@ Rails.application.routes.draw do
                registration: 'signup'
              },
              defaults: { format: :json },
-             controllers: { sessions: 'api/v1/devise/sessions' }
+             controllers: {
+               sessions: 'api/v1/devise/sessions',
+               registrations: 'api/v1/devise/registrations'
+             }
 
   namespace :api do
     namespace :v1 do

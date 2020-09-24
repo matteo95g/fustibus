@@ -20,9 +20,13 @@ const Signup = () => {
   const error = useSelector((state) => state.users.error);
 
   const validationSchema = Yup.object({
-    email: Yup.string().email('El email ingresado es inválido.').required('El email no puede ser vacío.'),
-    password: Yup.string().required('La contraseña no puede ser vacía.'),
-    passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], 'La confirmación de contraseña no coincide.'),
+    email: Yup.string()
+      .email("El email ingresado es inválido.")
+      .required("El email no puede ser vacío."),
+    password: Yup.string().required("La contraseña no puede ser vacía."),
+    passwordConfirmation: Yup.string()
+      .required("La confirmación de contraseña no coincide.")
+      .oneOf([Yup.ref("password"), null], "La confirmación de contraseña no coincide."),
   });
 
   const initialValues = {
@@ -41,12 +45,23 @@ const Signup = () => {
 
   return (
     <Flex p={{ xs: 5, md: 10, xl: 20 }} align="center" justify="center" minH="100vh" bg="blue.100">
-      <Box maxW="400px" w="100%" mt={-16} shadow="lg" bg="white" p={{ xs: 6, md: 10 }} textAlign="center">
-        <Heading as="h1" mb={6}>Nuevo Usuario</Heading>
-        {status === ERROR && <Alert status="error" mb="4">
-          {error}
-        </Alert>
-        }
+      <Box
+        maxW="400px"
+        w="100%"
+        mt={-16}
+        shadow="lg"
+        bg="white"
+        p={{ xs: 6, md: 10 }}
+        textAlign="center"
+      >
+        <Heading as="h1" mb={6}>
+          Nuevo Usuario
+        </Heading>
+        {status === ERROR && (
+          <Alert status="error" mb="4">
+            {error}
+          </Alert>
+        )}
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -56,12 +71,7 @@ const Signup = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <FormikTextInput
-                w="100%"
-                mb={3}
-                name="email"
-                placeholder="Email"
-              />
+              <FormikTextInput w="100%" mb={3} name="email" placeholder="Email" />
               <FormikTextInput
                 w="100%"
                 mb={3}
@@ -87,7 +97,7 @@ const Signup = () => {
         </Formik>
       </Box>
     </Flex>
-  )
+  );
 };
 
 export default Signup;
