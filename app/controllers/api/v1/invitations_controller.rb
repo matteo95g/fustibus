@@ -6,22 +6,24 @@ module Api
       before_action :set_invitation, only: [:accept, :reject]
 
       def invite
-        user_email = params.require(:user_email)
+        emails = params.require(:emails)
         club = Club.find(params.require(:club_id))
 
         return head :forbidden unless current_user.counselor_for_club?(club.id)
 
-        return head :ok if club.has_user?(email: user_email)
+        emails.each do |email|
+          next if club.has_user?(email: email)
 
-        Invitation.where(
-          club_id: club.id,
-          email: user_email,
-          status: :pending,
-        ).first_or_create!
+          Invitation.where(
+            club_id: club.id,
+            email: email,
+            status: :pending,
+          ).first_or_create!
 
-        # TODO: enviar mail diciendo que el usuario fue invitado a ser parte del club.
-        # Si el usuario aun no existe en la app, enviar ese mail pero invitandolo
-        # a crearse un usuario fustibustero
+          # TODO: enviar mail diciendo que el usuario fue invitado a ser parte del club.
+          # Si el usuario aun no existe en la app, enviar ese mail pero invitandolo
+          # a crearse un usuario fustibustero
+        end
 
         head :ok
       end

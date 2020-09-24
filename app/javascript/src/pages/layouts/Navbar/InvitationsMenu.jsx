@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ReactSVG } from "react-svg";
 import { useDispatch } from "react-redux";
-import invitationsAPI from "@features/invitations/api";
+import invitationsApi from "@features/invitations/api";
 import { list } from "@features/clubs/clubsSlice";
 import { fetchUser } from "@features/users/usersSlice";
 import { Box, Flex, Menu, MenuButton, MenuList, Icon, Spinner } from "@common/ui";
@@ -15,7 +15,7 @@ const InvitationsMenu = ({ invitations }) => {
   const acceptInvitation = (id) => {
     setLoadingAccept(true);
 
-    invitationsAPI
+    invitationsApi
       .accept(id)
       .then(() => {
         dispatch(fetchUser());
@@ -27,7 +27,7 @@ const InvitationsMenu = ({ invitations }) => {
   const rejectInvitation = (id) => {
     setLoadingReject(true);
 
-    invitationsAPI
+    invitationsApi
       .reject(id)
       .then(() => dispatch(fetchUser()))
       .finally(setLoadingReject(false));

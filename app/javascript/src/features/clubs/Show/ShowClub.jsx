@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { currentClub, currentClubCovers, currentClubCurrentUserRoles, clubStatus } from "@features/clubs/selectors";
-import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel, Button } from "@common/ui";
+import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel } from "@common/ui";
 import { useParams, useHistory } from "react-router-dom";
 import { find, destroy } from "@features/clubs/clubsSlice";
 import { getAreaColor, translateArea } from "@features/clubs/utils";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LOADING } from "@app/constants";
 import EditButton from "@common/components/EditButton";
 import DeleteButton from "@common/components/DeleteButton";
+import InviteUsers from "@common/components/InviteUsers";
 import { COUNSELOR_ROLE } from "@app/constants";
 import { clubsUrl, editClubUrl } from "@utils/app/urlHelpers";
 import ConfirmDeleteModal from "@common/components/ConfirmDeleteModal";
@@ -62,6 +63,7 @@ const ShowClub = () => {
           </Flex>
           {currentUserRoles?.includes(COUNSELOR_ROLE) && (
             <Flex>
+              <InviteUsers mr="4" clubId={id} />
               <EditButton mr="4" onClick={handleEdit} />
               <DeleteButton onClick={handleDelete} />
             </Flex>
