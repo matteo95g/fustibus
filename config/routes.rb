@@ -19,6 +19,12 @@ Rails.application.routes.draw do
       resources :clubs, only: [:create, :index, :update, :destroy, :show] do
         post :current
         resources :missions, only: [:create, :index, :update, :destroy]
+        resources :posters, only: [:create] do
+          collection do
+            get :show
+            put :update
+          end
+        end
       end
       resources :images, only: [:create, :index, :update, :destroy, :show]
       resources :field_folders, only: [:create, :index, :update, :destroy, :show] do
@@ -34,7 +40,6 @@ Rails.application.routes.draw do
           post :invite
         end
       end
-      resources :posters, only: [:create, :index, :update, :destroy, :show]
     end
   end
 

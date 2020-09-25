@@ -1,43 +1,75 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import { Box, Button } from "@common/ui";
 import createPdf from "@features/posters/utils/createPdf";
-import PostersApi from "@features/posters/api";
-import CreateButton from "@common/components/CreateButton";
+import SaveButton from "@common/components/SaveButton";
 import PosterForm from "@features/posters/components/PosterForm";
 import { reducer } from "@utils/app/forms";
+import { currentUserClub } from "@features/users/selectors";
+import { useSelector } from "react-redux";
+import { update, find } from "@features/posters/postersSlice";
+import { useDispatch } from "react-redux";
+import { convertFromRaw } from "draft-js";
+import { TITLE } from "@app/constants";
 
 const NewPoster = () => {
-  const [creatingPoster, setCreatingPoster] = useState(false);
-  const [creatingPosterAndPdf, setCreatingPosterAndPdf] = useState(false);
+  const [savingPoster, setSavingPoster] = useState(false);
+  const [savingPosterAndPdf, setSavingPosterAndPdf] = useState(false);
+  const [loading, setLoading] = useState(false);
   let initialInternalState = {};
   const [editorInternalState, setEditorInternalState] = useReducer(reducer, initialInternalState);
+  const club = useSelector((state) => currentUserClub(state));
+  const dispatch = useDispatch();
 
-  const handleCreate = async () => {
-    setCreatingPoster(true);
-    await PostersApi.create(editorInternalState);
-    setCreatingPoster(false);
+  const handleSave = async () => {
+    setSavingPoster(true);
+    await dispatch(update(club.id, editorInternalState));
+    setSavingPoster(false);
   };
 
-  const handleCreateAndPdf = async () => {
-    setCreatingPosterAndPdf(true);
-    const response = await PostersApi.create(editorInternalState);
+  const handleSaveAndPdf = async () => {
+    setSavingPosterAndPdf(true);
+    const response = await dispatch(update(club.id, editorInternalState));
     const {
-      data: { data },
+      payload: {
+        data: { data },
+      },
     } = response;
 
     createPdf(data);
 
-    setCreatingPosterAndPdf(false);
+    setSavingPosterAndPdf(false);
   };
+
+  const fetchPoster = async () => {
+    setLoading(true);
+    const response = await dispatch(find(club.id));
+    const {
+      payload: {
+        data: { data },
+      },
+    } = response;
+    const { attributes } = data;
+
+    let posterFormated = {};
+    Object.keys(attributes).forEach((key) => {
+      if (key !== TITLE) posterFormated[key] = JSON.parse(attributes[key]);
+      if (posterFormated[key]) posterFormated[key] = convertFromRaw(posterFormated[key]);
+    });
+    posterFormated[TITLE] = attributes[TITLE];
+    setEditorInternalState(posterFormated);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchPoster();
+  }, []);
 
   return (
     <Box>
-      <PosterForm editorInternalState={editorInternalState} setEditorInternalState={setEditorInternalState} />
-      <CreateButton mr="4" isLoading={creatingPoster} my="6" onClick={handleCreate}>
-        Guardar
-      </CreateButton>
-      <Button my="6" isLoading={creatingPosterAndPdf} onClick={handleCreateAndPdf}>
-        Crear y exportar PDF
+      <PosterForm editorInternalState={editorInternalState} setEditorInternalState={setEditorInternalState} loading={loading} />
+      <SaveButton mr="4" isLoading={savingPoster} my="6" onClick={handleSave} />
+      <Button my="6" isLoading={savingPosterAndPdf} onClick={handleSaveAndPdf}>
+        Guardar y exportar PDF
       </Button>
     </Box>
   );

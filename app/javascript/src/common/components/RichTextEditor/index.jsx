@@ -1,21 +1,24 @@
 import React from "react";
-import { Editor, EditorState, RichUtils, convertFromRaw, convertToRaw } from "draft-js";
+import { Editor, EditorState, ContentState, RichUtils, convertFromRaw, convertToRaw } from "draft-js";
 import "draft-js/dist/Draft.css";
 import { Box } from "@common/ui";
 
 class RichTextEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() };
 
-    const { sectionName, setEditorInternalState } = this.props;
+    const { sectionName, setEditorInternalState, prevContent } = this.props;
+
+    const content = prevContent ? prevContent : ContentState.createFromText("");
+
+    this.state = { editorState: EditorState.createWithContent(content) };
 
     this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => {
       this.setState({ editorState });
       if (sectionName && setEditorInternalState) {
         const contentRaw = convertToRaw(editorState.getCurrentContent());
-        setEditorInternalState({ sectionName: JSON.stringify(contentRaw) });
+        setEditorInternalState({ [sectionName]: JSON.stringify(contentRaw) });
       }
     };
 
