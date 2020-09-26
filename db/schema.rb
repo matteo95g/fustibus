@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_12_205820) do
+ActiveRecord::Schema.define(version: 2020_09_26_204755) do
 
   create_table "clubs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
@@ -89,13 +89,13 @@ ActiveRecord::Schema.define(version: 2020_09_12_205820) do
 
   create_table "posters", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "title"
-    t.text "abstract"
-    t.text "results"
-    t.text "conclusions"
-    t.text "introduction"
-    t.text "methodology"
-    t.text "bibliography"
-    t.text "acknowledgments"
+    t.text "abstract", size: :long
+    t.text "results", size: :long
+    t.text "conclusions", size: :long
+    t.text "introduction", size: :long
+    t.text "methodology", size: :long
+    t.text "bibliography", size: :long
+    t.text "acknowledgments", size: :long
     t.bigint "club_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
