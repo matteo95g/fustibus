@@ -41,7 +41,7 @@ const FieldFolderShow = () => {
   useEffect(() => {
     const timeOutId = setTimeout(() => dispatch(list(id, filters)), DELAY_TIMEOUT);
     return () => clearTimeout(timeOutId);
-  }, [filters]);
+  }, [id, filters]);
 
   const handleDeleteEntry = (entry) => {
     setCurrentEntry(entry);

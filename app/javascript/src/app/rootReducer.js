@@ -6,8 +6,9 @@ import entries from "@features/entries/entriesSlice";
 import clubDiary from "@features/clubDiary/clubDiarySlice";
 import users from "@features/users/usersSlice";
 import posters from "@features/posters/postersSlice";
+import { LOGOUT } from "@features/users/usersSlice";
 
-export default combineReducers({
+const appReducer = combineReducers({
   clubs,
   fieldFolders,
   entries,
@@ -15,3 +16,15 @@ export default combineReducers({
   users,
   posters,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === LOGOUT) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("persist:root");
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
+export default rootReducer;
