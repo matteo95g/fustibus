@@ -10,7 +10,7 @@ module Api
           render jsonapi: user,
                  include: [:roles, :image, invitations: [club: [:cover]], currentClub: [:cover]]
         rescue ActiveRecord::RecordInvalid => e
-          render json: e.record.errors, status: 422
+          render json: { errors: e.record.errors }, status: 422
         end
       end
     end
