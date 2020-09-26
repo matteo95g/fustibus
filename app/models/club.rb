@@ -6,6 +6,7 @@ class Club < ApplicationRecord
 
   has_one :cover, as: :owner, dependent: :destroy
   has_one :field_folder, dependent: :destroy
+  has_one :poster, dependent: :destroy
 
   has_many :clubs_users_roles, dependent: :destroy
   has_many :users, through: :clubs_users_roles
@@ -37,5 +38,9 @@ class Club < ApplicationRecord
 
   def add_initial_mission
     missions << Mission.create_initial
+  end
+
+  def poster_id
+    poster&.id
   end
 end

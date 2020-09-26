@@ -34,7 +34,7 @@ import {
   fieldFolderUrl,
   profileUrl,
   clubDiaryUrl,
-  newPostersUrl,
+  newPosterUrl,
 } from "@utils/app/urlHelpers";
 
 const App = () => {
@@ -61,7 +61,7 @@ const App = () => {
           <ShowFieldFolderRoute exact path={fieldFolderUrl()} layout={Authenticated} />
           <ProfileRoute exact path={profileUrl()} layout={Authenticated} />
           <ClubDiaryRoute exact path={clubDiaryUrl()} layout={Authenticated} />
-          <NewPosterRoute exact path={newPostersUrl()} layout={Authenticated} />
+          <NewPosterRoute exact path={newPosterUrl()} layout={Authenticated} />
         </Switch>
       </Router>
     </ThemeProvider>

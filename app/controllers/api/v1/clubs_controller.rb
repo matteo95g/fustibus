@@ -30,6 +30,7 @@ module Api
 
         ClubsUsersRole.create!(user_id: current_user.id, club_id: club.id, role: Role.counselor)
         club.create_field_folder!
+        club.create_poster!
         current_user.update(current_club_id: club.id) unless current_user.current_club
 
         render jsonapi: club, include: [:cover, :fieldFolder], expose: { current_user: current_user }
