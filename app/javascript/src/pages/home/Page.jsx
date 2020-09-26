@@ -5,15 +5,12 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { newClubUrl, fieldFolderUrl, clubDiaryUrl, newPosterUrl } from "@utils/app/urlHelpers";
 import strings from "@common/strings";
-import { clubFieldFolder } from "@features/clubs/selectors";
 import { currentUserClub } from "@features/users/selectors";
 
 const Home = () => {
   const history = useHistory();
 
   const currentClub = useSelector(currentUserClub);
-
-  const folder = useSelector(clubFieldFolder);
 
   const goToNewClub = () => {
     history.push(newClubUrl());
@@ -29,13 +26,16 @@ const Home = () => {
           <Box my="4">
             Mis Petates
             <Flex mt="4" align="center">
-              <BoxButton title="Diario de Viaje" onClick={() => history.push(clubDiaryUrl(currentClub.id))} />
+              <BoxButton
+                title="Diario de Viaje"
+                onClick={() => history.push(clubDiaryUrl(currentClub.id))}
+              />
               <BoxButton title="Libreta de Apuntes" onClick={() => {}} />
             </Flex>
           </Box>
           Petates del Equipo
           <Flex mt="4" align="center">
-            <BoxButton title="Carpeta de Campo" onClick={() => history.push(fieldFolderUrl(folder?.id))} />
+            <BoxButton title="Carpeta de Campo" onClick={() => history.push(fieldFolderUrl())} />
             <BoxButton title="Poster" onClick={() => history.push(newPosterUrl())} />
             <BoxButton title="Informe de Investigación" onClick={() => {}} />
           </Flex>

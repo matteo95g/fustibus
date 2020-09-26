@@ -9,7 +9,7 @@ import { DESTROY_ENTRY, CREATE_ENTRY } from "@features/entries/entriesSlice";
 export const FIND = "fieldFolders/FIND";
 
 // Action Creators
-export const find = (id) => apiAction(FIND, FieldFoldersApi.find(id));
+export const find = () => apiAction(FIND, FieldFoldersApi.find());
 
 // Reducer
 const initialState = {

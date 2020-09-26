@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useReducer } from "react";
 import { entriesState } from "@features/entries/selectors";
+import { currentFieldFolder } from "@features/fieldFolders/selectors";
 import { Box, Text, Skeleton, Flex, Image, Icon, Button, Divider, IconButton } from "@common/ui";
-import { useParams } from "react-router-dom";
 import { find } from "@features/fieldFolders/fieldFoldersSlice";
 import { list, destroy } from "@features/entries/entriesSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,8 +17,9 @@ import { reducer, DELAY_TIMEOUT } from "@utils/app/forms";
 const FieldFolderShow = () => {
   const entries = useSelector((state) => entriesState(state)?.current?.entries);
   const loading = useSelector((state) => entriesState(state)?.status === LOADING);
+  const id = useSelector((state) => currentFieldFolder(state)?.id);
+
   const dispatch = useDispatch();
-  const { id } = useParams();
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentEntry, setCurrentEntry] = useState(null);
@@ -26,7 +27,7 @@ const FieldFolderShow = () => {
   const [editEntryOpen, setEditEntryOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(find(id));
+    dispatch(find());
   }, []);
 
   const initialFilters = {
@@ -65,13 +66,23 @@ const FieldFolderShow = () => {
           <Text fontSize="5xl" mr="5">
             Carpeta de campo
           </Text>
-          <Button mt="1" rightIcon="plus-square" variantColor="green" onClick={() => setIsOpen(true)}>
+          <Button
+            mt="1"
+            rightIcon="plus-square"
+            variantColor="green"
+            onClick={() => setIsOpen(true)}
+          >
             Crear Entrada
           </Button>
         </Flex>
       </Skeleton>
       <Skeleton isLoaded={isLoaded}>
-        <Actions setIsOpen={setIsOpen} filters={filters} setFilters={setFilters} initialFilters={initialFilters} />
+        <Actions
+          setIsOpen={setIsOpen}
+          filters={filters}
+          setFilters={setFilters}
+          initialFilters={initialFilters}
+        />
       </Skeleton>
       <Divider mb="4" />
       <Skeleton isLoaded={isLoaded}>
@@ -92,8 +103,18 @@ const FieldFolderShow = () => {
                     <Text fontSize="2xl" mr="2">
                       {entry?.attributes?.title}
                     </Text>
-                    <IconButton variant="link" variantColor="teal" icon="edit" onClick={() => handleEditEntry(entry)} />
-                    <IconButton variant="link" variantColor="red" icon="delete" onClick={() => handleDeleteEntry(entry)} />
+                    <IconButton
+                      variant="link"
+                      variantColor="teal"
+                      icon="edit"
+                      onClick={() => handleEditEntry(entry)}
+                    />
+                    <IconButton
+                      variant="link"
+                      variantColor="red"
+                      icon="delete"
+                      onClick={() => handleDeleteEntry(entry)}
+                    />
                   </Flex>
                   <Text>{entry?.attributes?.description}</Text>
                 </Box>

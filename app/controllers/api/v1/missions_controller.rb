@@ -30,8 +30,9 @@ module Api
       end
 
       private
+
       def set_club
-        @club = current_user.clubs.find(params[:club_id])
+        @club = current_user.current_club
       end
 
       def set_mission

@@ -84,7 +84,7 @@ const ClubList = () => {
         <Box pos="relative" mt={20}>
           <Box
             pos="absolute"
-            top="30%"
+            top="0"
             left="50%"
             transform="translateX(-50%)"
             zIndex={1}
