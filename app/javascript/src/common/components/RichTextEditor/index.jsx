@@ -1,7 +1,13 @@
 import React from "react";
-import { Editor, EditorState, ContentState, RichUtils, convertFromRaw, convertToRaw } from "draft-js";
+import { EditorState, ContentState, RichUtils, convertToRaw, AtomicBlockUtils } from "draft-js";
+import Editor from "draft-js-plugins-editor";
+import createImagePlugin from "draft-js-image-plugin";
 import "draft-js/dist/Draft.css";
-import { Box } from "@common/ui";
+import { Box, Button } from "@common/ui";
+import FileUploader from "@common/components/FileUploader";
+import Modal from "@common/components/Modal";
+
+const imagePlugin = createImagePlugin();
 
 class RichTextEditor extends React.Component {
   constructor(props) {
@@ -11,7 +17,7 @@ class RichTextEditor extends React.Component {
 
     const content = prevContent ? prevContent : ContentState.createFromText("");
 
-    this.state = { editorState: EditorState.createWithContent(content) };
+    this.state = { editorState: EditorState.createWithContent(content), isOpen: false, files: [] };
 
     this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => {
@@ -27,6 +33,14 @@ class RichTextEditor extends React.Component {
     this.toggleBlockType = (type) => this._toggleBlockType(type);
     this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
   }
+
+  insertImage = (editorState, base64) => {
+    const contentState = editorState.getCurrentContent();
+    const contentStateWithEntity = contentState.createEntity("IMAGE", "IMMUTABLE", { src: base64 });
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+    const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
+    return AtomicBlockUtils.insertAtomicBlock(newEditorState, entityKey, " ");
+  };
 
   _handleKeyCommand(command) {
     const { editorState } = this.state;
@@ -52,7 +66,7 @@ class RichTextEditor extends React.Component {
   }
 
   render() {
-    const { editorState } = this.state;
+    const { editorState, isOpen } = this.state;
     const { hideControlls } = this.props;
 
     // If the user changes block type before entering any text, we can
@@ -66,9 +80,28 @@ class RichTextEditor extends React.Component {
       }
     }
 
+    const handleUpload = (files) => {
+      this.setState({ files: files.map((file) => file.result) });
+    };
+
+    const addFiles = () => {
+      this.state.files.forEach((file) => {
+        const newEditorState = this.insertImage(this.state.editorState, file);
+        this.setState({ editorState: newEditorState });
+      });
+
+      this.setState({ isOpen: false });
+    };
+
+    const openCloseModal = (show) => {
+      this.setState({ isOpen: show });
+    };
+
     return (
       <Box className="RichEditor-root" {...this.props}>
-        {!hideControlls && <BlockStyleControls editorState={editorState} onToggle={this.toggleBlockType} />}
+        {!hideControlls && (
+          <BlockStyleControls editorState={editorState} onToggle={this.toggleBlockType} openCloseModal={openCloseModal} />
+        )}
         {!hideControlls && <InlineStyleControls editorState={editorState} onToggle={this.toggleInlineStyle} />}
         <div className={className} onClick={this.focus} id={`poster-${this.props.sectionName}`}>
           <Editor
@@ -80,7 +113,14 @@ class RichTextEditor extends React.Component {
             onTab={this.onTab}
             ref="editor"
             spellCheck={true}
+            plugins={[imagePlugin]}
           />
+          <Modal isOpen={isOpen} onClose={() => openCloseModal(false)}>
+            <Box pt="5">
+              <FileUploader handleUpload={handleUpload} multiple={false} uploading={false} />
+              <Button onClick={addFiles}>Listo</Button>
+            </Box>
+          </Modal>
         </div>
       </Box>
     );
@@ -131,14 +171,11 @@ const BLOCK_TYPES = [
   { label: "H4", style: "header-four" },
   { label: "H5", style: "header-five" },
   { label: "H6", style: "header-six" },
-  { label: "Blockquote", style: "blockquote" },
-  // { label: "UL", style: "unordered-list-item" },
-  // { label: "OL", style: "ordered-list-item" },
-  { label: "Code Block", style: "code-block" },
+  { label: "Cita", style: "blockquote" },
 ];
 
 const BlockStyleControls = (props) => {
-  const { editorState } = props;
+  const { editorState, openCloseModal } = props;
   const selection = editorState.getSelection();
   const blockType = editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
 
@@ -153,6 +190,7 @@ const BlockStyleControls = (props) => {
           style={type.style}
         />
       ))}
+      <StyleButton key={"image"} label={"Imagen"} onToggle={() => openCloseModal(true)} />
     </div>
   );
 };

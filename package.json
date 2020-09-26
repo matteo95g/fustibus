@@ -15,6 +15,8 @@
     "babel-polyfill": "^6.26.0",
     "draft-js": "^0.11.7",
     "draft-js-export-html": "^1.4.1",
+    "draft-js-image-plugin": "^2.0.7",
+    "draft-js-plugins-editor": "^3.0.0",
     "emotion-theming": "^10.0.27",
     "formik": "^2.1.4",
     "humps": "^2.0.1",

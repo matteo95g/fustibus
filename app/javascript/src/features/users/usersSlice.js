@@ -112,9 +112,6 @@ const reducer = (state = initialState, action) => {
         },
 
         success: () => {
-          localStorage.removeItem("token");
-          localStorage.removeItem("persist:root");
-
           return initialState;
         },
 

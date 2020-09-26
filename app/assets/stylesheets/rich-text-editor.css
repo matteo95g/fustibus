@@ -63,3 +63,7 @@
 .RichEditor-activeButton {
   color: #5890ff;
 }
+
+#upload-file-text-editor {
+  display: none;
+}
