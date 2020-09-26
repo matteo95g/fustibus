@@ -26,11 +26,19 @@ Rails.application.routes.draw do
           end
         end
       end
+
       resources :images, only: [:create, :index, :update, :destroy, :show]
-      resources :field_folders, only: [:create, :index, :update, :destroy, :show] do
+
+      resources :field_folders, only: [] do
+        collection do
+          get :current
+        end
+
         resources :entries, only: [:create, :index, :update, :destroy, :show]
       end
+
       resources :users, only: [:update]
+
       resources :invitations, only: [] do
         post :accept
         post :reject
