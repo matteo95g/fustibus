@@ -4,14 +4,14 @@ import { getApiClient } from "@app/api";
 const API_URL = Config.API_FULL_URL;
 
 const urls = {
-  resource(id) {
-    return `/field_folders/${id}`;
+  find() {
+    return `/field_folders/current`;
   },
 };
 
 export default {
-  find(id) {
+  find() {
     const client = getApiClient(API_URL);
-    return client.get(urls.resource(id));
+    return client.get(urls.find());
   },
 };

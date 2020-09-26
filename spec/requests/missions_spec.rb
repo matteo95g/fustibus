@@ -13,33 +13,31 @@
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "Missions", type: :request do
-  let(:user) { create(:user) }
+  let!(:club) { create(:club) }
+  let!(:user) { create(:user, current_club: club) }
 
   before { sign_in user }
   after { sign_out user }
 
   describe "request list of club missions" do
     let(:count) { rand(1..5) }
-    let(:club) { create(:club, users: [user]) }
 
     before { create_list(:mission, count, club: club) }
-    
+
     it "returns all missions of a club" do
       get api_v1_club_missions_path({ club_id: club.id })
-      
+
       expect(response).to be_successful
       expect(json_body['data'].size).to eq(count + 1)
     end
   end
 
   describe "POST /create" do
-    let(:club) { create(:club, users: [user]) }
-    
     context "with valid parameters" do
       it "creates a new Mission" do
         expect {
           post api_v1_club_missions_path({ club_id: club.id }), params: { description: Faker::Lorem.paragraph }
-        }.to change(Mission, :count).by(2)
+        }.to change(Mission, :count).by(1)
       end
     end
 
@@ -47,13 +45,12 @@ RSpec.describe "Missions", type: :request do
       it "does not create a new Mission" do
         expect {
           post api_v1_club_missions_path({ club_id: club.id }), params: { }
-        }.to change(Mission, :count).by(1)
+        }.to change(Mission, :count).by(0)
       end
     end
   end
 
   describe "PATCH /update" do
-    let(:club) { create(:club, users: [user]) }
     let(:new_description) { Faker::Lorem.paragraph }
 
     context "with valid parameters" do
@@ -68,7 +65,6 @@ RSpec.describe "Missions", type: :request do
   end
 
   describe "DELETE /destroy" do
-    let(:club) { create(:club, users: [user]) }
     let(:mission) { create(:mission) }
 
     it "destroys the requested mission" do
