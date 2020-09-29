@@ -64,6 +64,16 @@ const strings = {
   },
 
   Poster: {
+    index: {
+      title: "Poster científico",
+      description:
+        "Todo Club de Ciencia debe presentar un póster científico de 90 cm de ancho y 120 cm de alto, aceptándose como alternativa el formato A0 (84,1 cm x 118,4 cm). El póster deberá exhibirse colgado de un soporte provisto por el propio Club de Ciencia.",
+      content:
+        "El póster debe exhibir en su parte superior el título del trabajo tal cual figura en el informe, el nombre de la institución, localidad y departamento. El contenido del póster debe dar cuenta en forma clara y coherente del proceso general de la investigación.",
+      source: "Fuente: Reglamento Clubes de Ciencia.",
+      sourceWeb: "https://www.gub.uy/ministerio-educacion-cultura/tematica/clubes-ciencia",
+      recomendations: "Recomendaciones para la elaboración del póster:",
+    },
     sections: {
       title: "Título",
       abstract: "Abstract",

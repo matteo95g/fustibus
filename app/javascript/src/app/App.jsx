@@ -15,6 +15,7 @@ import ShowFieldFolderRoute from "@pages/fieldFolders/show/Route";
 import ProfileRoute from "@pages/users/profile/Route";
 import ClubDiaryRoute from "@pages/clubDiary/show/Route";
 import NewPosterRoute from "@pages/posters/new/Route";
+import PostersIndexRoute from "@pages/posters/index/Route";
 
 import history from "./history";
 
@@ -35,6 +36,7 @@ import {
   profileUrl,
   clubDiaryUrl,
   newPosterUrl,
+  postersUrl,
 } from "@utils/app/urlHelpers";
 
 const App = () => {
@@ -62,6 +64,7 @@ const App = () => {
           <ProfileRoute exact path={profileUrl()} layout={Authenticated} />
           <ClubDiaryRoute exact path={clubDiaryUrl()} layout={Authenticated} />
           <NewPosterRoute exact path={newPosterUrl()} layout={Authenticated} />
+          <PostersIndexRoute exact path={postersUrl()} layout={Authenticated} />
         </Switch>
       </Router>
     </ThemeProvider>
