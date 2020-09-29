@@ -19,7 +19,7 @@ module Api
       end
 
       def create
-        club = Club.new(create_params)
+        club = Club.new(club_params)
 
         if params[:cover].present?
           cover = build_cover(params[:cover])
@@ -73,12 +73,8 @@ module Api
         end
       end
 
-      def create_params
-        params.permit(:name, :category, :area, :formal, :cover)
-      end
-
       def club_params
-        params.permit(:id, :name, :category, :area, :formal, :cover)
+        params.permit(:name, :category, :area, :formal, :cover, :description)
       end
 
       def sanitize_params

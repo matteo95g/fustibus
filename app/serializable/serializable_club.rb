@@ -3,6 +3,7 @@ class SerializableClub < SerializableBase
   attribute :category
   attribute :area
   attribute :formal
+  attribute :description
   attribute :created_at
   attribute :updated_at
   attribute :poster_id

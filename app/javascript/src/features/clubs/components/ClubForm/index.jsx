@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import FormikTextInput from "@common/components/FormikTextInput";
 import FormikSelect from "@common/components/FormikSelect";
 import FormikCheckbox from "@common/components/FormikCheckbox";
+import FormikTextArea from "@common/components/FormikTextArea";
 import AlertWithIcon from "@common/components/AlertWithIcon";
 import FileUploader from "@common/components/FileUploader";
 import { clubsState } from "@features/clubs/selectors";
@@ -51,8 +52,11 @@ const areaOptions = [
 const ClubForm = ({ club = null, handleUpload, handleSubmit, submitting, actionCompleted }) => {
   const initialValues = {
     name: club?.attributes?.name ?? "",
+    description: club?.attributes?.description ?? "",
     formal: club?.attributes?.formal ?? false,
-    category: categoriesOption.find((category) => category.label === club?.attributes?.category)?.value ?? "",
+    category:
+      categoriesOption.find((category) => category.label === club?.attributes?.category)?.value ??
+      "",
     area: areasOption.find((area) => area.label === club?.attributes?.area)?.value ?? "",
   };
 
@@ -62,6 +66,9 @@ const ClubForm = ({ club = null, handleUpload, handleSubmit, submitting, actionC
 
   const validationSchema = Yup.object({
     name: Yup.string().required(REQUIRED),
+    description: Yup.string()
+      .required(REQUIRED)
+      .matches(/^.{12,}$/, "Debe contener al menos 12 caracteres"),
     formal: Yup.boolean().required(REQUIRED).oneOf([true, false]),
     category: Yup.number()
       .oneOf(
@@ -112,6 +119,14 @@ const ClubForm = ({ club = null, handleUpload, handleSubmit, submitting, actionC
         <FormikCheckbox my="4" isSwitch={true} name="formal">
           ¿Es Formal?
         </FormikCheckbox>
+        <FormikTextArea
+          mt="4"
+          mb="6"
+          label="Descripción"
+          name="description"
+          type="text"
+          placeholder=""
+        />
         <FormLabel>Imagen</FormLabel>
         <FileUploader handleUpload={handleUpload} multiple={false} uploading={false} />
         <Button mr="4" variantColor="red" onClick={() => history.goBack()}>
