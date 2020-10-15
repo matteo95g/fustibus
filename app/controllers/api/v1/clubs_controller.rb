@@ -15,7 +15,7 @@ module Api
       end
 
       def show
-        render jsonapi: @club, include: [:fieldFolder, :cover], expose: { current_user: current_user }
+        render jsonapi: @club, include: [:fieldFolder, :cover, users: [:image]], expose: { current_user: current_user }
       end
 
       def create
