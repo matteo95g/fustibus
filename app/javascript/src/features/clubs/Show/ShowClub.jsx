@@ -4,6 +4,9 @@ import {
   currentClubCovers,
   currentClubCurrentUserRoles,
   clubStatus,
+  currentClubCounselorUsers,
+  currentClubMembersUsers,
+  currentClubUsersImages,
 } from "@features/clubs/selectors";
 import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel } from "@common/ui";
 import { useParams, useHistory } from "react-router-dom";
@@ -19,11 +22,15 @@ import { clubsUrl, editClubUrl } from "@utils/app/urlHelpers";
 import ConfirmDeleteModal from "@common/components/ConfirmDeleteModal";
 import strings from "@common/strings";
 import clubPlaceholder from "@images/clubPlaceholder";
+import UsersList from "@features/clubs/components/UsersList";
 
 const ShowClub = () => {
   const club = useSelector((state) => currentClub(state));
   const loading = useSelector((state) => clubStatus(state) === LOADING);
   const covers = useSelector((state) => currentClubCovers(state));
+  const clubCounselors = useSelector(currentClubCounselorUsers);
+  const clubMembers = useSelector(currentClubMembersUsers);
+  const usersImages = useSelector(currentClubUsersImages);
   const dispatch = useDispatch();
   const { id } = useParams();
   const currentUserRoles = useSelector((state) => currentClubCurrentUserRoles(state));
@@ -92,19 +99,34 @@ const ShowClub = () => {
         </Flex>
       </Skeleton>
 
-      <Flex mt="10">
+      <Flex my="10">
         <Box w="50%" pr="6">
           <Skeleton h="100%" isLoaded={!loading}>
             <Image
+              borderRadius="lg"
               src={covers[0]?.attributes?.file?.large?.url ?? clubPlaceholder}
               alt={club?.attributes?.name}
+              width="100%"
             />
           </Skeleton>
         </Box>
         <Box w="50%" pl="6">
-          <Skeleton h="100%" isLoaded={!loading}>
-            {club?.attributes?.description}
+          <Skeleton isLoaded={!loading} mb={6}>
+            <Box p={4} boxShadow="lg" borderRadius="md" backgroundColor={"gray.50"}>
+              <Text fontSize="lg" fontWeight="bold" mb={2}>
+                Descripción del club
+              </Text>
+              <Text>
+                {club?.attributes?.description || "El club aún no tiene una descripción."}
+              </Text>
+            </Box>
           </Skeleton>
+          <UsersList
+            counselorUsers={clubCounselors}
+            membersUsers={clubMembers}
+            usersImages={usersImages}
+            isLoaded={!loading}
+          />
         </Box>
       </Flex>
 

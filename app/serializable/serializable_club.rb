@@ -14,4 +14,5 @@ class SerializableClub < SerializableBase
 
   has_one :cover
   has_one :field_folder
+  has_many :users
 end
