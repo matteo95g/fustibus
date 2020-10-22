@@ -5,11 +5,11 @@ const API_URL = Config.API_FULL_URL;
 
 const urls = {
   collection(clubId) {
-    return `/clubs/${clubId}/posters`;
+    return `/clubs/${clubId}/poster`;
   },
 
   resource(clubId) {
-    return `/clubs/${clubId}/posters`;
+    return `/clubs/${clubId}/poster`;
   },
 };
 

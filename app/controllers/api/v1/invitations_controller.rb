@@ -40,7 +40,7 @@ module Api
         @invitation.club.users << current_user
         @invitation.update!(status: :accepted)
 
-        current_user.update(current_club: @invitation.club) unless current_user.current_club
+        current_user.update(current_club: @invitation.club) unless current_club
 
         head :ok
       end

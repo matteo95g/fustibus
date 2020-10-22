@@ -85,6 +85,11 @@ const strings = {
       acknowledgments: "Agredecimientos",
     },
   },
+  Reports: {
+    update: {
+      success: "Reporte agregado con éxito!",
+    },
+  },
 };
 
 export default strings;

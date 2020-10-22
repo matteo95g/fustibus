@@ -13,6 +13,10 @@ class ApplicationController < ActionController::Base
 
   respond_to :json
 
+  def current_club
+    current_user.current_club
+  end
+
   private
 
   def record_not_found(exception)
