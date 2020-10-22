@@ -19,7 +19,7 @@ Rails.application.routes.draw do
       resources :clubs, only: [:create, :index, :update, :destroy, :show] do
         post :current
         resources :missions, only: [:create, :index, :update, :destroy]
-        resources :posters, only: [:create] do
+        resources :poster, only: [:create] do
           collection do
             get :show
             put :update
@@ -28,6 +28,13 @@ Rails.application.routes.draw do
       end
 
       resources :images, only: [:create, :index, :update, :destroy, :show]
+
+      resources :report, only: [] do
+        collection do
+          get :current
+          put :update
+        end
+      end
 
       resources :field_folders, only: [] do
         collection do

@@ -15,3 +15,5 @@ export const clubDiaryUrl = (id) => (id ? `/clubs/${id}/diary` : "/clubs/:id/dia
 
 export const newPosterUrl = () => "/poster";
 export const postersUrl = () => "/posters";
+
+export const reportsUrl = () => "/reports";
