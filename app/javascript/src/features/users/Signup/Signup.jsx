@@ -19,10 +19,11 @@ const Signup = () => {
   const status = useSelector((state) => state.users.status);
   const error = useSelector((state) => state.users.error);
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const invitedEmail = urlParams.get("invited_email");
+
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("El email ingresado es inválido.")
-      .required("El email no puede ser vacío."),
+    email: Yup.string().email("El email ingresado es inválido.").required("El email no puede ser vacío."),
     password: Yup.string().required("La contraseña no puede ser vacía."),
     passwordConfirmation: Yup.string()
       .required("La confirmación de contraseña no coincide.")
@@ -30,7 +31,7 @@ const Signup = () => {
   });
 
   const initialValues = {
-    email: "",
+    email: invitedEmail || "",
     password: "",
     passwordConfirmation: "",
   };
@@ -45,15 +46,7 @@ const Signup = () => {
 
   return (
     <Flex p={{ xs: 5, md: 10, xl: 20 }} align="center" justify="center" minH="100vh" bg="blue.100">
-      <Box
-        maxW="400px"
-        w="100%"
-        mt={-16}
-        shadow="lg"
-        bg="white"
-        p={{ xs: 6, md: 10 }}
-        textAlign="center"
-      >
+      <Box maxW="400px" w="100%" mt={-16} shadow="lg" bg="white" p={{ xs: 6, md: 10 }} textAlign="center">
         <Heading as="h1" mb={6}>
           Nuevo Usuario
         </Heading>
@@ -71,14 +64,15 @@ const Signup = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <FormikTextInput w="100%" mb={3} name="email" placeholder="Email" />
               <FormikTextInput
                 w="100%"
                 mb={3}
-                name="password"
-                placeholder="Contraseña"
-                type="password"
+                name="email"
+                placeholder="Email"
+                value={invitedEmail || ""}
+                disabled={invitedEmail}
               />
+              <FormikTextInput w="100%" mb={3} name="password" placeholder="Contraseña" type="password" />
               <FormikTextInput
                 w="100%"
                 mb={3}

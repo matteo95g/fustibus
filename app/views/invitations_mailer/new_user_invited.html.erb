@@ -1,0 +1,15 @@
+<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="color: black">
+  <tr>
+    <td style="padding-top:20px;" valign="top" width="100%">
+      <table align="left" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;">
+        <tr width="100%">
+          <td width="100%">
+            <h2>Hola!</h2>
+            <h3>Has recibido una nueva invitación para formar parte del club <i><%= @club.name %></i></h3>
+            <h4>Puedes aceptar la invitación haciendo click en el siguiente <%= link_to 'link', "#{root_url}signup?invited_email=#{@email}"%></h4>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
