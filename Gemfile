@@ -23,6 +23,8 @@ gem 'jbuilder', '~> 2.7'
 
 gem 'sass-rails'
 
+gem 'acts_as_list'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
