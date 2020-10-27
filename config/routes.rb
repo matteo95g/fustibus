@@ -18,8 +18,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :clubs, only: [:create, :index, :update, :destroy, :show] do
         post :current
-        resources :missions, only: [:create, :index, :update, :destroy]
-        resources :poster, only: [:create] do
+        resources :posters, only: [:create] do
           collection do
             get :show
             put :update
@@ -30,6 +29,8 @@ Rails.application.routes.draw do
       resources :notes, only: [] do
         resources :note_sections, only: [:create, :index, :update, :destroy]
       end
+
+      resources :missions, only: [:create, :index, :update, :destroy]
 
       resources :images, only: [:create, :index, :update, :destroy, :show]
 

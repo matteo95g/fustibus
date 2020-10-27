@@ -26,7 +26,7 @@ const Home = () => {
           <Box my="4">
             Mis Petates
             <Flex mt="4" align="center">
-              <BoxButton title="Diario de Viaje" onClick={() => history.push(clubDiaryUrl(currentClub.id))} />
+              <BoxButton title="Diario de Viaje" onClick={() => history.push(clubDiaryUrl())} />
               <BoxButton title="Libreta de Apuntes" onClick={() => {}} />
             </Flex>
           </Box>
