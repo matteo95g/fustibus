@@ -27,6 +27,10 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :notes, only: [] do
+        resources :note_sections, only: [:create, :index, :update, :destroy]
+      end
+
       resources :images, only: [:create, :index, :update, :destroy, :show]
 
       resources :report, only: [] do
