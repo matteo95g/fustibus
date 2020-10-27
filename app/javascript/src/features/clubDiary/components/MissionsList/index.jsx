@@ -1,20 +1,13 @@
 import React, { useState } from "react";
 import { Flex } from "@common/ui";
 
-const MissionsList = ({ missions, onSelect }) => {
-  const [selected, setSelected] = useState(null);
-
+const MissionsList = ({ missions, onSelect, selectedId }) => {
   const missionSelected = (mission) => {
-    if (selected == mission.id) {
-      setSelected(null);
-    } else {
-      setSelected(mission.id);
-    }
     onSelect(mission);
   };
 
   const getBorderColor = (id) => {
-    return selected == id ? "black" : "gray";
+    return selectedId == id ? "black" : "gray";
   };
 
   return (
