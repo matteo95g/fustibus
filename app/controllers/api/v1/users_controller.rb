@@ -20,6 +20,42 @@ module Api
         render jsonapi: @user, include: [:roles, :image, currentClub: [:cover]]
       end
 
+      def add_role
+        current_club_id = current_user.current_club.id
+
+        return head :forbidden unless current_user.counselor_for_club?(current_club_id)
+
+        user = User.find(params[:id])
+
+        return head :forbidden unless user.clubs.exists?(current_club_id)
+
+        user.clubs_users_roles << ClubsUsersRole.create(
+          role: Role.find_by!(name: params[:role_name]),
+          club_id: current_club_id
+        )
+
+        head :no_content
+      end
+
+      def delete_role
+        current_club_id = current_user.current_club.id
+
+        return head :forbidden unless current_user.counselor_for_club?(current_club_id)
+
+        user = User.find(params[:id])
+
+        return head :forbidden unless user.clubs.exists?(current_club_id)
+
+        user.clubs_users_roles.delete(
+          user.clubs_users_roles.where(
+            role: Role.find_by!(name: params[:role_name]),
+            club_id: current_club_id
+          )
+        )
+
+        head :no_content
+      end
+
       private
 
       def set_user

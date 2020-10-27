@@ -44,4 +44,12 @@ class Club < ApplicationRecord
   def poster_id
     poster&.id
   end
+
+  def counselor_users
+    users.where(clubs_users_roles: { role: Role.find_by(name: Role::COUNSELOR) })
+  end
+
+  def member_users
+    users - users.where.not(clubs_users_roles: { role: nil })
+  end
 end

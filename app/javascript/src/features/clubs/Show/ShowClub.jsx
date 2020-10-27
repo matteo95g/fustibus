@@ -4,9 +4,6 @@ import {
   currentClubCovers,
   currentClubCurrentUserRoles,
   clubStatus,
-  currentClubCounselorUsers,
-  currentClubMembersUsers,
-  currentClubUsersImages,
 } from "@features/clubs/selectors";
 import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel } from "@common/ui";
 import { useParams, useHistory } from "react-router-dom";
@@ -28,15 +25,14 @@ const ShowClub = () => {
   const club = useSelector((state) => currentClub(state));
   const loading = useSelector((state) => clubStatus(state) === LOADING);
   const covers = useSelector((state) => currentClubCovers(state));
-  const clubCounselors = useSelector(currentClubCounselorUsers);
-  const clubMembers = useSelector(currentClubMembersUsers);
-  const usersImages = useSelector(currentClubUsersImages);
   const dispatch = useDispatch();
   const { id } = useParams();
   const currentUserRoles = useSelector((state) => currentClubCurrentUserRoles(state));
   const history = useHistory();
+  const isCurrentUserCounselor = currentUserRoles?.includes(COUNSELOR_ROLE);
 
   const [confirmDeleteIsOpen, setConfirmDeleteIsOpen] = useState(false);
+  const [refreshIndex, setRefreshIndex] = useState(0);
 
   useEffect(() => {
     const fetchClub = async () => {
@@ -46,7 +42,7 @@ const ShowClub = () => {
       }
     };
     fetchClub();
-  }, [id]);
+  }, [id, refreshIndex]);
 
   const onDeleteConfirm = () => {
     dispatch(destroy(id));
@@ -74,7 +70,7 @@ const ShowClub = () => {
               <TagLabel>{club?.attributes?.formal ? "Formal" : "No formal"}</TagLabel>
             </Tag>
           </Flex>
-          {currentUserRoles?.includes(COUNSELOR_ROLE) && (
+          {isCurrentUserCounselor && (
             <Flex>
               <InviteUsers mr="4" clubId={id} />
               <EditButton mr="4" onClick={handleEdit} />
@@ -122,10 +118,11 @@ const ShowClub = () => {
             </Box>
           </Skeleton>
           <UsersList
-            counselorUsers={clubCounselors}
-            membersUsers={clubMembers}
-            usersImages={usersImages}
+            counselorUsers={club?.attributes?.counselorUsers}
+            memberUsers={club?.attributes?.memberUsers}
             isLoaded={!loading}
+            refreshClub={() => setRefreshIndex(refreshIndex + 1)}
+            isCurrentUserCounselor={isCurrentUserCounselor}
           />
         </Box>
       </Flex>

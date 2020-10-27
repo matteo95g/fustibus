@@ -16,6 +16,12 @@ const urls = {
   resource(id) {
     return `/users/${id}`;
   },
+  addRole(id) {
+    return `/users/${id}/role`;
+  },
+  removeRole(id) {
+    return `/users/${id}/role`;
+  },
 };
 
 export default {
@@ -37,5 +43,15 @@ export default {
   update(id, attributes = {}) {
     const client = getApiClient(API_URL);
     return client.put(urls.resource(id), attributes);
+  },
+
+  addRole(id, attributes = {}) {
+    const client = getApiClient(API_URL);
+    return client.post(urls.addRole(id), attributes);
+  },
+
+  removeRole(id, attributes = {}) {
+    const client = getApiClient(API_URL);
+    return client.delete(urls.removeRole(id), attributes);
   },
 };

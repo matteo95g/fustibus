@@ -21,6 +21,14 @@ class User < ApplicationRecord
     roles.where(name: Role::COUNSELOR).any?
   end
 
+  def profile_image
+    image&.file&.url
+  end
+
+  def attributes
+    super.merge(profile_image: profile_image)
+  end
+
   def counselor_for_club?(club_id)
     clubs_users_roles.joins(:role).where(
       clubs_users_roles: { club_id: club_id },

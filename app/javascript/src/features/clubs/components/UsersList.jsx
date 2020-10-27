@@ -1,16 +1,18 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-import { Box, Skeleton, Image, Text } from "@common/ui";
-import { getUserFullNameOrMail } from "@features/users/utils";
+import { Box, Skeleton, Text } from "@common/ui";
 import User from "@features/clubs/components/User";
+import { currentUser } from "@features/users/selectors";
 
-const UsersList = ({ counselorUsers, membersUsers, usersImages, isLoaded }) => {
-  const currentUserImage = (user) => {
-    const userImageId = user.relationships?.image?.data?.id;
-    const userImage = usersImages.find((img) => img.id === userImageId);
-
-    return userImage?.attributes?.file?.url;
-  };
+const UsersList = ({
+  counselorUsers,
+  memberUsers,
+  isLoaded,
+  refreshClub,
+  isCurrentUserCounselor,
+}) => {
+  const currentUserId = useSelector(currentUser).id;
 
   return (
     <Box>
@@ -23,7 +25,12 @@ const UsersList = ({ counselorUsers, membersUsers, usersImages, isLoaded }) => {
         <Box mx={-2}>
           {counselorUsers.map((user) => (
             <Skeleton key={user.id} isLoaded={isLoaded} display="inline-block" mx={2} w="90px">
-              <User user={user} userImage={currentUserImage(user)} />
+              <User
+                user={user}
+                refreshClub={refreshClub}
+                isCounselor={true}
+                canChangeRole={isCurrentUserCounselor && `${user.id}` !== currentUserId}
+              />
             </Skeleton>
           ))}
         </Box>
@@ -34,13 +41,18 @@ const UsersList = ({ counselorUsers, membersUsers, usersImages, isLoaded }) => {
         </Text>
       </Skeleton>
       <Box mx={-2}>
-        {membersUsers.map((user) => (
+        {memberUsers.map((user) => (
           <Skeleton key={user.id} isLoaded={isLoaded} display="inline-block" mx={2} w="90px">
-            <User user={user} userImage={currentUserImage(user)} />
+            <User
+              user={user}
+              refreshClub={refreshClub}
+              isCounselor={false}
+              canChangeRole={isCurrentUserCounselor}
+            />
           </Skeleton>
         ))}
       </Box>
-      {membersUsers.length === 0 && "El club aun no tiene miembros."}
+      {memberUsers.length === 0 && "El club aun no tiene miembros."}
     </Box>
   );
 };
