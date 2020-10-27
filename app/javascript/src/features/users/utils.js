@@ -1,7 +1,7 @@
 export const getUserFullNameOrMail = (user) => {
-  if (user.attributes.names || user.attributes.lastNames) {
-    return `${user.attributes.names} ${user.attributes.lastNames}`;
+  if (user.names || user.last_names) {
+    return `${user.names} ${user.last_names}`;
   } else {
-    return user.attributes.email;
+    return user.email;
   }
 };

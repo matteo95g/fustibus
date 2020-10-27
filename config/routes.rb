@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: "home#index"
+  root to: 'home#index'
 
   devise_for :users,
              path: 'api/v1',
@@ -44,7 +44,12 @@ Rails.application.routes.draw do
         resources :entries, only: [:create, :index, :update, :destroy, :show]
       end
 
-      resources :users, only: [:update]
+      resources :users, only: [:update] do
+        member do
+          post :add_role, path: 'role'
+          delete :delete_role, path: 'role'
+        end
+      end
 
       resources :invitations, only: [] do
         post :accept
