@@ -46,6 +46,9 @@ export {
   MenuDivider,
   MenuOptionGroup,
   MenuItemOption,
+  List,
+  ListItem,
+  CloseButton,
 } from "@chakra-ui/core";
 
 export { default as DatePicker } from "react-datepicker";

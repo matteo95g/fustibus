@@ -1,24 +1,25 @@
 import { apiAction } from "@app/actions";
-import PostersApi from "./api";
+import ReportsApi from "./api";
 import produce from "immer";
 import { handle } from "redux-pack";
 import { ERROR, LOADING, COMPLETE } from "@app/constants";
 
 // Actions
-export const CREATE = "posters/CREATE";
-export const FIND = "posters/FIND";
-export const UPDATE = "posters/UPDATE";
+export const UPDATE = "reports/UPDATE";
+export const FIND = "reports/FIND";
 
 // Action Creators
-export const create = (clubId, attributes) => apiAction(CREATE, PostersApi.create(clubId, attributes));
-export const find = (clubId) => apiAction(CREATE, PostersApi.find(clubId));
-export const update = (clubId, attributes) => apiAction(UPDATE, PostersApi.update(clubId, attributes));
+export const update = (attributes) => apiAction(UPDATE, ReportsApi.update(attributes));
+export const find = () => apiAction(FIND, ReportsApi.find());
 
 // Reducer
 const initialState = {
   status: null,
-  posterId: null,
   error: "",
+  current: {
+    report: {},
+    included: [],
+  },
 };
 
 const reducer = (state = initialState, action) => {
@@ -26,8 +27,8 @@ const reducer = (state = initialState, action) => {
   const { data: json } = payload || {};
 
   switch (type) {
-    case CREATE:
     case FIND:
+    case UPDATE:
       return handle(state, action, {
         start: (prevState) => {
           const newState = produce(prevState, (draftState) => {
@@ -38,7 +39,7 @@ const reducer = (state = initialState, action) => {
 
         success: (prevState) => {
           const newState = produce(prevState, (draftState) => {
-            draftState.posterId = json.data.id;
+            draftState.current.report = json.data;
             draftState.status = COMPLETE;
           });
           return { ...prevState, ...newState };
@@ -52,7 +53,6 @@ const reducer = (state = initialState, action) => {
           return { ...prevState, ...newState };
         },
       });
-
     default:
       return state;
   }

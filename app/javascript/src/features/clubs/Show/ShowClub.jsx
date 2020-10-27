@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { currentClub, currentClubCovers, currentClubCurrentUserRoles, clubStatus } from "@features/clubs/selectors";
+import {
+  currentClub,
+  currentClubCovers,
+  currentClubCurrentUserRoles,
+  clubStatus,
+  currentClubCounselorUsers,
+  currentClubMembersUsers,
+  currentClubUsersImages,
+} from "@features/clubs/selectors";
 import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel } from "@common/ui";
 import { useParams, useHistory } from "react-router-dom";
 import { find, destroy } from "@features/clubs/clubsSlice";
@@ -13,11 +21,16 @@ import { COUNSELOR_ROLE } from "@app/constants";
 import { clubsUrl, editClubUrl } from "@utils/app/urlHelpers";
 import ConfirmDeleteModal from "@common/components/ConfirmDeleteModal";
 import strings from "@common/strings";
+import clubPlaceholder from "@images/clubPlaceholder";
+import UsersList from "@features/clubs/components/UsersList";
 
 const ShowClub = () => {
   const club = useSelector((state) => currentClub(state));
   const loading = useSelector((state) => clubStatus(state) === LOADING);
   const covers = useSelector((state) => currentClubCovers(state));
+  const clubCounselors = useSelector(currentClubCounselorUsers);
+  const clubMembers = useSelector(currentClubMembersUsers);
+  const usersImages = useSelector(currentClubUsersImages);
   const dispatch = useDispatch();
   const { id } = useParams();
   const currentUserRoles = useSelector((state) => currentClubCurrentUserRoles(state));
@@ -51,9 +64,9 @@ const ShowClub = () => {
 
   return (
     <>
-      <Skeleton isLoaded={!loading}>
+      <Skeleton mt="8" isLoaded={!loading}>
         <Flex align="center" justify="space-between">
-          <Flex my="5" align="start">
+          <Flex align="start">
             <Text mr="2" fontSize="5xl">
               {club?.attributes?.name}
             </Text>
@@ -72,7 +85,12 @@ const ShowClub = () => {
       </Skeleton>
       <Skeleton isLoaded={!loading}>
         <Flex align="center">
-          <Badge fontSize="xl" mr="4" variant="solid" variantColor={getAreaColor(club?.attributes?.area)}>
+          <Badge
+            fontSize="xl"
+            mr="4"
+            variant="solid"
+            variantColor={getAreaColor(club?.attributes?.area)}
+          >
             {translateArea(club?.attributes?.area)}
           </Badge>
           <Badge variant="outline" fontSize="xl">
@@ -81,13 +99,37 @@ const ShowClub = () => {
         </Flex>
       </Skeleton>
 
-      {covers[0] && (
-        <Skeleton isLoaded={!loading}>
-          <Box my="3">
-            <Image width="50%" src={covers[0]?.attributes?.file?.large?.url} alt={club?.attributes?.name} />
-          </Box>
-        </Skeleton>
-      )}
+      <Flex my="10">
+        <Box w="50%" pr="6">
+          <Skeleton h="100%" isLoaded={!loading}>
+            <Image
+              borderRadius="lg"
+              src={covers[0]?.attributes?.file?.large?.url ?? clubPlaceholder}
+              alt={club?.attributes?.name}
+              width="100%"
+            />
+          </Skeleton>
+        </Box>
+        <Box w="50%" pl="6">
+          <Skeleton isLoaded={!loading} mb={6}>
+            <Box p={4} boxShadow="lg" borderRadius="md" backgroundColor={"gray.50"}>
+              <Text fontSize="lg" fontWeight="bold" mb={2}>
+                Descripción del club
+              </Text>
+              <Text>
+                {club?.attributes?.description || "El club aún no tiene una descripción."}
+              </Text>
+            </Box>
+          </Skeleton>
+          <UsersList
+            counselorUsers={clubCounselors}
+            membersUsers={clubMembers}
+            usersImages={usersImages}
+            isLoaded={!loading}
+          />
+        </Box>
+      </Flex>
+
       <ConfirmDeleteModal
         header={strings.Clubs.delete.confirmHeader}
         isOpen={confirmDeleteIsOpen}

@@ -11,7 +11,7 @@ module Api
       private
 
       def set_field_folder
-        @field_folder = current_user.current_club.field_folder
+        @field_folder = current_club.field_folder
       end
     end
   end

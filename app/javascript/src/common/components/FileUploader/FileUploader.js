@@ -1,10 +1,12 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Box, Image, Flex } from "@common/ui";
+import { Box, Image, Flex, Text } from "@common/ui";
+import reportIcon from "@images/icons/report.svg";
+import { ReactSVG } from "react-svg";
 
 const ACCEPTED_FILES = ["image/*"];
 
-const FileUploader = ({ handleUpload, multiple, uploading = false }) => {
+const FileUploader = ({ handleUpload, multiple, uploading = false, accept = ACCEPTED_FILES, setFilesSelected }) => {
   const [previews, setPreviews] = useState([]);
 
   const onDropAccepted = useCallback((acceptedFiles) => {
@@ -31,13 +33,14 @@ const FileUploader = ({ handleUpload, multiple, uploading = false }) => {
         if (index === acceptedFiles.length - 1) handleUpload(files);
       };
     });
-    setPreviews(acceptedFiles.map((file) => URL.createObjectURL(file)));
+    setPreviews(acceptedFiles.map((file) => [file.type, file.name, URL.createObjectURL(file)]));
+    if (setFilesSelected) setFilesSelected(acceptedFiles.length > 0);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDropAccepted,
     multiple,
-    accept: ACCEPTED_FILES,
+    accept: accept,
   });
 
   return (
@@ -47,11 +50,24 @@ const FileUploader = ({ handleUpload, multiple, uploading = false }) => {
         {isDragActive ? <p>Suelta el archivo aqui...</p> : <p>Arrastra el archivo aqui, o clickea para seleccionar</p>}
       </Box>
       {previews.length > 0 &&
-        previews.map((preview, index) => (
-          <Flex my="3" key={index}>
-            <Image size="100px" objectFit="contain" src={preview} />
-          </Flex>
-        ))}
+        previews.map(([type, name, preview], index) => {
+          return (
+            <Flex my="3" key={index}>
+              {type.startsWith("application") ? (
+                <>
+                  <Box width="50px" m="2">
+                    <ReactSVG src={reportIcon} />
+                    <Text textAlign="center" fontSize="xs">
+                      {name}
+                    </Text>
+                  </Box>
+                </>
+              ) : (
+                <Image size="100px" objectFit="contain" src={preview} />
+              )}
+            </Flex>
+          );
+        })}
     </>
   );
 };

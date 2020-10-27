@@ -20,9 +20,7 @@ module Api
             status: :pending,
           ).first_or_create!
 
-          # TODO: enviar mail diciendo que el usuario fue invitado a ser parte del club.
-          # Si el usuario aun no existe en la app, enviar ese mail pero invitandolo
-          # a crearse un usuario fustibustero
+          InvitationsMailer.with(club_id: club.id, email: email).new_user_invited.deliver_later unless User.find_by(email: email)
         end
 
         head :ok
@@ -40,7 +38,7 @@ module Api
         @invitation.club.users << current_user
         @invitation.update!(status: :accepted)
 
-        current_user.update(current_club: @invitation.club) unless current_user.current_club
+        current_user.update(current_club: @invitation.club) unless current_club
 
         head :ok
       end

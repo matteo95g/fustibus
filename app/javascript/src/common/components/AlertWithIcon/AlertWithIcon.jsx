@@ -1,12 +1,19 @@
-import React from "react";
-import { Alert, AlertIcon } from "@common/ui";
+import React, { useState } from "react";
+import { Alert, AlertIcon, Flex, Box, Icon, AlertDescription, CloseButton } from "@common/ui";
 import PropTypes from "prop-types";
 
 const AlertWithIcon = ({ children, ...props }) => {
+  const [hide, setHide] = useState(false);
+
+  const handleClose = (e) => {
+    setHide(true);
+  };
+
   return (
-    <Alert {...props}>
+    <Alert {...props} className={`${hide ? "hide" : ""}`}>
       <AlertIcon />
-      {children}
+      <AlertDescription>{children}</AlertDescription>
+      <CloseButton onClick={(e) => handleClose(e)} position="absolute" right="8px" top="8px" />
     </Alert>
   );
 };

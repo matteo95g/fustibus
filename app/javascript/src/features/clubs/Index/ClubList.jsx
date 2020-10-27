@@ -15,6 +15,7 @@ import { fetchUser } from "@features/users/usersSlice";
 import emptyClubs from "@images/emptyClubs";
 import CreateButton from "@common/components/CreateButton";
 import { newClubUrl } from "@utils/app/urlHelpers";
+import clubPlaceholder from "@images/clubPlaceholder";
 
 const ClubList = () => {
   const history = useHistory();
@@ -50,7 +51,7 @@ const ClubList = () => {
               const clubCoverId = club.relationships?.cover?.data?.id;
               const coverUrl = clubCoverId
                 ? covers.find((cover) => cover.id === clubCoverId)?.attributes?.file?.url
-                : "";
+                : clubPlaceholder;
               return (
                 <Box key={club.id} mb="8">
                   <Card

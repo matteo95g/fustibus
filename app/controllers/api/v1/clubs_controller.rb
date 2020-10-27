@@ -15,11 +15,11 @@ module Api
       end
 
       def show
-        render jsonapi: @club, include: [:fieldFolder, :cover], expose: { current_user: current_user }
+        render jsonapi: @club, include: [:fieldFolder, :cover, users: [:image]], expose: { current_user: current_user }
       end
 
       def create
-        club = Club.new(create_params)
+        club = Club.new(club_params)
 
         if params[:cover].present?
           cover = build_cover(params[:cover])
@@ -31,7 +31,8 @@ module Api
         ClubsUsersRole.create!(user_id: current_user.id, club_id: club.id, role: Role.counselor)
         club.create_field_folder!
         club.create_poster!
-        current_user.update(current_club_id: club.id) unless current_user.current_club
+        club.create_report!
+        current_user.update(current_club_id: club.id) unless current_club
 
         render jsonapi: club, include: [:cover, :fieldFolder], expose: { current_user: current_user }
       end
@@ -44,7 +45,7 @@ module Api
       def destroy
         @club.destroy!
 
-        unless current_user.current_club
+        unless current_club
           first_user_club = current_user.clubs.first
 
           current_user.update(current_club_id: first_user_club.id) if first_user_club
@@ -73,12 +74,8 @@ module Api
         end
       end
 
-      def create_params
-        params.permit(:name, :category, :area, :formal, :cover)
-      end
-
       def club_params
-        params.permit(:id, :name, :category, :area, :formal, :cover)
+        params.permit(:name, :category, :area, :formal, :cover, :description)
       end
 
       def sanitize_params
