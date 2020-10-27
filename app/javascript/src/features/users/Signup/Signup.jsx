@@ -64,14 +64,7 @@ const Signup = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <FormikTextInput
-                w="100%"
-                mb={3}
-                name="email"
-                placeholder="Email"
-                value={invitedEmail || ""}
-                disabled={invitedEmail}
-              />
+              <FormikTextInput w="100%" mb={3} name="email" placeholder="Email" disabled={invitedEmail} />
               <FormikTextInput w="100%" mb={3} name="password" placeholder="Contraseña" type="password" />
               <FormikTextInput
                 w="100%"
