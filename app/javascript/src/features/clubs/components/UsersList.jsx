@@ -12,7 +12,7 @@ const UsersList = ({
   refreshClub,
   isCurrentUserCounselor,
 }) => {
-  const currentUserId = useSelector(currentUser).id;
+  const currentUserId = useSelector(currentUser)?.id;
 
   return (
     <Box>
