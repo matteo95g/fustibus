@@ -44,7 +44,7 @@ module Api
       end
 
       def mission_params
-        params.permit(:name, :description, :completed)
+        params.permit(:name, :description, :completed, :enabled)
       end
     end
   end

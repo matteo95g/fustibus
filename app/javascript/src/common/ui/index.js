@@ -56,6 +56,12 @@ export {
   CloseButton,
   PopoverCloseButton,
   Avatar,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  PseudoBox,
 } from "@chakra-ui/core";
 
 export { default as DatePicker } from "react-datepicker";
