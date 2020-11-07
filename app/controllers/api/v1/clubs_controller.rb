@@ -62,6 +62,15 @@ module Api
         head :no_content
       end
 
+      def leave
+        return head :forbidden unless current_user.clubs.exists?(id: params[:club_id])
+
+        current_user.clubs_users_roles
+                    .delete(current_user.clubs_users_roles.where(club_id: params[:club_id]))
+
+        head :no_content
+      end
+
       private
 
       def set_club

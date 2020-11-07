@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :clubs, only: [:create, :index, :update, :destroy, :show] do
         post :current
+        post :leave
         resources :posters, only: [:create] do
           collection do
             get :show

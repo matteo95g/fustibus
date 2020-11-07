@@ -15,7 +15,7 @@ const InviteUsers = ({ clubId, ...props }) => {
 
   const handleSubmit = (values, setSubmitting) => {
     setTimeout(() => {
-      values.emails = values.emails.split(/[\s,]+/);
+      values.emails = Array.isArray(values.emails) ? values.emails : values.emails.split(/[\s,]+/);
 
       setStatus(null);
 
@@ -29,7 +29,17 @@ const InviteUsers = ({ clubId, ...props }) => {
 
   const validationSchema = Yup.object({
     emails: Yup.array()
-      .transform((_, originalValue) => (originalValue ? originalValue.split(/[\s,]+/) : []))
+      .transform((_, originalValue) => {
+        if (Array.isArray(originalValue)) {
+          return originalValue;
+        }
+
+        if (!originalValue) {
+          return [];
+        }
+
+        return originalValue.split(/[\s,]+/);
+      })
       .of(Yup.string().email(strings.Invitations.addUsers.form.emails.invalid))
       .required(strings.Invitations.addUsers.form.emails.required),
   });

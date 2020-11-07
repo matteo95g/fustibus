@@ -15,6 +15,10 @@ const urls = {
   setCurrentClub(id) {
     return `/clubs/${id}/current`;
   },
+
+  leaveClub(id) {
+    return `/clubs/${id}/leave`;
+  }
 };
 
 export default {
@@ -51,4 +55,9 @@ export default {
     const client = getApiClient(API_URL);
     return client.post(urls.setCurrentClub(id));
   },
+
+  leaveClub(id) {
+    const client = getApiClient(API_URL);
+    return client.post(urls.leaveClub(id));
+  }
 };

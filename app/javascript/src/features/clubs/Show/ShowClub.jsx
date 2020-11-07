@@ -5,11 +5,12 @@ import {
   currentClubCurrentUserRoles,
   clubStatus,
 } from "@features/clubs/selectors";
-import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel } from "@common/ui";
+import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel, Button } from "@common/ui";
 import { useParams, useHistory } from "react-router-dom";
 import { find, destroy } from "@features/clubs/clubsSlice";
 import { getAreaColor, translateArea } from "@features/clubs/utils";
 import { useDispatch, useSelector } from "react-redux";
+import clubsApi from "@features/clubs/api";
 import { LOADING } from "@app/constants";
 import EditButton from "@common/components/EditButton";
 import DeleteButton from "@common/components/DeleteButton";
@@ -20,6 +21,7 @@ import ConfirmDeleteModal from "@common/components/ConfirmDeleteModal";
 import strings from "@common/strings";
 import clubPlaceholder from "@images/clubPlaceholder";
 import UsersList from "@features/clubs/components/UsersList";
+import { fetchUser } from "@features/users/usersSlice";
 
 const ShowClub = () => {
   const club = useSelector((state) => currentClub(state));
@@ -58,6 +60,10 @@ const ShowClub = () => {
     history.push(editClubUrl(id));
   };
 
+  const handleLeaveClub = () => {
+    clubsApi.leaveClub(id).then(() => dispatch(fetchUser()).then(() => history.push(clubsUrl())));
+  }
+
   return (
     <>
       <Skeleton mt="8" isLoaded={!loading}>
@@ -70,13 +76,13 @@ const ShowClub = () => {
               <TagLabel>{club?.attributes?.formal ? "Formal" : "No formal"}</TagLabel>
             </Tag>
           </Flex>
-          {isCurrentUserCounselor && (
+          {isCurrentUserCounselor ? (
             <Flex>
               <InviteUsers mr="4" clubId={id} />
               <EditButton mr="4" onClick={handleEdit} />
               <DeleteButton onClick={handleDelete} />
             </Flex>
-          )}
+          ) : <Button variantColor="red" onClick={handleLeaveClub}>Abandonar Club</Button>}
         </Flex>
       </Skeleton>
       <Skeleton isLoaded={!loading}>
