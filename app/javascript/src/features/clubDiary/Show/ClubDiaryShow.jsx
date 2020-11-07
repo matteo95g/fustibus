@@ -23,9 +23,12 @@ const ClubDiaryShow = () => {
     attributes: { isCounselor },
   } = useSelector(currentUser);
 
+  const MISSIONS = "misiones";
+  const ACHIEVEMENTS = "logros";
+
   const dispatch = useDispatch();
   const isLoaded = true;
-  const [selected, setSelected] = useState("misiones");
+  const [selected, setSelected] = useState(MISSIONS);
   const [selectedMission, setMission] = useState(null);
   const [newMission, setNewMission] = useState(false);
   const [editingMission, setEditingMission] = useState(false);
@@ -37,7 +40,7 @@ const ClubDiaryShow = () => {
   // Show Missions
 
   useEffect(() => {
-    if (selected == "misiones") {
+    if (selected == MISSIONS) {
       dispatch(listMissions());
     }
   }, [selected]);
@@ -108,18 +111,18 @@ const ClubDiaryShow = () => {
           <Flex
             as="button"
             padding="20px"
-            borderColor={selected == "misiones" ? "black" : "white"}
+            borderColor={selected == MISSIONS ? "black" : "white"}
             borderWidth="1px"
-            onClick={() => toggle("misiones")}
+            onClick={() => toggle(MISSIONS)}
           >
             Misiones
           </Flex>
           <Flex
             as="button"
             padding="20px"
-            borderColor={selected == "logros" ? "black" : "white"}
+            borderColor={selected == ACHIEVEMENTS ? "black" : "white"}
             borderWidth="1px"
-            onClick={() => toggle("logros")}
+            onClick={() => toggle(ACHIEVEMENTS)}
           >
             Logros
           </Flex>
@@ -138,7 +141,11 @@ const ClubDiaryShow = () => {
       </Flex>
       <Skeleton isLoaded={isLoaded}>
         <Flex mt="4">
-          <MissionsList missions={missions} onSelect={onMissionSelected} selectedId={selectedMission ? selectedMission.id : null} />
+          <MissionsList
+            missions={missions}
+            onSelect={onMissionSelected}
+            selectedId={selectedMission ? selectedMission.id : null}
+          />
           {!newMission && !editingMission && selectedMission && <MissionDetail mission={selectedMission} />}
           {!newMission && !selectedMission && (
             <Flex flex="1" ml="4">
@@ -148,7 +155,11 @@ const ClubDiaryShow = () => {
           {(newMission || editingMission) && (
             <Flex flex="1" alignSelf="stretch" ml="4" flexDirection="column" borderColor="black" borderWidth="0.5px">
               <Formik
-                initialValues={editingMission ? { name: selectedMission.attributes.name, description: selectedMission.attributes.description } : initialValues}
+                initialValues={
+                  editingMission
+                    ? { name: selectedMission.attributes.name, description: selectedMission.attributes.description }
+                    : initialValues
+                }
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
                   handleSubmit(values);
