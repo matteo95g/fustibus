@@ -20,7 +20,11 @@ module Api
             status: :pending,
           ).first_or_create!
 
-          InvitationsMailer.with(club_id: club.id, email: email).new_user_invited.deliver_later unless User.find_by(email: email)
+          if user = User.find_by(email: email)
+            InvitationsMailer.with(club_id: club.id, user_id: user.id).existed_user_invited.deliver_later
+          else
+            InvitationsMailer.with(club_id: club.id, email: email).new_user_invited.deliver_later
+          end
         end
 
         head :ok
