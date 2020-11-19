@@ -53,6 +53,8 @@ export {
   PopoverTrigger,
   PopoverContent,
   PopoverArrow,
+  PopoverBody,
+  PopoverHeader,
   CloseButton,
   PopoverCloseButton,
   Avatar,

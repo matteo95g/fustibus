@@ -16,6 +16,13 @@ const CONCLUSIONS = "conclusions";
 const BIBLIOGRAPHY = "bibliography";
 const ACKNOWLEDGMENTS = "acknowledgments";
 
+// notes sections
+const TEXT = 0;
+const TEXT_AND_IMAGE = 1;
+const LIST = 2;
+const IMAGE = 3;
+const FILE = 4;
+
 export {
   LOADING,
   ERROR,
@@ -30,4 +37,9 @@ export {
   CONCLUSIONS,
   BIBLIOGRAPHY,
   ACKNOWLEDGMENTS,
+  TEXT,
+  TEXT_AND_IMAGE,
+  LIST,
+  IMAGE,
+  FILE,
 };

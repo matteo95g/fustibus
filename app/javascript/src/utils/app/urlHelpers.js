@@ -15,6 +15,10 @@ export const fieldFolderUrl = () => "/field-folder";
 export const profileUrl = () => "/profile";
 export const clubDiaryUrl = () => "/diary";
 
+export const notebookUrl = () => "/notebook";
+
+export const newNoteUrl = () => "/notes/new";
+
 export const newPosterUrl = () => "/poster";
 export const postersUrl = () => "/posters";
 
