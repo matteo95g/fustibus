@@ -44,59 +44,120 @@ const NewNote = () => {
   const dispatch = useDispatch();
 
   const [sections, setSections] = useState([]);
-  const [position, setPosition] = useState(0);
 
   const currentClub = useSelector(currentUserClub);
 
-  const TextAndImageSection = () => (
-    <Box my="4">
-      <Flex>
-        <Image w="30%" mr="2" />
-        <Textarea w="70%" ml="2" />
-      </Flex>
-    </Box>
-  );
+  const TextAndImageSection = ({ index }) => {
+    const [data, setData] = useState({});
 
-  const ListSection = () => (
-    <Box my="4">
-      <List styleType="disc" mb="2">
-        <ListItem>Lorem ipsum dolor sit amet</ListItem>
-        <ListItem>Consectetur adipiscing elit</ListItem>
-        <ListItem>Integer molestie lorem at massa</ListItem>
-        <ListItem>Facilisis in pretium nisl aliquet</ListItem>
-      </List>
-      <Flex>
-        <Input />
-        <Button ml="2">Agregar item</Button>
-      </Flex>
-    </Box>
-  );
+    const handleUpload = (files) => {
+      const newData = { ...data, image: files[0].data };
+      setData(newData);
+      updateSection(index, newData);
+    };
 
-  const FileSection = () => <FileUploader />;
+    const handleChange = (value) => {
+      const newData = { ...data, text: value };
+      setData(newData);
+      updateSection(index, newData);
+    };
+
+    return (
+      <Box my="4">
+        <Flex>
+          <Box w="30%">
+            <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
+          </Box>
+          <Textarea w="70%" ml="2" onChange={(e) => handleChange(e.target.value)} />
+        </Flex>
+      </Box>
+    );
+  };
+
+  const ListSection = ({ index, section, handleAddListItem }) => {
+    const [value, setValue] = useState("");
+
+    const handleClick = () => {
+      handleAddListItem(index, [...section.payload, value]);
+    };
+
+    return (
+      <Box my="4">
+        <List styleType="disc" mb="2">
+          {section.payload.map((item) => (
+            <ListItem>{item}</ListItem>
+          ))}
+        </List>
+        <Flex>
+          <Input onChange={(e) => setValue(e.target.value)} />
+          <Button ml="2" onClick={handleClick}>
+            Agregar item
+          </Button>
+        </Flex>
+      </Box>
+    );
+  };
+
+  const ImageSection = () => {
+    const handleUpdload = (files) => {
+      // console.log(files);
+    };
+
+    return <FileUploader hideSelectorOnPreview={true} handleUpdload={handleUpdload} />;
+  };
 
   const handleAddSection = (type) => {
     let newSection;
-    setPosition(position + 1);
+    let payload;
 
-    // section_type: "text", url: nil, text: nil, list: [], position: 1, note_id: 1
+    if (type === LIST) {
+      payload = [];
+    } else if (type === TEXT_AND_IMAGE) {
+      payload = {
+        text: "",
+        image: "",
+      };
+    } else {
+      payload = null;
+    }
 
-    newSection = { sectionType: type };
+    newSection = { sectionType: type, payload: payload };
 
-    newSection.position = position;
     setSections([...sections, newSection]);
+  };
+
+  const updateSection = (index, payload) => {
+    let updatedSections = [...sections];
+    let sectionUpdated = {
+      ...sections[index],
+      payload: payload,
+    };
+    updatedSections[index] = sectionUpdated;
+    setSections(updatedSections);
+  };
+
+  const handleTextAreaChange = (index, value) => {
+    updateSection(index, value);
+  };
+
+  const handleAddListItem = (index, value) => {
+    updateSection(index, value);
   };
 
   return (
     <>
       <Box my="5">
         {sections.map((section, index) => (
-          <>
-            {section.sectionType === TEXT && <Textarea my="4" value={section.text} />}
-            {section.sectionType === TEXT_AND_IMAGE && <TextAndImageSection />}
-            {section.sectionType === LIST && <ListSection />}
-            {section.sectionType === IMAGE && <Image my="4" />}
-            {section.sectionType === FILE && <FileSection />}
-          </>
+          <div key={index}>
+            {section.sectionType === TEXT && (
+              <Textarea my="4" value={section.text} onChange={(e) => handleTextAreaChange(e.target.value, index)} />
+            )}
+            {section.sectionType === TEXT_AND_IMAGE && <TextAndImageSection index={index} section={section} />}
+            {section.sectionType === LIST && (
+              <ListSection index={index} section={section} handleAddListItem={handleAddListItem} />
+            )}
+            {section.sectionType === IMAGE && <ImageSection />}
+          </div>
         ))}
       </Box>
       <Popover placement="top" my="5">
@@ -133,12 +194,6 @@ const NewNote = () => {
             </Button>
             <Button mx="1" onClick={() => handleAddSection(IMAGE)}>
               Imagen sola
-            </Button>
-            <Button mx="1" onClick={() => handleAddSection("")}>
-              Tabla
-            </Button>
-            <Button mx="1" onClick={() => handleAddSection(FILE)}>
-              Archivo
             </Button>
           </PopoverBody>
         </PopoverContent>

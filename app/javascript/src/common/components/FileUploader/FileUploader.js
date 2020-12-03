@@ -6,7 +6,14 @@ import { ReactSVG } from "react-svg";
 
 const ACCEPTED_FILES = ["image/*"];
 
-const FileUploader = ({ handleUpload, multiple, uploading = false, accept = ACCEPTED_FILES, setFilesSelected }) => {
+const FileUploader = ({
+  handleUpload,
+  multiple,
+  uploading = false,
+  accept = ACCEPTED_FILES,
+  setFilesSelected,
+  hideSelectorOnPreview = false,
+}) => {
   const [previews, setPreviews] = useState([]);
 
   const onDropAccepted = useCallback((acceptedFiles) => {
@@ -30,7 +37,7 @@ const FileUploader = ({ handleUpload, multiple, uploading = false, accept = ACCE
         };
 
         files.push(fileToUpload);
-        if (index === acceptedFiles.length - 1) handleUpload(files);
+        if (index === acceptedFiles.length - 1 && handleUpload) handleUpload(files);
       };
     });
     setPreviews(acceptedFiles.map((file) => [file.type, file.name, URL.createObjectURL(file)]));
@@ -45,14 +52,19 @@ const FileUploader = ({ handleUpload, multiple, uploading = false, accept = ACCE
 
   return (
     <>
-      <Box pointerEvents={uploading ? "none" : ""} my="4" {...getRootProps({ className: "dropzone" })}>
-        <input {...getInputProps()} />
-        {isDragActive ? <p>Suelta el archivo aqui...</p> : <p>Arrastra el archivo aqui, o clickea para seleccionar</p>}
-      </Box>
+      {hideSelectorOnPreview && previews.length > 0 ? (
+        <></>
+      ) : (
+        <Box pointerEvents={uploading ? "none" : ""} {...getRootProps({ className: "dropzone" })}>
+          <input {...getInputProps()} />
+          {isDragActive ? <p>Suelta el archivo aqui...</p> : <p>Arrastra el archivo aqui, o clickea para seleccionar</p>}
+        </Box>
+      )}
+
       {previews.length > 0 &&
         previews.map(([type, name, preview], index) => {
           return (
-            <Flex my="3" key={index}>
+            <Flex key={index}>
               {type.startsWith("application") ? (
                 <>
                   <Box width="50px" m="2">
