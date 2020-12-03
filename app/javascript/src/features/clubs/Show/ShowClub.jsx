@@ -68,19 +68,19 @@ const ShowClub = () => {
     <>
       <Skeleton mt="8" isLoaded={!loading}>
         <Flex align="center" justify="space-between">
-          <Flex align="start">
+          <Flex align="center">
             <Text mr="2" fontSize="5xl">
               {club?.attributes?.name}
             </Text>
-            <Tag mt="2" rounded="full" variant="solid" variantColor="green" size="sm">
-              <TagLabel>{club?.attributes?.formal ? "Formal" : "No formal"}</TagLabel>
+            <Tag p="2" rounded="full" variant="solid" variantColor="green" size="sm">
+              {club?.attributes?.formal ? "Formal" : "No formal"}
             </Tag>
           </Flex>
           {isCurrentUserCounselor ? (
-            <Flex>
-              <InviteUsers mr="4" clubId={id} />
-              <EditButton mr="4" onClick={handleEdit} />
-              <DeleteButton onClick={handleDelete} />
+            <Flex wrap="wrap" ml="2">
+              <InviteUsers mr="4" my="1" clubId={id} />
+              <EditButton mr="4" my="1" onClick={handleEdit} />
+              <DeleteButton my="1" onClick={handleDelete} />
             </Flex>
           ) : <Button variantColor="red" onClick={handleLeaveClub}>Abandonar Club</Button>}
         </Flex>
@@ -102,8 +102,8 @@ const ShowClub = () => {
       </Skeleton>
 
       <Flex my="10">
-        <Box w="50%" pr="6">
-          <Skeleton h="100%" isLoaded={!loading}>
+        <Flex flex="1" pr="6">
+          <Skeleton isLoaded={!loading}>
             <Image
               borderRadius="lg"
               src={covers[0]?.attributes?.file?.large?.url ?? clubPlaceholder}
@@ -111,8 +111,8 @@ const ShowClub = () => {
               width="100%"
             />
           </Skeleton>
-        </Box>
-        <Box w="50%" pl="6">
+        </Flex>
+        <Flex flex="3" direction="column" pl="6">
           <Skeleton isLoaded={!loading} mb={6}>
             <Box p={4} boxShadow="lg" borderRadius="md" backgroundColor={"gray.50"}>
               <Text fontSize="lg" fontWeight="bold" mb={2}>
@@ -130,7 +130,7 @@ const ShowClub = () => {
             refreshClub={() => setRefreshIndex(refreshIndex + 1)}
             isCurrentUserCounselor={isCurrentUserCounselor}
           />
-        </Box>
+        </Flex>
       </Flex>
 
       <ConfirmDeleteModal
