@@ -16,7 +16,7 @@ const urls = {
 export default {
   create(attributes = {}) {
     const client = getApiClient(API_URL);
-    return client.post(urls.collection(noteId), attributes);
+    return client.post(urls.collection(), attributes);
   },
 
   // list(noteId, attributes = {}) {

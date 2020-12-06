@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Text,
@@ -12,100 +12,75 @@ import {
   Button,
   Box,
   Textarea,
-  Image,
   Input,
   List,
   ListItem,
 } from "@common/ui";
-import Card from "@common/components/Card";
-import { useSelector, useDispatch } from "react-redux";
-import missionsApi from "@features/missions/api";
-import { clubsState, clubsCovers } from "@features/clubs/selectors";
-import { currentUserClub } from "@features/users/selectors";
-import { useHistory } from "react-router-dom";
-import { clubUrl } from "@utils/app/urlHelpers";
-import Pagination from "@common/components/Pagination";
-import { LOADING, TEXT, TEXT_AND_IMAGE, LIST, IMAGE, FILE } from "@app/constants";
-import { fetchUser } from "@features/users/usersSlice";
-import emptyClubs from "@images/emptyClubs";
-import CreateButton from "@common/components/CreateButton";
-import { newClubUrl } from "@utils/app/urlHelpers";
-import clubPlaceholder from "@images/clubPlaceholder";
-import NoteSections from "./NoteSections";
+import { TEXT, TEXT_AND_IMAGE, LIST, IMAGE } from "@app/constants";
 import FileUploader from "@common/components/FileUploader";
 
-const NewNote = () => {
-  const history = useHistory();
-  const clubs = useSelector((state) => clubsState(state).all.clubs);
-  const pagination = useSelector((state) => clubsState(state).all.pagination);
-  const covers = useSelector((state) => clubsCovers(state));
-  const loading = useSelector((state) => clubsState(state).status === LOADING);
+const TextAndImageSection = ({ index, section, updateSection }) => {
+  const [data, setData] = useState({ image: section.payload.image, text: section.payload.text });
 
-  const dispatch = useDispatch();
-
-  const [sections, setSections] = useState([]);
-
-  const currentClub = useSelector(currentUserClub);
-
-  const TextAndImageSection = ({ index }) => {
-    const [data, setData] = useState({});
-
-    const handleUpload = (files) => {
-      const newData = { ...data, image: files[0].data };
-      setData(newData);
-      updateSection(index, newData);
-    };
-
-    const handleChange = (value) => {
-      const newData = { ...data, text: value };
-      setData(newData);
-      updateSection(index, newData);
-    };
-
-    return (
-      <Box my="4">
-        <Flex>
-          <Box w="30%">
-            <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
-          </Box>
-          <Textarea w="70%" ml="2" onChange={(e) => handleChange(e.target.value)} />
-        </Flex>
-      </Box>
-    );
+  const handleUpload = (files) => {
+    const newData = { ...data, image: files[0].data };
+    setData(newData);
+    updateSection(index, newData);
   };
 
-  const ListSection = ({ index, section, handleAddListItem }) => {
-    const [value, setValue] = useState("");
-
-    const handleClick = () => {
-      handleAddListItem(index, [...section.payload, value]);
-    };
-
-    return (
-      <Box my="4">
-        <List styleType="disc" mb="2">
-          {section.payload.map((item) => (
-            <ListItem>{item}</ListItem>
-          ))}
-        </List>
-        <Flex>
-          <Input onChange={(e) => setValue(e.target.value)} />
-          <Button ml="2" onClick={handleClick}>
-            Agregar item
-          </Button>
-        </Flex>
-      </Box>
-    );
+  const handleChange = (value) => {
+    const newData = { ...data, text: value };
+    setData(newData);
+    updateSection(index, newData);
   };
 
-  const ImageSection = () => {
-    const handleUpdload = (files) => {
-      // console.log(files);
-    };
+  return (
+    <Box my="4">
+      <Flex>
+        <Box w="30%">
+          <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
+        </Box>
+        <Textarea w="70%" ml="2" onChange={(e) => handleChange(e.target.value)} value={data.text} />
+      </Flex>
+    </Box>
+  );
+};
 
-    return <FileUploader hideSelectorOnPreview={true} handleUpdload={handleUpdload} />;
+const ListSection = ({ index, section, handleAddListItem }) => {
+  const [value, setValue] = useState("");
+
+  const handleClick = () => {
+    if (value === "") return;
+    handleAddListItem(index, [...section.payload, value]);
+    setValue("");
   };
 
+  return (
+    <Box my="4">
+      <List styleType="disc" mb="2">
+        {section.payload.map((item, i) => (
+          <ListItem key={i}>{item}</ListItem>
+        ))}
+      </List>
+      <Flex>
+        <Input onChange={(e) => setValue(e.target.value)} value={value} />
+        <Button ml="2" onClick={handleClick}>
+          Agregar item
+        </Button>
+      </Flex>
+    </Box>
+  );
+};
+
+const ImageSection = ({ index, updateSection }) => {
+  const handleUpload = (files) => {
+    updateSection(index, files[0].data);
+  };
+
+  return <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />;
+};
+
+const NewNote = ({ sections, setSections }) => {
   const handleAddSection = (type) => {
     let newSection;
     let payload;
@@ -126,11 +101,11 @@ const NewNote = () => {
     setSections([...sections, newSection]);
   };
 
-  const updateSection = (index, payload) => {
+  const updateSection = (index, value) => {
     let updatedSections = [...sections];
     let sectionUpdated = {
       ...sections[index],
-      payload: payload,
+      payload: value,
     };
     updatedSections[index] = sectionUpdated;
     setSections(updatedSections);
@@ -150,13 +125,15 @@ const NewNote = () => {
         {sections.map((section, index) => (
           <div key={index}>
             {section.sectionType === TEXT && (
-              <Textarea my="4" value={section.text} onChange={(e) => handleTextAreaChange(e.target.value, index)} />
+              <Textarea my="4" value={section.text} onChange={(e) => handleTextAreaChange(index, e.target.value)} />
             )}
-            {section.sectionType === TEXT_AND_IMAGE && <TextAndImageSection index={index} section={section} />}
+            {section.sectionType === TEXT_AND_IMAGE && (
+              <TextAndImageSection index={index} section={section} updateSection={updateSection} />
+            )}
             {section.sectionType === LIST && (
               <ListSection index={index} section={section} handleAddListItem={handleAddListItem} />
             )}
-            {section.sectionType === IMAGE && <ImageSection />}
+            {section.sectionType === IMAGE && <ImageSection index={index} updateSection={updateSection} />}
           </div>
         ))}
       </Box>

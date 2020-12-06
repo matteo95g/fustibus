@@ -3,12 +3,16 @@ module Api
     class NotesController < ApplicationController
       before_action :authenticate_user!
       before_action :set_note, only: [:index, :update]
-      before_action :sanitize_params, only: [:create, :update]
 
       def create
-        note = Note.create!(create_params)
+        user_mission = UserMission.create!(user_id: current_user.id, mission_id: params[:selected_mission_id])
+        note = Note.create!(user_mission: user_mission)
 
-        render jsonapi: note_section
+        NoteSection.create_sections(note, params[:sections])
+
+        # render jsonapi: note_section
+      rescue
+        note.destroy!
       end
 
       def index
