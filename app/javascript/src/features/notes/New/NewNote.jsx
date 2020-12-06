@@ -4,9 +4,13 @@ import missionsApi from "@features/missions/api";
 import notesApi from "@features/notes/api";
 import CreateButton from "@common/components/CreateButton";
 import NoteSections from "./NoteSections";
+import { notebookUrl } from "@utils/app/urlHelpers";
+import { useHistory } from "react-router-dom";
 
 const NewNote = () => {
   const [sections, setSections] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   const [missions, setMissions] = useState([]);
   const [selectedMissionId, setSelectedMissionId] = useState(null);
@@ -20,12 +24,15 @@ const NewNote = () => {
   }, []);
 
   const handleAddNote = async () => {
+    setLoading(true);
     const values = {
       selectedMissionId,
       sections,
     };
 
     await notesApi.create(values);
+    setLoading(false);
+    history.push(notebookUrl());
   };
 
   return (
@@ -40,8 +47,12 @@ const NewNote = () => {
           </option>
         ))}
       </Select>
-      <NoteSections setSections={setSections} sections={sections} />
-      <CreateButton my="5" onClick={handleAddNote} />
+      {selectedMissionId && (
+        <>
+          <NoteSections setSections={setSections} sections={sections} />
+          <CreateButton my="5" onClick={handleAddNote} isLoading={loading} />
+        </>
+      )}
     </>
   );
 };

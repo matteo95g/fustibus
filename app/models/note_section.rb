@@ -44,4 +44,8 @@ class NoteSection < ApplicationRecord
 
     url = image.file.url
   end
+
+  def mission_id
+    note.mission.id
+  end
 end

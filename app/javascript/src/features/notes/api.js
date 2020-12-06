@@ -19,14 +19,14 @@ export default {
     return client.post(urls.collection(), attributes);
   },
 
-  // list(noteId, attributes = {}) {
-  //   const client = getApiClient(API_URL);
-  //   return client.get(urls.collection(noteId), {
-  //     params: {
-  //       ...attributes,
-  //     },
-  //   });
-  // },
+  list(attributes = {}) {
+    const client = getApiClient(API_URL);
+    return client.get(urls.collection(), {
+      params: {
+        ...attributes,
+      },
+    });
+  },
 
   // destroy(noteId, id) {
   //   const client = getApiClient(API_URL);

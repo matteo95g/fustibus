@@ -21,7 +21,11 @@ const TEXT = 0;
 const TEXT_AND_IMAGE = 1;
 const LIST = 2;
 const IMAGE = 3;
-const FILE = 4;
+
+const TEXT_STRING = "text";
+const TEXT_AND_IMAGE_STRING = "text_and_image";
+const LIST_STRING = "list";
+const IMAGE_STRING = "image";
 
 export {
   LOADING,
@@ -41,5 +45,8 @@ export {
   TEXT_AND_IMAGE,
   LIST,
   IMAGE,
-  FILE,
+  TEXT_STRING,
+  TEXT_AND_IMAGE_STRING,
+  LIST_STRING,
+  IMAGE_STRING,
 };

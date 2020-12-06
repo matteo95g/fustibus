@@ -1,8 +1,7 @@
 module Api
   module V1
     class NotesController < ApplicationController
-      before_action :authenticate_user!
-      before_action :set_note, only: [:index, :update]
+      # before_action :authenticate_user!
 
       def create
         user_mission = UserMission.create!(user_id: current_user.id, mission_id: params[:selected_mission_id])
@@ -16,7 +15,7 @@ module Api
       end
 
       def index
-        render jsonapi: @note.note_sections, include: [note: [userMission: [:mission, :user]]]
+        render jsonapi: current_user.notes, include: [:mission, noteSections: [:note]]
       end
 
       def update

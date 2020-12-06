@@ -4,6 +4,7 @@ class SerializableNoteSection < SerializableBase
   attribute :text
   attribute :list
   attribute :position
+  attribute :mission_id
 
   belongs_to :note
 end
