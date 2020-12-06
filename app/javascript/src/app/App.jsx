@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 
 import LoginRoute from "@pages/users/login/Route";
 import SignupRoute from "@pages/users/signup/Route";
+import WelcomeUserRoute from "@pages/users/welcome/Route";
 import HomeRoute from "@pages/home/Route";
 import ClubsRoute from "@pages/clubs/index/Route";
 import NewClubRoute from "@pages/clubs/new/Route";
@@ -39,6 +40,7 @@ import {
   newPosterUrl,
   postersUrl,
   reportsUrl,
+  welcomeUrl,
 } from "@utils/app/urlHelpers";
 
 const App = () => {
@@ -57,6 +59,7 @@ const App = () => {
         <Switch>
           <LoginRoute exact path={loginUrl()} layout={Unauthenticated} />
           <SignupRoute exact path={signupUrl()} layout={Unauthenticated} />
+          <WelcomeUserRoute exact path={welcomeUrl()} />
           <HomeRoute exact path={homeUrl()} layout={Authenticated} />
           <ClubsRoute exact path={clubsUrl()} layout={Authenticated} />
           <NewClubRoute exact path={newClubUrl()} layout={Authenticated} />
