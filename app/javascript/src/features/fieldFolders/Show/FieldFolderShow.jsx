@@ -13,6 +13,7 @@ import EditEntryModal from "@features/entries/Edit";
 import ConfirmDeleteEntryModal from "@features/entries/Delete";
 import moment from "moment";
 import { reducer, DELAY_TIMEOUT } from "@utils/app/forms";
+import useDebounce from "@utils/app/useDebounce";
 
 const FieldFolderShow = () => {
   const entries = useSelector((state) => entriesState(state)?.current?.entries);
@@ -36,13 +37,15 @@ const FieldFolderShow = () => {
   };
 
   const [filters, setFilters] = useReducer(reducer, initialFilters);
+  const debouncedFilters = useDebounce(filters, DELAY_TIMEOUT);
   const isFiltering = filters.date || filters.content;
   const isLoaded = isFiltering ? true : !loading;
 
   useEffect(() => {
-    const timeOutId = setTimeout(() => dispatch(list(id, filters)), DELAY_TIMEOUT);
-    return () => clearTimeout(timeOutId);
-  }, [id, filters]);
+    if (debouncedFilters) {
+      dispatch(list(id, debouncedFilters));
+    }
+  }, [id, debouncedFilters]);
 
   const handleDeleteEntry = (entry) => {
     setCurrentEntry(entry);
