@@ -117,7 +117,7 @@ const ClubForm = ({ club = null, handleUpload, handleSubmit, submitting, actionC
           ))}
         </FormikSelect>
         <FormikCheckbox my="4" isSwitch={true} name="formal">
-          ¿Es Formal?
+          ¿Es de educación formal?
         </FormikCheckbox>
         <FormikTextArea
           mt="4"
