@@ -1,10 +1,14 @@
 import React from "react";
 import { Flex, PseudoBox, Switch } from "@common/ui";
-import { useDispatch } from "react-redux";
 import { updateMission } from "@features/clubDiary/clubDiarySlice";
+import { currentUser } from "@features/users/selectors";
+import { useDispatch, useSelector } from "react-redux";
 
 const MissionsList = ({ missions, onSelect, selectedId }) => {
   const dispatch = useDispatch();
+  const {
+    attributes: { isCounselor },
+  } = useSelector(currentUser);
 
   const missionSelected = (mission) => {
     onSelect(mission);
@@ -25,9 +29,11 @@ const MissionsList = ({ missions, onSelect, selectedId }) => {
           <Flex p="2" width="80%">
             Nombre
           </Flex>
-          <Flex width="20%" justifyContent="center" alignItems="center" p="2" width="20%">
-            Activa
-          </Flex>
+          {isCounselor && (
+            <Flex width="20%" justifyContent="center" alignItems="center" p="2" width="20%">
+              Activa
+            </Flex>
+          )}
         </Flex>
         {missions.map((mission) => {
           const {
@@ -47,13 +53,15 @@ const MissionsList = ({ missions, onSelect, selectedId }) => {
                 <Flex flex="1" padding="4" borderLeftWidth="4px" borderColor={getBorderColor(id)}>
                   {name}
                 </Flex>
-                <Flex width="20%" justifyContent="center" alignItems="center">
-                  <Switch
-                    id="email-alerts"
-                    isChecked={enabled}
-                    onChange={() => dispatch(updateMission(id, { enabled: !enabled }))}
-                  />
-                </Flex>
+                {isCounselor && (
+                  <Flex width="20%" justifyContent="center" alignItems="center">
+                    <Switch
+                      id="email-alerts"
+                      isChecked={enabled}
+                      onChange={() => dispatch(updateMission(id, { enabled: !enabled }))}
+                    />
+                  </Flex>
+                )}
               </Flex>
             </PseudoBox>
           );

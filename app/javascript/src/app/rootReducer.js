@@ -7,6 +7,7 @@ import clubDiary from "@features/clubDiary/clubDiarySlice";
 import users from "@features/users/usersSlice";
 import posters from "@features/posters/postersSlice";
 import reports from "@features/reports/reportsSlice";
+import notes from "@features/notes/notesSlice";
 import { LOGOUT } from "@features/users/usersSlice";
 
 const appReducer = combineReducers({
@@ -17,6 +18,7 @@ const appReducer = combineReducers({
   users,
   posters,
   reports,
+  notes,
 });
 
 const rootReducer = (state, action) => {

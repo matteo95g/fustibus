@@ -18,6 +18,8 @@ import ClubDiaryRoute from "@pages/clubDiary/show/Route";
 import NewPosterRoute from "@pages/posters/new/Route";
 import PostersIndexRoute from "@pages/posters/index/Route";
 import ReportsIndexRoute from "@pages/reports/index/Route";
+import NotebookShowRoute from "@pages/notebooks/show/Route";
+import NewNoteRoute from "@pages/notes/new/Route";
 
 import history from "./history";
 
@@ -41,6 +43,8 @@ import {
   postersUrl,
   reportsUrl,
   welcomeUrl,
+  notebookUrl,
+  newNoteUrl,
 } from "@utils/app/urlHelpers";
 
 const App = () => {
@@ -71,6 +75,8 @@ const App = () => {
           <NewPosterRoute exact path={newPosterUrl()} layout={Authenticated} />
           <PostersIndexRoute exact path={postersUrl()} layout={Authenticated} />
           <ReportsIndexRoute exact path={reportsUrl()} layout={Authenticated} />
+          <NotebookShowRoute exact path={notebookUrl()} layout={Authenticated} />
+          <NewNoteRoute exact path={newNoteUrl()} layout={Authenticated} />
         </Switch>
       </Router>
     </ThemeProvider>
