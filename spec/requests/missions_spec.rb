@@ -13,8 +13,10 @@
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "Missions", type: :request do
-  let!(:club) { create(:club) }
-  let!(:user) { create(:user, current_club: club) }
+  let!(:club)             { create(:club) }
+  let!(:user)             { create(:user, current_club: club) }
+  let!(:role)             { create(:role) }
+  let!(:clubs_users_role) { create(:clubs_users_role, club: club, user: user, role: role) }
 
   before { sign_in user }
   after { sign_out user }
