@@ -82,7 +82,7 @@ const strings = {
       results: "Resultados",
       conclusions: "Conclusiones",
       bibliography: "Bibliografía",
-      acknowledgments: "Agredecimientos",
+      acknowledgments: "Agradecimientos",
     },
   },
   Reports: {
