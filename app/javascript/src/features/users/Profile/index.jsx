@@ -4,6 +4,7 @@ import UserForm from "@features/users/components/UserForm";
 import { currentUser } from "@features/users/selectors";
 import { update } from "@features/users/usersSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "@features/users/usersSlice";
 
 const Profile = ({}) => {
   const user = useSelector(currentUser);
@@ -20,14 +21,22 @@ const Profile = ({}) => {
     setSubmitting(true);
     if (profileImage) values.profileImage = profileImage;
     dispatch(update(user.id, values)).then(() => {
-      setSubmitting(false);
-      setSuccess(true);
-      window.scrollTo(0, 0);
+      dispatch(fetchUser()).then(() => {
+        setSubmitting(false);
+        setSuccess(true);
+        window.scrollTo(0, 0);
+      });
     });
   };
 
   return (
-    <UserForm user={user} handleSubmit={handleSubmit} submitting={submitting} handleUpload={handleUpload} success={success} />
+    <UserForm
+      user={user}
+      handleSubmit={handleSubmit}
+      submitting={submitting}
+      handleUpload={handleUpload}
+      success={success}
+    />
   );
 };
 

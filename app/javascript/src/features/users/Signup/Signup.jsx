@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 
 import { signup } from "@features/users/usersSlice";
 import { ERROR } from "@app/constants";
-import { loginUrl } from "@utils/app/urlHelpers";
+import { loginUrl, welcomeUrl } from "@utils/app/urlHelpers";
 
 import { Box, Flex, Heading, Button, Alert } from "@common/ui";
 import FormikTextInput from "@common/components/FormikTextInput";
@@ -23,7 +23,9 @@ const Signup = () => {
   const invitedEmail = urlParams.get("invited_email");
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("El email ingresado es inválido.").required("El email no puede ser vacío."),
+    email: Yup.string()
+      .email("El email ingresado es inválido.")
+      .required("El email no puede ser vacío."),
     password: Yup.string().required("La contraseña no puede ser vacía."),
     passwordConfirmation: Yup.string()
       .required("La confirmación de contraseña no coincide.")
@@ -40,13 +42,22 @@ const Signup = () => {
     setTimeout(() => {
       dispatch(signup({ user: values })).then(() => {
         setSubmitting(false);
+        history.push(welcomeUrl());
       });
     }, DELAY_TIMEOUT);
   };
 
   return (
     <Flex p={{ xs: 5, md: 10, xl: 20 }} align="center" justify="center" minH="100vh" bg="blue.100">
-      <Box maxW="400px" w="100%" mt={-16} shadow="lg" bg="white" p={{ xs: 6, md: 10 }} textAlign="center">
+      <Box
+        maxW="400px"
+        w="100%"
+        mt={-16}
+        shadow="lg"
+        bg="white"
+        p={{ xs: 6, md: 10 }}
+        textAlign="center"
+      >
         <Heading as="h1" mb={6}>
           Nuevo Usuario
         </Heading>
@@ -64,8 +75,20 @@ const Signup = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <FormikTextInput w="100%" mb={3} name="email" placeholder="Email" disabled={invitedEmail} />
-              <FormikTextInput w="100%" mb={3} name="password" placeholder="Contraseña" type="password" />
+              <FormikTextInput
+                w="100%"
+                mb={3}
+                name="email"
+                placeholder="Email"
+                disabled={invitedEmail}
+              />
+              <FormikTextInput
+                w="100%"
+                mb={3}
+                name="password"
+                placeholder="Contraseña"
+                type="password"
+              />
               <FormikTextInput
                 w="100%"
                 mb={3}

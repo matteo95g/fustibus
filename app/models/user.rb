@@ -4,6 +4,8 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: JwtBlacklist
 
   has_and_belongs_to_many :assigned_missions, class_name: 'Mission', join_table: :missions_assigned_users
+  has_many :user_missions
+  has_many :notes, through: :user_missions
 
   has_one :image, as: :owner, dependent: :destroy
 
@@ -19,6 +21,14 @@ class User < ApplicationRecord
 
   def is_counselor
     roles.where(name: Role::COUNSELOR).any?
+  end
+
+  def profile_image
+    image&.file&.url
+  end
+
+  def attributes
+    super.merge(profile_image: profile_image)
   end
 
   def counselor_for_club?(club_id)

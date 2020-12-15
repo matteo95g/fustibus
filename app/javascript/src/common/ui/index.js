@@ -48,7 +48,22 @@ export {
   MenuItemOption,
   List,
   ListItem,
+  DarkMode,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverBody,
+  PopoverHeader,
   CloseButton,
+  PopoverCloseButton,
+  Avatar,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  PseudoBox,
 } from "@chakra-ui/core";
 
 export { default as DatePicker } from "react-datepicker";

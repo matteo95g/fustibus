@@ -4,15 +4,13 @@ import {
   currentClubCovers,
   currentClubCurrentUserRoles,
   clubStatus,
-  currentClubCounselorUsers,
-  currentClubMembersUsers,
-  currentClubUsersImages,
 } from "@features/clubs/selectors";
-import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel } from "@common/ui";
+import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel, Button } from "@common/ui";
 import { useParams, useHistory } from "react-router-dom";
 import { find, destroy } from "@features/clubs/clubsSlice";
 import { getAreaColor, translateArea } from "@features/clubs/utils";
 import { useDispatch, useSelector } from "react-redux";
+import clubsApi from "@features/clubs/api";
 import { LOADING } from "@app/constants";
 import EditButton from "@common/components/EditButton";
 import DeleteButton from "@common/components/DeleteButton";
@@ -23,20 +21,20 @@ import ConfirmDeleteModal from "@common/components/ConfirmDeleteModal";
 import strings from "@common/strings";
 import clubPlaceholder from "@images/clubPlaceholder";
 import UsersList from "@features/clubs/components/UsersList";
+import { fetchUser } from "@features/users/usersSlice";
 
 const ShowClub = () => {
   const club = useSelector((state) => currentClub(state));
   const loading = useSelector((state) => clubStatus(state) === LOADING);
   const covers = useSelector((state) => currentClubCovers(state));
-  const clubCounselors = useSelector(currentClubCounselorUsers);
-  const clubMembers = useSelector(currentClubMembersUsers);
-  const usersImages = useSelector(currentClubUsersImages);
   const dispatch = useDispatch();
   const { id } = useParams();
   const currentUserRoles = useSelector((state) => currentClubCurrentUserRoles(state));
   const history = useHistory();
+  const isCurrentUserCounselor = currentUserRoles?.includes(COUNSELOR_ROLE);
 
   const [confirmDeleteIsOpen, setConfirmDeleteIsOpen] = useState(false);
+  const [refreshIndex, setRefreshIndex] = useState(0);
 
   useEffect(() => {
     const fetchClub = async () => {
@@ -46,7 +44,7 @@ const ShowClub = () => {
       }
     };
     fetchClub();
-  }, [id]);
+  }, [id, refreshIndex]);
 
   const onDeleteConfirm = () => {
     dispatch(destroy(id));
@@ -62,25 +60,29 @@ const ShowClub = () => {
     history.push(editClubUrl(id));
   };
 
+  const handleLeaveClub = () => {
+    clubsApi.leaveClub(id).then(() => dispatch(fetchUser()).then(() => history.push(clubsUrl())));
+  }
+
   return (
     <>
       <Skeleton mt="8" isLoaded={!loading}>
         <Flex align="center" justify="space-between">
-          <Flex align="start">
+          <Flex align="center">
             <Text mr="2" fontSize="5xl">
               {club?.attributes?.name}
             </Text>
-            <Tag mt="2" rounded="full" variant="solid" variantColor="green" size="sm">
-              <TagLabel>{club?.attributes?.formal ? "Formal" : "No formal"}</TagLabel>
+            <Tag p="2" rounded="full" variant="solid" variantColor="green" size="sm">
+              {club?.attributes?.formal ? "Formal" : "No formal"}
             </Tag>
           </Flex>
-          {currentUserRoles?.includes(COUNSELOR_ROLE) && (
-            <Flex>
-              <InviteUsers mr="4" clubId={id} />
-              <EditButton mr="4" onClick={handleEdit} />
-              <DeleteButton onClick={handleDelete} />
+          {isCurrentUserCounselor ? (
+            <Flex wrap="wrap" ml="2">
+              <InviteUsers mr="4" my="1" clubId={id} />
+              <EditButton mr="4" my="1" onClick={handleEdit} />
+              <DeleteButton my="1" onClick={handleDelete} />
             </Flex>
-          )}
+          ) : <Button variantColor="red" onClick={handleLeaveClub}>Abandonar Club</Button>}
         </Flex>
       </Skeleton>
       <Skeleton isLoaded={!loading}>
@@ -100,8 +102,8 @@ const ShowClub = () => {
       </Skeleton>
 
       <Flex my="10">
-        <Box w="50%" pr="6">
-          <Skeleton h="100%" isLoaded={!loading}>
+        <Flex flex="1" pr="6">
+          <Skeleton isLoaded={!loading}>
             <Image
               borderRadius="lg"
               src={covers[0]?.attributes?.file?.large?.url ?? clubPlaceholder}
@@ -109,8 +111,8 @@ const ShowClub = () => {
               width="100%"
             />
           </Skeleton>
-        </Box>
-        <Box w="50%" pl="6">
+        </Flex>
+        <Flex flex="3" direction="column" pl="6">
           <Skeleton isLoaded={!loading} mb={6}>
             <Box p={4} boxShadow="lg" borderRadius="md" backgroundColor={"gray.50"}>
               <Text fontSize="lg" fontWeight="bold" mb={2}>
@@ -122,12 +124,13 @@ const ShowClub = () => {
             </Box>
           </Skeleton>
           <UsersList
-            counselorUsers={clubCounselors}
-            membersUsers={clubMembers}
-            usersImages={usersImages}
+            counselorUsers={club?.attributes?.counselorUsers}
+            memberUsers={club?.attributes?.memberUsers}
             isLoaded={!loading}
+            refreshClub={() => setRefreshIndex(refreshIndex + 1)}
+            isCurrentUserCounselor={isCurrentUserCounselor}
           />
-        </Box>
+        </Flex>
       </Flex>
 
       <ConfirmDeleteModal

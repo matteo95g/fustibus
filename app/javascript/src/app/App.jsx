@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 
 import LoginRoute from "@pages/users/login/Route";
 import SignupRoute from "@pages/users/signup/Route";
+import WelcomeUserRoute from "@pages/users/welcome/Route";
 import HomeRoute from "@pages/home/Route";
 import ClubsRoute from "@pages/clubs/index/Route";
 import NewClubRoute from "@pages/clubs/new/Route";
@@ -17,6 +18,8 @@ import ClubDiaryRoute from "@pages/clubDiary/show/Route";
 import NewPosterRoute from "@pages/posters/new/Route";
 import PostersIndexRoute from "@pages/posters/index/Route";
 import ReportsIndexRoute from "@pages/reports/index/Route";
+import NotebookShowRoute from "@pages/notebooks/show/Route";
+import NewNoteRoute from "@pages/notes/new/Route";
 
 import history from "./history";
 
@@ -39,6 +42,9 @@ import {
   newPosterUrl,
   postersUrl,
   reportsUrl,
+  welcomeUrl,
+  notebookUrl,
+  newNoteUrl,
 } from "@utils/app/urlHelpers";
 
 const App = () => {
@@ -57,6 +63,7 @@ const App = () => {
         <Switch>
           <LoginRoute exact path={loginUrl()} layout={Unauthenticated} />
           <SignupRoute exact path={signupUrl()} layout={Unauthenticated} />
+          <WelcomeUserRoute exact path={welcomeUrl()} />
           <HomeRoute exact path={homeUrl()} layout={Authenticated} />
           <ClubsRoute exact path={clubsUrl()} layout={Authenticated} />
           <NewClubRoute exact path={newClubUrl()} layout={Authenticated} />
@@ -68,6 +75,8 @@ const App = () => {
           <NewPosterRoute exact path={newPosterUrl()} layout={Authenticated} />
           <PostersIndexRoute exact path={postersUrl()} layout={Authenticated} />
           <ReportsIndexRoute exact path={reportsUrl()} layout={Authenticated} />
+          <NotebookShowRoute exact path={notebookUrl()} layout={Authenticated} />
+          <NewNoteRoute exact path={newNoteUrl()} layout={Authenticated} />
         </Switch>
       </Router>
     </ThemeProvider>

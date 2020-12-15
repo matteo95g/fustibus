@@ -48,7 +48,7 @@ const reducer = (state = initialState, action) => {
 
           const newState = produce(prevState, (draftState) => {
             draftState.current.user = json.data;
-            if (json.included) draftState.current.included = json.included;
+            draftState.current.included = json.included ?? [];
             draftState.status = COMPLETE;
             draftState.error = null;
           });

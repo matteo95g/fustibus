@@ -13,8 +13,10 @@
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "Missions", type: :request do
-  let!(:club) { create(:club) }
-  let!(:user) { create(:user, current_club: club) }
+  let!(:club)             { create(:club) }
+  let!(:user)             { create(:user, current_club: club) }
+  let!(:role)             { create(:role) }
+  let!(:clubs_users_role) { create(:clubs_users_role, club: club, user: user, role: role) }
 
   before { sign_in user }
   after { sign_out user }
@@ -25,7 +27,7 @@ RSpec.describe "Missions", type: :request do
     before { create_list(:mission, count, club: club) }
 
     it "returns all missions of a club" do
-      get api_v1_club_missions_path({ club_id: club.id })
+      get api_v1_missions_path()
 
       expect(response).to be_successful
       expect(json_body['data'].size).to eq(count + 1)
@@ -36,7 +38,7 @@ RSpec.describe "Missions", type: :request do
     context "with valid parameters" do
       it "creates a new Mission" do
         expect {
-          post api_v1_club_missions_path({ club_id: club.id }), params: { description: Faker::Lorem.paragraph }
+          post api_v1_missions_path({ club_id: club.id }), params: { description: Faker::Lorem.paragraph }
         }.to change(Mission, :count).by(1)
       end
     end
@@ -44,7 +46,7 @@ RSpec.describe "Missions", type: :request do
     context "with invalid parameters" do
       it "does not create a new Mission" do
         expect {
-          post api_v1_club_missions_path({ club_id: club.id }), params: { }
+          post api_v1_missions_path({ club_id: club.id }), params: { }
         }.to change(Mission, :count).by(0)
       end
     end
@@ -57,7 +59,7 @@ RSpec.describe "Missions", type: :request do
       let(:mission) { create(:mission) }
 
       it "updates the requested mission" do
-        patch api_v1_club_mission_path({ club_id: club.id, id: mission.id }), params: { description: new_description }
+        patch api_v1_mission_path({ club_id: club.id, id: mission.id }), params: { description: new_description }
         mission.reload
         expect(json_body['data']['attributes']['description']).to eq(new_description)
       end
@@ -68,7 +70,7 @@ RSpec.describe "Missions", type: :request do
     let(:mission) { create(:mission) }
 
     it "destroys the requested mission" do
-      delete api_v1_club_mission_path({ club_id: club.id, id: mission.id })
+      delete api_v1_mission_path({ club_id: club.id, id: mission.id })
 
       expect(response).to be_successful
       expect(club.missions.count).to eq(1)

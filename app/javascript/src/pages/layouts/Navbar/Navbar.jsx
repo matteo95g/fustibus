@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Heading, Flex, Link, Menu, MenuButton, MenuList, MenuItem, Icon, Image, MenuDivider } from "@common/ui";
 import { useHistory } from "react-router-dom";
-import { homeUrl, clubsUrl, profileUrl } from "@utils/app/urlHelpers";
+import { homeUrl, clubsUrl, clubUrl,  profileUrl } from "@utils/app/urlHelpers";
 import { logout } from "@features/users/usersSlice";
 import { currentUser, currentUserImage, currentUserClub, currentUserInvitations } from "@features/users/selectors";
 import emptyProfile from "@images/emptyProfile";
 import InvitationsMenu from './InvitationsMenu';
-import { clubUrl } from "@utils/app/urlHelpers";
 
 const Navbar = (props) => {
   const [show, setShow] = useState(false);

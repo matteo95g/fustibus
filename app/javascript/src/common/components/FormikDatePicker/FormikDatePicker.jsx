@@ -26,8 +26,17 @@ export const FormikDatePicker = ({ showTimeInput = false, ...props }) => {
     <DatePicker
       {...field}
       {...props}
+      showMonthDropdown
+      showYearDropdown
+      closeOnScroll
+      dropdownMode="select"
       selected={(field.value && new Date(field.value)) || null}
-      onChange={(val) => setFieldValue(field.name, moment(val).format(`${showTimeInput ? "YYYY-MM-DD - HH:mm" : "YYYY-MM-DD"}`))}
+      onChange={(val) =>
+        setFieldValue(
+          field.name,
+          moment(val).format(`${showTimeInput ? "YYYY-MM-DD - HH:mm" : "YYYY-MM-DD"}`)
+        )
+      }
       customInput={<DateInput />}
       showTimeInput={showTimeInput}
     />

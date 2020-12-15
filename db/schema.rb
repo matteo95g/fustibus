@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_06_213736) do
+ActiveRecord::Schema.define(version: 2020_11_07_201206) do
 
   create_table "clubs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
@@ -78,14 +78,32 @@ ActiveRecord::Schema.define(version: 2020_10_06_213736) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
+    t.boolean "enabled", default: false
     t.index ["club_id"], name: "index_missions_on_club_id"
   end
 
-  create_table "missions_assigned_users", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "missions_assigned_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "mission_id"
     t.index ["mission_id"], name: "index_missions_assigned_users_on_mission_id"
     t.index ["user_id"], name: "index_missions_assigned_users_on_user_id"
+  end
+
+  create_table "note_sections", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "section_type", null: false
+    t.string "url"
+    t.text "text"
+    t.text "list"
+    t.integer "position"
+    t.bigint "note_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["note_id"], name: "index_note_sections_on_note_id"
+  end
+
+  create_table "notes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_mission_id"
+    t.index ["user_mission_id"], name: "index_notes_on_user_mission_id"
   end
 
   create_table "posters", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

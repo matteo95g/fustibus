@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: "home#index"
+  root to: 'home#index'
 
   devise_for :users,
              path: 'api/v1',
@@ -18,14 +18,20 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :clubs, only: [:create, :index, :update, :destroy, :show] do
         post :current
-        resources :missions, only: [:create, :index, :update, :destroy]
-        resources :poster, only: [:create] do
+        post :leave
+        resources :posters, only: [:create] do
           collection do
             get :show
             put :update
           end
         end
       end
+
+      resources :notes, only: [:create, :index] do
+        resources :note_sections, only: [:create, :index, :update, :destroy]
+      end
+
+      resources :missions, only: [:create, :index, :update, :destroy]
 
       resources :images, only: [:create, :index, :update, :destroy, :show]
 
@@ -44,7 +50,12 @@ Rails.application.routes.draw do
         resources :entries, only: [:create, :index, :update, :destroy, :show]
       end
 
-      resources :users, only: [:update]
+      resources :users, only: [:update] do
+        member do
+          post :add_role, path: 'role'
+          delete :delete_role, path: 'role'
+        end
+      end
 
       resources :invitations, only: [] do
         post :accept
