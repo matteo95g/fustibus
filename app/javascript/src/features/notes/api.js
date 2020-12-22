@@ -8,9 +8,9 @@ const urls = {
     return `/notes`;
   },
 
-  // resource(noteId, id) {
-  //   return `/notes/${noteId}/note_sections/${id}`;
-  // },
+  resource(id) {
+    return `/notes/${id}`;
+  },
 };
 
 export default {
@@ -28,13 +28,18 @@ export default {
     });
   },
 
+  find(id) {
+    const client = getApiClient(API_URL);
+    return client.get(urls.resource(id));
+  },
+
   // destroy(noteId, id) {
   //   const client = getApiClient(API_URL);
   //   return client.delete(urls.resource(noteId, id));
   // },
 
-  // update(noteId, id, attributes) {
-  //   const client = getApiClient(API_URL);
-  //   return client.put(urls.resource(noteId, id), attributes);
-  // },
+  update(id, attributes) {
+    const client = getApiClient(API_URL);
+    return client.put(urls.resource(id), attributes);
+  },
 };

@@ -15,6 +15,7 @@ import {
   Input,
   List,
   ListItem,
+  Image,
 } from "@common/ui";
 import { TEXT, TEXT_AND_IMAGE, LIST, IMAGE } from "@app/constants";
 import FileUploader from "@common/components/FileUploader";
@@ -38,7 +39,11 @@ const TextAndImageSection = ({ index, section, updateSection }) => {
     <Box my="4">
       <Flex>
         <Box w="30%">
-          <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
+          {section?.payload?.image !== "" ? (
+            <Image borderRadius="lg" src={section?.payload?.image} width="300px" />
+          ) : (
+            <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
+          )}
         </Box>
         <Textarea w="70%" ml="2" onChange={(e) => handleChange(e.target.value)} value={data.text} />
       </Flex>
@@ -72,12 +77,16 @@ const ListSection = ({ index, section, handleAddListItem }) => {
   );
 };
 
-const ImageSection = ({ index, updateSection }) => {
+const ImageSection = ({ index, updateSection, section }) => {
   const handleUpload = (files) => {
     updateSection(index, files[0].data);
   };
 
-  return <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />;
+  return section?.payload?.image !== "" ? (
+    <Image borderRadius="lg" src={section?.payload?.image} width="500px" />
+  ) : (
+    <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
+  );
 };
 
 const NewNote = ({ sections, setSections }) => {
@@ -125,7 +134,7 @@ const NewNote = ({ sections, setSections }) => {
         {sections.map((section, index) => (
           <div key={index}>
             {section.sectionType === TEXT && (
-              <Textarea my="4" value={section.text} onChange={(e) => handleTextAreaChange(index, e.target.value)} />
+              <Textarea my="4" value={section.payload || ""} onChange={(e) => handleTextAreaChange(index, e.target.value)} />
             )}
             {section.sectionType === TEXT_AND_IMAGE && (
               <TextAndImageSection index={index} section={section} updateSection={updateSection} />
@@ -133,7 +142,7 @@ const NewNote = ({ sections, setSections }) => {
             {section.sectionType === LIST && (
               <ListSection index={index} section={section} handleAddListItem={handleAddListItem} />
             )}
-            {section.sectionType === IMAGE && <ImageSection index={index} updateSection={updateSection} />}
+            {section.sectionType === IMAGE && <ImageSection section={section} index={index} updateSection={updateSection} />}
           </div>
         ))}
       </Box>

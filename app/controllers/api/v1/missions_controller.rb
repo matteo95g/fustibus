@@ -8,7 +8,18 @@ module Api
 
       def index
         missions = @club.missions
+        missions = missions.enabled if params[:enabled] == "true"
+
+        if params[:without_notes] == "true"
+          mission_ids_with_notes = UserMission.where(mission_id: missions.ids).joins(:note).pluck(:mission_id)
+          missions = missions.where.not(id: mission_ids_with_notes)
+        end
+
         render jsonapi: missions
+      end
+
+      def show
+        render jsonapi: @image
       end
 
       def create

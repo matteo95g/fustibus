@@ -27,6 +27,8 @@ const TEXT_AND_IMAGE_STRING = "text_and_image";
 const LIST_STRING = "list";
 const IMAGE_STRING = "image";
 
+const NOTE_SECTION_STRING_TO_INT = { text: 0, text_and_image: 1, list: 2, image: 3 };
+
 export {
   LOADING,
   ERROR,
@@ -49,4 +51,5 @@ export {
   TEXT_AND_IMAGE_STRING,
   LIST_STRING,
   IMAGE_STRING,
+  NOTE_SECTION_STRING_TO_INT,
 };
