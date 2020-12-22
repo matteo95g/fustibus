@@ -33,10 +33,10 @@ export default {
     return client.get(urls.resource(id));
   },
 
-  // destroy(noteId, id) {
-  //   const client = getApiClient(API_URL);
-  //   return client.delete(urls.resource(noteId, id));
-  // },
+  destroy(id) {
+    const client = getApiClient(API_URL);
+    return client.delete(urls.resource(id));
+  },
 
   update(id, attributes) {
     const client = getApiClient(API_URL);

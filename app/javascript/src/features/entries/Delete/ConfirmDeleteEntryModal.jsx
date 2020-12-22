@@ -8,11 +8,11 @@ const ConfirmDeleteEntryModal = ({ isOpen, setIsOpen, onDeleteConfirm }) => {
   return (
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} header={strings.Entries.delete.title}>
       <Flex m="6" justify="space-between">
-        <Button type="submit" variantColor="teal" onClick={() => setIsOpen(false)}>
-          {strings.Entries.delete.cancel}
-        </Button>
         <Button mr="4" variantColor="red" onClick={onDeleteConfirm}>
           {strings.Entries.delete.delete}
+        </Button>
+        <Button type="submit" variantColor="teal" onClick={() => setIsOpen(false)}>
+          {strings.Entries.delete.cancel}
         </Button>
       </Flex>
     </Modal>
