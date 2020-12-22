@@ -27,7 +27,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :notes, only: [:create, :index] do
+      resources :notes, only: [:create, :index, :show, :update] do
         resources :note_sections, only: [:create, :index, :update, :destroy]
       end
 

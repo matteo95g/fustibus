@@ -20,6 +20,7 @@ import PostersIndexRoute from "@pages/posters/index/Route";
 import ReportsIndexRoute from "@pages/reports/index/Route";
 import NotebookShowRoute from "@pages/notebooks/show/Route";
 import NewNoteRoute from "@pages/notes/new/Route";
+import EditNoteRoute from "@pages/notes/edit/Route";
 
 import history from "./history";
 
@@ -45,6 +46,7 @@ import {
   welcomeUrl,
   notebookUrl,
   newNoteUrl,
+  editNoteUrl,
 } from "@utils/app/urlHelpers";
 
 const App = () => {
@@ -77,6 +79,7 @@ const App = () => {
           <ReportsIndexRoute exact path={reportsUrl()} layout={Authenticated} />
           <NotebookShowRoute exact path={notebookUrl()} layout={Authenticated} />
           <NewNoteRoute exact path={newNoteUrl()} layout={Authenticated} />
+          <EditNoteRoute exact path={editNoteUrl()} layout={Authenticated} />
         </Switch>
       </Router>
     </ThemeProvider>

@@ -6,9 +6,11 @@ import { ERROR, LOADING, COMPLETE } from "@app/constants";
 
 // Actions
 export const CREATE = "notes/CREATE";
+export const FIND = "notes/FIND";
 
 // Action Creators
 export const create = (noteId, attributes = {}) => apiAction(CREATE, NotesApi.create(noteId, attributes));
+export const find = (id) => apiAction(FIND, NotesApi.find(id));
 
 // Reducer
 const initialState = {
@@ -59,6 +61,33 @@ const reducer = (state = initialState, action) => {
             draftState.error = json.detail;
           });
           return { ...state, ...newState };
+        },
+      });
+
+    case FIND:
+      return handle(state, action, {
+        start: (prevState) => {
+          const newState = produce(prevState, (draftState) => {
+            draftState.status = LOADING;
+          });
+          return { ...initialState, ...newState };
+        },
+
+        success: (prevState) => {
+          const newState = produce(prevState, (draftState) => {
+            draftState.status = COMPLETE;
+            draftState.current.note = json.data;
+            if (json.included) draftState.current.included = json.included;
+          });
+          return { ...initialState, ...newState };
+        },
+
+        failure: (prevState) => {
+          const newState = produce(prevState, (draftState) => {
+            draftState.status = ERROR;
+            draftState.error = json.detail;
+          });
+          return { ...initialState, ...newState };
         },
       });
 

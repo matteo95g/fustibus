@@ -3,7 +3,7 @@ import { Text, Select } from "@common/ui";
 import missionsApi from "@features/missions/api";
 import notesApi from "@features/notes/api";
 import CreateButton from "@common/components/CreateButton";
-import NoteSections from "./NoteSections";
+import NoteSections from "@features/notes/components/NoteSections";
 import { notebookUrl } from "@utils/app/urlHelpers";
 import { useHistory } from "react-router-dom";
 
@@ -17,7 +17,7 @@ const NewNote = () => {
 
   useEffect(() => {
     async function anyNameFunction() {
-      const clubMissions = await missionsApi.list();
+      const clubMissions = await missionsApi.list({ enabled: true, withoutNotes: true });
       setMissions(clubMissions.data.data);
     }
     anyNameFunction();

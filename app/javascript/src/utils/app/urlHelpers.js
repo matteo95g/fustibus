@@ -18,6 +18,7 @@ export const clubDiaryUrl = () => "/diary";
 export const notebookUrl = () => "/notebook";
 
 export const newNoteUrl = () => "/notes/new";
+export const editNoteUrl = (id) => (id ? `/notes/${id}/edit` : "/notes/:id/edit");
 
 export const newPosterUrl = () => "/poster";
 export const postersUrl = () => "/posters";

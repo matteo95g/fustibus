@@ -11,4 +11,6 @@ class Mission < ApplicationRecord
   def self.create_initial
     Mission.new(name: INITIAL_NAME, description: INITIAL_DESC)
   end
+
+  scope :enabled, -> { where(enabled: true) }
 end
