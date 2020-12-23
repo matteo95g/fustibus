@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  currentClub,
-  currentClubCovers,
-  currentClubCurrentUserRoles,
-  clubStatus,
-} from "@features/clubs/selectors";
-import { Box, Text, Skeleton, Flex, Badge, Image, Tag, TagLabel, Button } from "@common/ui";
+import { currentClub, currentClubCovers, currentClubCurrentUserRoles, clubStatus } from "@features/clubs/selectors";
+import { Box, Text, Skeleton, Flex, Badge, Image, Tag, Button } from "@common/ui";
 import { useParams, useHistory } from "react-router-dom";
 import { find, destroy } from "@features/clubs/clubsSlice";
 import { getAreaColor, translateArea } from "@features/clubs/utils";
@@ -62,7 +57,7 @@ const ShowClub = () => {
 
   const handleLeaveClub = () => {
     clubsApi.leaveClub(id).then(() => dispatch(fetchUser()).then(() => history.push(clubsUrl())));
-  }
+  };
 
   return (
     <>
@@ -82,17 +77,16 @@ const ShowClub = () => {
               <EditButton mr="4" my="1" onClick={handleEdit} />
               <DeleteButton my="1" onClick={handleDelete} />
             </Flex>
-          ) : <Button variantColor="red" onClick={handleLeaveClub}>Abandonar Club</Button>}
+          ) : (
+            <Button variantColor="red" onClick={handleLeaveClub}>
+              Abandonar Club
+            </Button>
+          )}
         </Flex>
       </Skeleton>
       <Skeleton isLoaded={!loading}>
         <Flex align="center">
-          <Badge
-            fontSize="xl"
-            mr="4"
-            variant="solid"
-            variantColor={getAreaColor(club?.attributes?.area)}
-          >
+          <Badge fontSize="xl" mr="4" variant="solid" variantColor={getAreaColor(club?.attributes?.area)}>
             {translateArea(club?.attributes?.area)}
           </Badge>
           <Badge variant="outline" fontSize="xl">
@@ -118,9 +112,7 @@ const ShowClub = () => {
               <Text fontSize="lg" fontWeight="bold" mb={2}>
                 Descripción del club
               </Text>
-              <Text>
-                {club?.attributes?.description || "El club aún no tiene una descripción."}
-              </Text>
+              <Text>{club?.attributes?.description || "El club aún no tiene una descripción."}</Text>
             </Box>
           </Skeleton>
           <UsersList

@@ -9,6 +9,7 @@ export const CREATE_ENTRY = "entries/CREATE";
 export const LIST = "entries/LIST";
 export const DESTROY_ENTRY = "entries/DESTROY";
 export const UPDATE_ENTRY = "entries/UPDATE";
+export const FIND_ENTRY = "entries/FIND";
 
 // Action Creators
 export const create = (fieldForlderId, attributes = {}) => apiAction(CREATE_ENTRY, EntriesApi.create(fieldForlderId, attributes));
@@ -16,12 +17,14 @@ export const list = (fieldForlderId, attributes = {}) => apiAction(LIST, Entries
 export const destroy = (fieldForlderId, id) => apiAction(DESTROY_ENTRY, EntriesApi.destroy(fieldForlderId, id), { entryId: id });
 export const update = (fieldForlderId, id, attributes = {}) =>
   apiAction(UPDATE_ENTRY, EntriesApi.update(fieldForlderId, id, attributes));
+export const find = (fieldForlderId, id) => apiAction(FIND_ENTRY, EntriesApi.find(fieldForlderId, id));
 
 // Reducer
 const initialState = {
   status: "",
   error: null,
   current: {
+    entry: {},
     entries: [],
     included: [],
   },
@@ -103,6 +106,34 @@ const reducer = (state = initialState, action) => {
           const newState = produce(prevState, (draftState) => {
             draftState.status = COMPLETE;
             draftState.current.entries = prevState.current.entries.filter((entry) => entry.id.toString() !== entryId);
+          });
+          return { ...initialState, ...newState };
+        },
+
+        failure: (prevState) => {
+          const newState = produce(prevState, (draftState) => {
+            draftState.status = ERROR;
+            draftState.error = json.detail;
+          });
+          return { ...initialState, ...newState };
+        },
+      });
+
+    case FIND_ENTRY:
+      return handle(state, action, {
+        start: (prevState) => {
+          const newState = produce(prevState, (draftState) => {
+            draftState.status = LOADING;
+            draftState.current.entry = null;
+          });
+          return { ...initialState, ...newState };
+        },
+
+        success: (prevState) => {
+          const newState = produce(prevState, (draftState) => {
+            draftState.status = COMPLETE;
+            draftState.current.entry = json.data;
+            if (json.included) draftState.current.included = json.included;
           });
           return { ...initialState, ...newState };
         },

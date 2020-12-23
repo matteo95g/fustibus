@@ -21,6 +21,8 @@ import ReportsIndexRoute from "@pages/reports/index/Route";
 import NotebookShowRoute from "@pages/notebooks/show/Route";
 import NewNoteRoute from "@pages/notes/new/Route";
 import EditNoteRoute from "@pages/notes/edit/Route";
+import NewEntryRoute from "@pages/entries/new/Route";
+import EditEntryRoute from "@pages/entries/edit/Route";
 
 import history from "./history";
 
@@ -47,6 +49,8 @@ import {
   notebookUrl,
   newNoteUrl,
   editNoteUrl,
+  newEntryUrl,
+  editEntryUrl,
 } from "@utils/app/urlHelpers";
 
 const App = () => {
@@ -80,6 +84,8 @@ const App = () => {
           <NotebookShowRoute exact path={notebookUrl()} layout={Authenticated} />
           <NewNoteRoute exact path={newNoteUrl()} layout={Authenticated} />
           <EditNoteRoute exact path={editNoteUrl()} layout={Authenticated} />
+          <NewEntryRoute exact path={newEntryUrl()} layout={Authenticated} />
+          <EditEntryRoute exact path={editEntryUrl()} layout={Authenticated} />
         </Switch>
       </Router>
     </ThemeProvider>
