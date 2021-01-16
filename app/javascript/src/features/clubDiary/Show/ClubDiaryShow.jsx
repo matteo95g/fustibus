@@ -1,13 +1,31 @@
 import React, { useEffect, useState } from "react";
 
 import { listMissions } from "@features/clubDiary/clubDiarySlice";
-import { Text, Flex, Tabs, TabList, TabPanels, Tab, TabPanel } from "@common/ui";
+import { Text, Flex, Tabs, TabList, TabPanels, Tab, TabPanel, SimpleGrid } from "@common/ui";
 import { useDispatch } from "react-redux";
 import MissionsPanel from "@features/clubDiary/components/MissionsPanel";
+import { ReactSVG } from "react-svg";
+
+import throphies from "@features/throphies";
+
+const Throphies = () => (
+  <SimpleGrid columns={4} spacing="40px" mt="6">
+    {throphies.map((thropy, index) => (
+      <Flex key={index} justify="center">
+        <ReactSVG
+          src={thropy}
+          key={index}
+          beforeInjection={(svg) => {
+            svg.setAttribute("style", "width: 150px; height: 150px");
+          }}
+        />
+      </Flex>
+    ))}
+  </SimpleGrid>
+);
 
 const ClubDiaryShow = () => {
   const MISSIONS = 0;
-  const ACHIEVEMENTS = 1;
 
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(MISSIONS);
@@ -17,8 +35,6 @@ const ClubDiaryShow = () => {
   useEffect(() => {
     if (selected == MISSIONS) {
       dispatch(listMissions());
-    } else if (selected == ACHIEVEMENTS) {
-      // Todo: dispatch list de logros
     }
   }, [selected]);
 
@@ -33,13 +49,15 @@ const ClubDiaryShow = () => {
       <Tabs onChange={(index) => setSelected(index)}>
         <TabList>
           <Tab>Misiones</Tab>
-          <Tab>Logros</Tab>
+          <Tab>Trofeos</Tab>
         </TabList>
         <TabPanels mt="5">
           <TabPanel>
             <MissionsPanel />
           </TabPanel>
-          <TabPanel>TODO :)</TabPanel>
+          <TabPanel>
+            <Throphies />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </>

@@ -10,12 +10,39 @@ import DeleteButton from "@common/components/DeleteButton";
 import EditButton from "@common/components/EditButton";
 import MissionsList from "@features/clubDiary/components/MissionsList";
 import MissionDetail from "@features/clubDiary/components/MissionDetail";
-import { Skeleton, Flex, Stack, Button, Text } from "@common/ui";
+import { Skeleton, Flex, Stack, Button, Text, SimpleGrid } from "@common/ui";
 import { LOADING } from "@app/constants";
 import { currentUser } from "@features/users/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import SaveButton from "@common/components/SaveButton";
 import CancelButton from "@common/components/CancelButton";
+import Modal from "@common/components/Modal";
+import { ReactSVG } from "react-svg";
+import throphies from "@features/throphies";
+
+const ThropiesModal = ({ isOpen, onClose, selectThropy }) => {
+  const handleSelectedThropy = (thropy) => {
+    selectThropy(thropy);
+    onClose();
+  };
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} header={"Seleccioná un trofeo"} size={"full"}>
+      <SimpleGrid columns={4} spacing="40px" mt="6">
+        {throphies.map((thropy, index) => (
+          <Flex key={index} justify="center" className="cursor-pointer" onClick={() => handleSelectedThropy(thropy)}>
+            <ReactSVG
+              src={thropy}
+              key={index}
+              beforeInjection={(svg) => {
+                svg.setAttribute("style", "width: 100px; height: 100px");
+              }}
+            />
+          </Flex>
+        ))}
+      </SimpleGrid>
+    </Modal>
+  );
+};
 
 const MissionsPanel = ({}) => {
   const dispatch = useDispatch();
@@ -27,6 +54,8 @@ const MissionsPanel = ({}) => {
   const [selectedMission, setMission] = useState(null);
   const [newMission, setNewMission] = useState(false);
   const [editingMission, setEditingMission] = useState(false);
+  const [thropiesModalIsOpen, setThropiesModalIsOpen] = useState(false);
+  const [selectedThropy, setSelectedThropy] = useState(null);
 
   const onMissionSelected = (mission) => {
     setNewMission(false);
@@ -36,6 +65,8 @@ const MissionsPanel = ({}) => {
       setMission(mission);
     }
   };
+
+  console.log(selectedThropy);
 
   // Mission Handling
 
@@ -94,6 +125,11 @@ const MissionsPanel = ({}) => {
 
   return (
     <>
+      <ThropiesModal
+        isOpen={thropiesModalIsOpen}
+        onClose={() => setThropiesModalIsOpen(false)}
+        selectThropy={setSelectedThropy}
+      />
       <Flex pt="4" justifyContent="space-between" alignItems="center">
         <Stack isInline spacing={8} align="center">
           {isCounselor && (
@@ -128,17 +164,35 @@ const MissionsPanel = ({}) => {
               <Formik
                 initialValues={
                   editingMission
-                    ? { name: selectedMission.attributes.name, description: selectedMission.attributes.description }
+                    ? {
+                        name: selectedMission.attributes.name,
+                        description: selectedMission.attributes.description,
+                        thropy: selectedMission.attributes.thropy,
+                      }
                     : initialValues
                 }
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
+                  values.thropy = selectedThropy;
                   handleSubmit(values);
                 }}
               >
                 <Form>
-                  <FormikTextInput my="4" name="name" type="text" placeholder="Nombre" />
-                  <FormikTextArea my="4" name="description" type="text" placeholder="Descripción" />
+                  <Flex flexDirection="column" mb="6">
+                    <FormikTextInput my="4" name="name" type="text" placeholder="Nombre" />
+                    <FormikTextArea my="4" name="description" type="text" placeholder="Descripción" />
+                    <Flex>
+                      <Button onClick={() => setThropiesModalIsOpen(true)} mr="10">
+                        Agregar trofeo
+                      </Button>
+                      <ReactSVG
+                        src={editingMission ? selectedMission.attributes.thropy : selectedThropy}
+                        beforeInjection={(svg) => {
+                          svg.setAttribute("style", "width: 50px; height: 50px");
+                        }}
+                      />
+                    </Flex>
+                  </Flex>
 
                   <SaveButton mr="2" type="submit" isLoading={createMissionStatus == LOADING} />
                   <CancelButton onClick={handleCancel} />
