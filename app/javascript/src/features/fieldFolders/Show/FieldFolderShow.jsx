@@ -8,12 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { LOADING } from "@app/constants";
 import Actions from "./Actions";
 import emptyBox from "@images/emptyBox";
-import NewEntryModal from "@features/entries/New";
-import EditEntryModal from "@features/entries/Edit";
 import ConfirmDeleteEntryModal from "@features/entries/Delete";
 import moment from "moment";
 import { reducer, DELAY_TIMEOUT } from "@utils/app/forms";
 import useDebounce from "@utils/app/useDebounce";
+import { newEntryUrl, editEntryUrl } from "@utils/app/urlHelpers";
+import { useHistory } from "react-router-dom";
 
 const FieldFolderShow = () => {
   const entries = useSelector((state) => entriesState(state)?.current?.entries);
@@ -22,10 +22,9 @@ const FieldFolderShow = () => {
 
   const dispatch = useDispatch();
 
-  const [isOpen, setIsOpen] = useState(false);
   const [currentEntry, setCurrentEntry] = useState(null);
   const [confirmDeleteIsOpen, setConfirmDeleteIsOpen] = useState(false);
-  const [editEntryOpen, setEditEntryOpen] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(find());
@@ -58,8 +57,7 @@ const FieldFolderShow = () => {
   };
 
   const handleEditEntry = async (entry) => {
-    await setCurrentEntry(entry);
-    setEditEntryOpen(true);
+    history.push(editEntryUrl(entry.id));
   };
 
   return (
@@ -69,23 +67,13 @@ const FieldFolderShow = () => {
           <Text fontSize="5xl" mr="5">
             Carpeta de campo
           </Text>
-          <Button
-            mt="1"
-            rightIcon="plus-square"
-            variantColor="green"
-            onClick={() => setIsOpen(true)}
-          >
+          <Button mt="1" rightIcon="plus-square" variantColor="green" onClick={() => history.push(newEntryUrl())}>
             Crear Entrada
           </Button>
         </Flex>
       </Skeleton>
       <Skeleton isLoaded={isLoaded}>
-        <Actions
-          setIsOpen={setIsOpen}
-          filters={filters}
-          setFilters={setFilters}
-          initialFilters={initialFilters}
-        />
+        <Actions filters={filters} setFilters={setFilters} initialFilters={initialFilters} />
       </Skeleton>
       <Divider mb="4" />
       <Skeleton isLoaded={isLoaded}>
@@ -106,18 +94,8 @@ const FieldFolderShow = () => {
                     <Text fontSize="2xl" mr="2">
                       {entry?.attributes?.title}
                     </Text>
-                    <IconButton
-                      variant="link"
-                      variantColor="teal"
-                      icon="edit"
-                      onClick={() => handleEditEntry(entry)}
-                    />
-                    <IconButton
-                      variant="link"
-                      variantColor="red"
-                      icon="delete"
-                      onClick={() => handleDeleteEntry(entry)}
-                    />
+                    <IconButton variant="link" variantColor="teal" icon="edit" onClick={() => handleEditEntry(entry)} />
+                    <IconButton variant="link" variantColor="red" icon="delete" onClick={() => handleDeleteEntry(entry)} />
                   </Flex>
                   <Text>{entry?.attributes?.description}</Text>
                 </Box>
@@ -133,13 +111,11 @@ const FieldFolderShow = () => {
           )
         )}
       </Skeleton>
-      <NewEntryModal isOpen={isOpen} setIsOpen={setIsOpen} fieldFolderId={id} />
       <ConfirmDeleteEntryModal
         isOpen={confirmDeleteIsOpen}
         setIsOpen={setConfirmDeleteIsOpen}
         onDeleteConfirm={onDeleteConfirm}
       />
-      <EditEntryModal entry={currentEntry} isOpen={editEntryOpen} setIsOpen={setEditEntryOpen} />
     </>
   );
 };

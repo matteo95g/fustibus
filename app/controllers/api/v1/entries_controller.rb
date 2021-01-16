@@ -51,6 +51,10 @@ module Api
       def sanitize_params
         params[:club_id] = params[:club_id].to_i
       end
+
+      def set_field_folder
+        @field_folder = current_user.current_club.field_folder
+      end
     end
   end
 end

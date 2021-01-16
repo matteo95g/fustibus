@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Heading, Flex, Link, Menu, MenuButton, MenuList, MenuItem, Icon, Image, MenuDivider } from "@common/ui";
 import { useHistory } from "react-router-dom";
-import { homeUrl, clubsUrl, clubUrl,  profileUrl } from "@utils/app/urlHelpers";
+import { homeUrl, clubsUrl, clubUrl, profileUrl } from "@utils/app/urlHelpers";
 import { logout } from "@features/users/usersSlice";
 import { currentUser, currentUserImage, currentUserClub, currentUserInvitations } from "@features/users/selectors";
 import emptyProfile from "@images/emptyProfile";
-import InvitationsMenu from './InvitationsMenu';
+import InvitationsMenu from "./InvitationsMenu";
+import brandLogo2 from "@images/brandLogo2";
 
 const Navbar = (props) => {
   const [show, setShow] = useState(false);
@@ -22,13 +23,13 @@ const Navbar = (props) => {
     dispatch(logout());
   };
 
-  const invitations = useSelector(currentUserInvitations)
+  const invitations = useSelector(currentUserInvitations);
 
   return (
     <Flex as="nav" align="center" justify="space-between" wrap="wrap" padding="1.5rem" bg="blue.900" color="white" {...props}>
-      <Heading as="h1" mr={10} size="lg" cursor="pointer" onClick={() => history.push(homeUrl())}>
-        Fustibus
-      </Heading>
+      <Box w="200px" onClick={() => history.push(homeUrl())} cursor="pointer">
+        <Image src={brandLogo2} display="inline-block" />
+      </Box>
 
       <Box display={{ xs: "block", md: "none" }} onClick={handleToggle}>
         <svg fill="white" width="12px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -39,7 +40,7 @@ const Navbar = (props) => {
 
       <Box display={{ xs: show ? "block" : "none", md: "flex" }} width={{ xs: "full", md: "auto" }}>
         <Box display={{ xs: "block", md: "flex" }} justifyContent="space-between" alignItems="center" width="full">
-          <Flex alignItems="center" >
+          <Flex alignItems="center">
             <Box pr="4">
               <InvitationsMenu invitations={invitations} />
             </Box>

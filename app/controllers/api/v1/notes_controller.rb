@@ -26,6 +26,11 @@ module Api
         NoteSection.create_sections(note, params[:sections])
         render jsonapi: note
       end
+
+      def destroy
+        current_user.notes.find(params[:id]).destroy!
+        head :ok
+      end
     end
   end
 end

@@ -33,6 +33,11 @@ export default {
     return client.delete(urls.resource(fieldFolderId, id));
   },
 
+  find(fieldFolderId, id) {
+    const client = getApiClient(API_URL);
+    return client.get(urls.resource(fieldFolderId, id));
+  },
+
   update(fieldFolderId, id, attributes) {
     const client = getApiClient(API_URL);
     return client.put(urls.resource(fieldFolderId, id), attributes);

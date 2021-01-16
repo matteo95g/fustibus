@@ -11,6 +11,8 @@ export const clubUrl = (id) => (id ? `/clubs/${id}` : "/clubs/:id");
 export const editClubUrl = (id) => (id ? `/clubs/${id}/edit` : "/clubs/:id/edit");
 
 export const fieldFolderUrl = () => "/field-folder";
+export const newEntryUrl = () => "/entries/new";
+export const editEntryUrl = (id) => (id ? `/entries/${id}/edit` : "/entries/:id/edit");
 
 export const profileUrl = () => "/profile";
 export const clubDiaryUrl = () => "/diary";

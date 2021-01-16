@@ -3,4 +3,5 @@ class SerializableMission < SerializableBase
   attribute :description
   attribute :completed
   attribute :enabled
+  attribute :thropy
 end
