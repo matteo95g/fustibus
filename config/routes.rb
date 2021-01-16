@@ -19,7 +19,7 @@ Rails.application.routes.draw do
       resources :clubs, only: [:create, :index, :update, :destroy, :show] do
         post :current
         post :leave
-        resources :posters, only: [:create] do
+        resources :poster, only: [:create] do
           collection do
             get :show
             put :update

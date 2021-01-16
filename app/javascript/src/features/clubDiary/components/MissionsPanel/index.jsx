@@ -31,7 +31,7 @@ const ThropiesModal = ({ isOpen, onClose, selectThropy }) => {
         {throphies.map((thropy, index) => (
           <Flex key={index} justify="center" className="cursor-pointer" onClick={() => handleSelectedThropy(thropy)}>
             <ReactSVG
-              src={thropy}
+              src={thropy || ""}
               key={index}
               beforeInjection={(svg) => {
                 svg.setAttribute("style", "width: 100px; height: 100px");
@@ -65,8 +65,6 @@ const MissionsPanel = ({}) => {
       setMission(mission);
     }
   };
-
-  console.log(selectedThropy);
 
   // Mission Handling
 
@@ -186,7 +184,7 @@ const MissionsPanel = ({}) => {
                         Agregar trofeo
                       </Button>
                       <ReactSVG
-                        src={editingMission ? selectedMission.attributes.thropy : selectedThropy}
+                        src={editingMission ? selectedMission.attributes.thropy || "" : selectedThropy || ""}
                         beforeInjection={(svg) => {
                           svg.setAttribute("style", "width: 50px; height: 50px");
                         }}

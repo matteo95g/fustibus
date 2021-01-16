@@ -61,7 +61,7 @@ const MissionsList = ({ missions, onSelect, selectedId }) => {
                   {name}
                 </Flex>
                 <ReactSVG
-                  src={thropy}
+                  src={thropy || ""}
                   beforeInjection={(svg) => {
                     svg.setAttribute("style", "width: 50px; height: 50px");
                   }}
