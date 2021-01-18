@@ -6,11 +6,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { currentEntry } from "@features/entries/selectors";
 import { find } from "@features/entries/entriesSlice";
 import { Skeleton } from "@common/ui";
+import { useHistory } from "react-router-dom";
 
 const Page = () => {
   const { id } = useParams();
+  const history = useHistory();
   const fieldFolderId = useSelector((state) => currentFieldFolder(state)?.id);
-  const entry = useSelector((state) => currentEntry(state));
+  const entry = history.location.state
   const dispatch = useDispatch();
 
   useEffect(() => {
