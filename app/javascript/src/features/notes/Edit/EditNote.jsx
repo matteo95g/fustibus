@@ -4,26 +4,16 @@ import notesApi from "@features/notes/api";
 import NoteSections from "@features/notes/components/NoteSections";
 import { notebookUrl } from "@utils/app/urlHelpers";
 import { useParams, useHistory } from "react-router-dom";
-import { find } from "@features/notes/notesSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { currentNotesSections } from "@features/notes/selectors";
 import { TEXT, TEXT_AND_IMAGE, LIST, IMAGE, NOTE_SECTION_STRING_TO_INT } from "@app/constants";
 import SaveButton from "@common/components/SaveButton";
 import CancelButton from "@common/components/CancelButton";
 
 const EditNote = () => {
-  const dispatch = useDispatch();
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { id } = useParams();
-  const noteSections = useSelector((state) => currentNotesSections(state));
-
-  useEffect(() => {
-    if (id) {
-      dispatch(find(id));
-    }
-  }, [id]);
+  const noteSections = history.location.state.sections;
 
   const handleSave = async () => {
     setLoading(true);
