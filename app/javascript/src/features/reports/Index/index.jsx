@@ -18,7 +18,7 @@ const Reports = () => {
   const [submiting, setSubmitting] = useState(null);
   const [success, setSuccess] = useState(false);
   const [filesSelected, setFilesSelected] = useState(false);
-  const clubReport = useSelector((state) => currentReport(state));
+  const { attributes: { file: { url }, name } } = useSelector((state) => currentReport(state));
 
   const handleUpload = (files) => {
     setReport(files[0]);
@@ -46,23 +46,23 @@ const Reports = () => {
       )}
       <Heading my="6">Informe de investigación</Heading>
       <Text>TODO: poner info sobre el informe :)</Text>
-      {clubReport ? (
+      {url ? (
         <Box my="6">
           <Box width="100px" m="2">
             <ReactSVG src={reportIcon} />
             <Flex justify="center" mt="2">
-              <a href={clubReport?.attributes?.file?.url} target="_blank">
+              <a href={url} target="_blank">
                 <Icon mx="2" name="external-link" />
               </a>
               <a
-                href={clubReport?.attributes?.file?.url?.replace("/upload/", "/upload/fl_attachment/")}
-                download={clubReport?.attributes?.name}
+                href={url.replace("/upload/", "/upload/fl_attachment/")}
+                download={name}
               >
                 <Icon mx="2" name="download" />
               </a>
             </Flex>
             <Text textAlign="center" fontSize="xs">
-              {clubReport?.attributes?.name}
+              {name}
             </Text>
           </Box>
         </Box>
