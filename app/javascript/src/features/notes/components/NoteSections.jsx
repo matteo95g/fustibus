@@ -82,8 +82,8 @@ const ImageSection = ({ index, updateSection, section }) => {
     updateSection(index, files[0].data);
   };
 
-  return section?.payload?.image !== "" ? (
-    <Image borderRadius="lg" src={section?.payload?.image} width="500px" />
+  return section?.payload?.image !== undefined ? (
+    <Image borderRadius="lg" src={section?.payload?.image} />
   ) : (
     <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
   );

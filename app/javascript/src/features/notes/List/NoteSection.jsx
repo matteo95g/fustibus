@@ -24,7 +24,11 @@ const NoteSection = ({ section }) => {
           ))}
         </List>
       )}
-      {attributes.sectionType === IMAGE_STRING && <Image src={attributes.url} rounded="md" />}
+      {attributes.sectionType === IMAGE_STRING && (
+        <Flex justifyContent="center">
+          <Image src={attributes.url} rounded="md" maxW="50%" />
+        </Flex>
+      )}
     </Box>
   );
 };

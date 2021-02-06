@@ -2,7 +2,7 @@ class FileUploader < CarrierWave::Uploader::Base
   include Cloudinary::CarrierWave
 
   def public_id
-    "images/#{model.owner_type.pluralize.downcase}/#{model.owner_id}"
+    "images/#{model.owner_type.pluralize.downcase}/#{model.owner_id}/#{SecureRandom.uuid}"
   end
 
   version :icon do
