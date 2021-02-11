@@ -11,18 +11,25 @@ class NoteSection < ApplicationRecord
   def self.create_sections(note, sections)
     sections.each do |section, index|
       attributes = {}
-
       attributes = case section[:section_type]
         when section_types[:text]
           { text: section[:payload] }
         when section_types[:text_and_image]
-          url = upload_image(section[:payload][:image], note.id, index)
+          url = if section[:payload][:image].start_with?('http')
+            section[:payload][:image]
+          else
+            upload_image(section[:payload][:image], note.id, index)
+          end
 
           { text: section[:payload][:text], url: url }
         when section_types[:list]
           { list: section[:payload] }
         when section_types[:image]
-          url = upload_image(section[:payload], note.id, index)
+          url = if section[:payload].is_a?(String)
+            upload_image(section[:payload], note.id, index)
+          else
+            section[:payload][:image]
+          end
 
           { url: url }
         end

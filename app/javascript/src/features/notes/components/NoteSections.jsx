@@ -24,7 +24,7 @@ const TextAndImageSection = ({ index, section, updateSection }) => {
   const [data, setData] = useState({ image: section.payload.image, text: section.payload.text });
 
   const handleUpload = (files) => {
-    const newData = { ...data, image: files[0].data };
+    const newData = { ...data, image: files[0].data, preview: files[0].data};
     setData(newData);
     updateSection(index, newData);
   };
@@ -39,10 +39,10 @@ const TextAndImageSection = ({ index, section, updateSection }) => {
     <Box my="4">
       <Flex>
         <Box w="30%">
-          {section?.payload?.image !== "" ? (
-            <Image borderRadius="lg" src={section?.payload?.image} width="300px" />
-          ) : (
+          {section?.payload?.image === "" || section?.payload?.preview != null ? (
             <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
+          ) : (
+            <Image borderRadius="lg" src={section?.payload?.image} width="300px" />
           )}
         </Box>
         <Textarea w="70%" ml="2" onChange={(e) => handleChange(e.target.value)} value={data.text} />
@@ -100,6 +100,7 @@ const NewNote = ({ sections, setSections }) => {
       payload = {
         text: "",
         image: "",
+        preview: null
       };
     } else {
       payload = null;
