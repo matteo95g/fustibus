@@ -36,18 +36,16 @@ const TextAndImageSection = ({ index, section, updateSection }) => {
   };
 
   return (
-    <Box my="4">
-      <Flex>
-        <Box w="30%">
-          {section?.payload?.image === "" || section?.payload?.preview != null ? (
-            <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
-          ) : (
-            <Image borderRadius="lg" src={section?.payload?.image} width="300px" />
-          )}
-        </Box>
-        <Textarea w="70%" ml="2" onChange={(e) => handleChange(e.target.value)} value={data.text} />
-      </Flex>
-    </Box>
+    <Flex flex="1">
+      <Box w="30%">
+        {section?.payload?.image === "" || section?.payload?.preview != null ? (
+          <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
+        ) : (
+          <Image borderRadius="lg" src={section?.payload?.image} width="300px" />
+        )}
+      </Box>
+      <Textarea w="70%" ml="2" onChange={(e) => handleChange(e.target.value)} value={data.text} />
+    </Flex>
   );
 };
 
@@ -61,7 +59,7 @@ const ListSection = ({ index, section, handleAddListItem }) => {
   };
 
   return (
-    <Box my="4">
+    <Flex flex="1" flexDirection="column">
       <List styleType="disc" mb="2">
         {section.payload.map((item, i) => (
           <ListItem key={i}>{item}</ListItem>
@@ -73,7 +71,7 @@ const ListSection = ({ index, section, handleAddListItem }) => {
           Agregar item
         </Button>
       </Flex>
-    </Box>
+    </Flex>
   );
 };
 
@@ -83,7 +81,9 @@ const ImageSection = ({ index, updateSection, section }) => {
   };
 
   return section?.payload?.image !== undefined ? (
-    <Image borderRadius="lg" src={section?.payload?.image} />
+    <Flex flex="1" justifyContent="center">
+      <Image borderRadius="lg" src={section?.payload?.image} maxW="50%" />
+    </Flex>
   ) : (
     <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
   );
@@ -129,13 +129,19 @@ const NewNote = ({ sections, setSections }) => {
     updateSection(index, value);
   };
 
+  const handleDeleteItem = (index) => {
+    let updatedSections = [...sections];
+    updatedSections.splice(index, 1);
+    setSections(updatedSections);
+  }
+
   return (
     <>
       <Box my="5">
         {sections.map((section, index) => (
-          <div key={index}>
+          <Flex key={index} my="4" justifyContent="space-between">
             {section.sectionType === TEXT && (
-              <Textarea my="4" value={section.payload || ""} onChange={(e) => handleTextAreaChange(index, e.target.value)} />
+              <Textarea value={section.payload || ""} onChange={(e) => handleTextAreaChange(index, e.target.value)} />
             )}
             {section.sectionType === TEXT_AND_IMAGE && (
               <TextAndImageSection index={index} section={section} updateSection={updateSection} />
@@ -144,7 +150,8 @@ const NewNote = ({ sections, setSections }) => {
               <ListSection index={index} section={section} handleAddListItem={handleAddListItem} />
             )}
             {section.sectionType === IMAGE && <ImageSection section={section} index={index} updateSection={updateSection} />}
-          </div>
+            <Icon name="delete" ml="4" className="cursor-pointer" onClick={() => handleDeleteItem(index)}/>
+          </Flex>
         ))}
       </Box>
       <Popover placement="top" my="5">
