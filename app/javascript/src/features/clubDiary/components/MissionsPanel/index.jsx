@@ -64,6 +64,7 @@ const MissionsPanel = ({}) => {
     } else {
       setMission(mission);
     }
+    setSelectedThropy(null);
   };
 
   // Mission Handling
@@ -84,10 +85,11 @@ const MissionsPanel = ({}) => {
 
   const handleSubmit = (values) => {
     if (editingMission) {
-      dispatch(updateMission(selectedMission.id, values));
+      dispatch(updateMission(selectedMission.id, values)).then((response) => setMission(response.payload.data.data));
     } else {
       dispatch(createMission(values));
     }
+    setSelectedThropy(null);
   };
 
   const onEditMission = () => {
@@ -100,6 +102,7 @@ const MissionsPanel = ({}) => {
     // Checho 15/10/20
     const { id } = selectedMission;
     dispatch(deleteMission(id));
+    setMission(null);
   };
 
   useEffect(() => {
@@ -107,7 +110,6 @@ const MissionsPanel = ({}) => {
       dispatch(listMissions());
       setNewMission(false);
       setEditingMission(false);
-      setMission(null);
     }
   }, [createMissionStatus, updateStatus, deleteStatus]);
 
@@ -157,7 +159,7 @@ const MissionsPanel = ({}) => {
               <Text fontSize="xl">Selecciona una misión para ver en detalle.</Text>
             </Flex>
           )}
-          {(newMission || editingMission) && (
+          {(newMission || (editingMission && selectedMission)) && (
             <Flex flex="1" alignSelf="stretch" ml="4" flexDirection="column">
               <Formik
                 initialValues={
@@ -171,9 +173,10 @@ const MissionsPanel = ({}) => {
                 }
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
-                  values.thropy = selectedThropy;
+                  if (selectedThropy) values.thropy = selectedThropy;
                   handleSubmit(values);
                 }}
+                enableReinitialize
               >
                 <Form>
                   <Flex flexDirection="column" mb="6">
@@ -184,7 +187,7 @@ const MissionsPanel = ({}) => {
                         Agregar trofeo
                       </Button>
                       <ReactSVG
-                        src={editingMission ? selectedMission.attributes.thropy || "" : selectedThropy || ""}
+                        src={selectedThropy ? selectedThropy || "" : selectedMission.attributes.thropy || ""}
                         beforeInjection={(svg) => {
                           svg.setAttribute("style", "width: 50px; height: 50px");
                         }}

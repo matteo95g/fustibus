@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Flex, Text, Icon } from "@common/ui";
 import { useHistory } from "react-router-dom";
 import NoteSection from "./NoteSection";
-import { editNoteUrl, notebookUrl } from "@utils/app/urlHelpers";
+import { editNoteUrl } from "@utils/app/urlHelpers";
 import ConfirmDeleteModal from "@common/components/ConfirmDeleteModal";
 import notesApi from "@features/notes/api";
 
@@ -41,8 +41,8 @@ const NoteList = ({ notes }) => {
     }
     setIndex(newIndex);
     setSelectedMission(missions[newIndex]);
-    setSelectedNotesSections(notesSections.filter((section) => section.attributes.missionId == selectedMission.id));
-    setSelectedNote(notes?.data?.filter((note) => note.attributes.missionId == selectedMission.id)[0]);
+    setSelectedNotesSections(notesSections.filter((section) => section.attributes.missionId == missions[newIndex].id));
+    setSelectedNote(notes?.data?.filter((note) => note.attributes.missionId == missions[newIndex].id)[0]);
   };
 
   const onDeleteConfirm = async () => {
@@ -59,7 +59,14 @@ const NoteList = ({ notes }) => {
             <Text>{missions?.[index]?.attributes?.name || ""}</Text>
             {selectedNote && (
               <>
-                <Icon name="edit" ml="4" className="cursor-pointer" onClick={() => history.push(editNoteUrl(selectedNote.id))} />
+                <Icon
+                  name="edit"
+                  ml="4"
+                  className="cursor-pointer"
+                  onClick={() =>
+                    history.push(editNoteUrl(selectedNote.id), { note: selectedNote, sections: selectedNotesSections })
+                  }
+                />
                 <Icon name="delete" ml="4" className="cursor-pointer" onClick={() => setShowDeleteModal(true)} />
               </>
             )}

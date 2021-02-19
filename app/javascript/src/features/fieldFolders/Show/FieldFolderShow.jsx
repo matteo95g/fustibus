@@ -57,7 +57,7 @@ const FieldFolderShow = () => {
   };
 
   const handleEditEntry = async (entry) => {
-    history.push(editEntryUrl(entry.id));
+    history.push(editEntryUrl(entry.id), entry);
   };
 
   return (

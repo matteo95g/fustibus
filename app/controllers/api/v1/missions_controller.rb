@@ -8,7 +8,7 @@ module Api
 
       def index
         missions = @club.missions
-        missions = missions.enabled if params[:enabled] == "true"
+        missions = missions.where(status: params[:status]) if params[:status]
 
         if params[:without_notes] == "true"
           mission_ids_with_notes = UserMission.where(mission_id: missions.ids).joins(:note).pluck(:mission_id)
@@ -61,7 +61,7 @@ module Api
       end
 
       def mission_params
-        params.permit(:name, :description, :completed, :enabled, :thropy)
+        params.permit(:name, :description, :completed, :status, :thropy)
       end
     end
   end

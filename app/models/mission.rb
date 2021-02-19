@@ -3,6 +3,8 @@ class Mission < ApplicationRecord
   has_and_belongs_to_many :assigned_users, class_name: 'User', join_table: :missions_assigned_users
   has_many :user_missions
 
+  enum status: [:pending, :in_progress, :completed]
+
   validates :description, presence: true, allow_blank: false
 
   INITIAL_NAME = "Primera reunión de equipo"
@@ -11,6 +13,4 @@ class Mission < ApplicationRecord
   def self.create_initial
     Mission.new(name: INITIAL_NAME, description: INITIAL_DESC)
   end
-
-  scope :enabled, -> { where(enabled: true) }
 end

@@ -17,7 +17,7 @@ const NewNote = () => {
 
   useEffect(() => {
     async function anyNameFunction() {
-      const clubMissions = await missionsApi.list({ enabled: true, withoutNotes: true });
+      const clubMissions = await missionsApi.list({ status: "in_progress", withoutNotes: true });
       setMissions(clubMissions.data.data);
     }
     anyNameFunction();
@@ -40,7 +40,11 @@ const NewNote = () => {
       <Text fontSize="5xl" mr="5">
         Nueva nota
       </Text>
-      <Select placeholder="Selecciona una misión" my="5" onChange={(e) => setSelectedMissionId(e.target.value)}>
+      <Select
+        placeholder="Selecciona una misión"
+        my="5"
+        onChange={(e) => setSelectedMissionId(e.target.value)}
+      >
         {missions?.map((mission) => (
           <option key={mission.id} value={mission.id}>
             {mission.attributes.name}
