@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { REQUIRED, COMPLETE } from "@app/constants";
-import { listMissions, createMission, updateMission, deleteMission } from "@features/clubDiary/clubDiarySlice";
-import { missionsState, missionStatus, updateMissionStatus, deleteMissionStatus } from "@features/clubDiary/selectors";
+import {
+  listMissions,
+  createMission,
+  updateMission,
+  deleteMission,
+} from "@features/clubDiary/clubDiarySlice";
+import {
+  missionsState,
+  missionStatus,
+  updateMissionStatus,
+  deleteMissionStatus,
+} from "@features/clubDiary/selectors";
 import { Formik, Form } from "formik";
 import FormikTextInput from "@common/components/FormikTextInput";
 import FormikTextArea from "@common/components/FormikTextArea";
@@ -29,7 +39,12 @@ const ThropiesModal = ({ isOpen, onClose, selectThropy }) => {
     <Modal isOpen={isOpen} onClose={onClose} header={"Seleccioná un trofeo"} size={"full"}>
       <SimpleGrid columns={4} spacing="40px" mt="6">
         {throphies.map((thropy, index) => (
-          <Flex key={index} justify="center" className="cursor-pointer" onClick={() => handleSelectedThropy(thropy)}>
+          <Flex
+            key={index}
+            justify="center"
+            className="cursor-pointer"
+            onClick={() => handleSelectedThropy(thropy)}
+          >
             <ReactSVG
               src={thropy || ""}
               key={index}
@@ -70,6 +85,7 @@ const MissionsPanel = ({}) => {
   // Mission Handling
 
   const onNewMission = () => {
+    setMission(null);
     setNewMission(!newMission);
   };
 
@@ -85,7 +101,9 @@ const MissionsPanel = ({}) => {
 
   const handleSubmit = (values) => {
     if (editingMission) {
-      dispatch(updateMission(selectedMission.id, values)).then((response) => setMission(response.payload.data.data));
+      dispatch(updateMission(selectedMission.id, values)).then((response) =>
+        setMission(response.payload.data.data)
+      );
     } else {
       dispatch(createMission(values));
     }
@@ -153,7 +171,9 @@ const MissionsPanel = ({}) => {
             onSelect={onMissionSelected}
             selectedId={selectedMission ? selectedMission.id : null}
           />
-          {!newMission && !editingMission && selectedMission && <MissionDetail mission={selectedMission} />}
+          {!newMission && !editingMission && selectedMission && (
+            <MissionDetail mission={selectedMission} />
+          )}
           {!newMission && !selectedMission && (
             <Flex flex="1" ml="4" alignItems="center" justifyContent="center">
               <Text fontSize="xl">Selecciona una misión para ver en detalle.</Text>
@@ -181,13 +201,22 @@ const MissionsPanel = ({}) => {
                 <Form>
                   <Flex flexDirection="column" mb="6">
                     <FormikTextInput my="4" name="name" type="text" placeholder="Nombre" />
-                    <FormikTextArea my="4" name="description" type="text" placeholder="Descripción" />
+                    <FormikTextArea
+                      my="4"
+                      name="description"
+                      type="text"
+                      placeholder="Descripción"
+                    />
                     <Flex>
                       <Button onClick={() => setThropiesModalIsOpen(true)} mr="10">
                         Agregar trofeo
                       </Button>
                       <ReactSVG
-                        src={selectedThropy ? selectedThropy || "" : selectedMission.attributes.thropy || ""}
+                        src={
+                          selectedThropy
+                            ? selectedThropy || ""
+                            : selectedMission?.attributes.thropy || ""
+                        }
                         beforeInjection={(svg) => {
                           svg.setAttribute("style", "width: 50px; height: 50px");
                         }}
