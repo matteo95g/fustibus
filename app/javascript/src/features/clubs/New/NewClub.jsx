@@ -4,12 +4,15 @@ import { Box } from "@common/ui";
 import { useDispatch } from "react-redux";
 import ClubForm from "@features/clubs/components/ClubForm";
 import { fetchUser } from "@features/users/usersSlice";
+import { useHistory } from "react-router-dom";
+import { clubsUrl } from "@utils/app/urlHelpers";
 
 const NewClub = () => {
   const dispatch = useDispatch();
   const [clubCreated, setClubCreated] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [cover, setCover] = useState(null);
+  const history = useHistory();
 
   const handleUpload = (files) => {
     setCover(files[0]);
@@ -22,6 +25,7 @@ const NewClub = () => {
       setClubCreated(true);
       setSubmitting(false);
       dispatch(fetchUser());
+      history.push(clubsUrl());
     });
   };
 

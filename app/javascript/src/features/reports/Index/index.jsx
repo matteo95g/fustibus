@@ -45,8 +45,17 @@ const Reports = () => {
           {strings.Reports.update.success}
         </AlertWithIcon>
       )}
-      <Heading my="6">Informe de investigación</Heading>
-      <Text>TODO: poner info sobre el informe :)</Text>
+      <Text fontSize="5xl" mr="5">
+        Informe de investigación
+      </Text>
+      <Text fontSize="xl">
+        Un Informe de Investigación es un documento escrito, realizado por el estudiante investigador en el cual se describen los
+        resultados de su investigación.
+      </Text>
+      <Text fontSize="xl">
+        El propósito del documento es explicarle a otros científicos cuales son los objetivos, métodos y los hallazgos del estudio
+        realizado.
+      </Text>
       {reportUrl ? (
         <Box my="6">
           <Box width="100px" m="2">
@@ -55,10 +64,7 @@ const Reports = () => {
               <a href={reportUrl} target="_blank">
                 <Icon mx="2" name="external-link" />
               </a>
-              <a
-                href={reportUrl.replace("/upload/", "/upload/fl_attachment/")}
-                download={clubReport?.attributes?.name}
-              >
+              <a href={reportUrl.replace("/upload/", "/upload/fl_attachment/")} download={clubReport?.attributes?.name}>
                 <Icon mx="2" name="download" />
               </a>
             </Flex>
