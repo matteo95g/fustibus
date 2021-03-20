@@ -24,7 +24,7 @@ const TextAndImageSection = ({ index, section, updateSection }) => {
   const [data, setData] = useState({ image: section.payload.image, text: section.payload.text });
 
   const handleUpload = (files) => {
-    const newData = { ...data, image: files[0].data, preview: files[0].data};
+    const newData = { ...data, image: files[0].data, preview: files[0].data };
     setData(newData);
     updateSection(index, newData);
   };
@@ -36,7 +36,7 @@ const TextAndImageSection = ({ index, section, updateSection }) => {
   };
 
   return (
-    <Flex flex="1">
+    <Flex flex="1" alignItems="center">
       <Box w="30%">
         {section?.payload?.image === "" || section?.payload?.preview != null ? (
           <FileUploader hideSelectorOnPreview={true} handleUpload={handleUpload} />
@@ -90,7 +90,7 @@ const ImageSection = ({ index, updateSection, section }) => {
 };
 
 const NewNote = ({ sections, setSections }) => {
-  const handleAddSection = (type) => {
+  const handleAddSection = (type, close) => {
     let newSection;
     let payload;
 
@@ -100,7 +100,7 @@ const NewNote = ({ sections, setSections }) => {
       payload = {
         text: "",
         image: "",
-        preview: null
+        preview: null,
       };
     } else {
       payload = null;
@@ -109,6 +109,8 @@ const NewNote = ({ sections, setSections }) => {
     newSection = { sectionType: type, payload: payload };
 
     setSections([...sections, newSection]);
+
+    if (close) close();
   };
 
   const updateSection = (index, value) => {
@@ -133,13 +135,17 @@ const NewNote = ({ sections, setSections }) => {
     let updatedSections = [...sections];
     updatedSections.splice(index, 1);
     setSections(updatedSections);
-  }
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const open = () => setIsOpen(!isOpen);
+  const close = () => setIsOpen(false);
 
   return (
     <>
       <Box my="5">
         {sections.map((section, index) => (
-          <Flex key={index} my="4" justifyContent="space-between">
+          <Flex key={index} my="4" justifyContent="space-between" alignItems="center">
             {section.sectionType === TEXT && (
               <Textarea value={section.payload || ""} onChange={(e) => handleTextAreaChange(index, e.target.value)} />
             )}
@@ -150,11 +156,11 @@ const NewNote = ({ sections, setSections }) => {
               <ListSection index={index} section={section} handleAddListItem={handleAddListItem} />
             )}
             {section.sectionType === IMAGE && <ImageSection section={section} index={index} updateSection={updateSection} />}
-            <Icon name="delete" ml="4" className="cursor-pointer" onClick={() => handleDeleteItem(index)}/>
+            <Icon name="delete" ml="4" className="cursor-pointer" onClick={() => handleDeleteItem(index)} />
           </Flex>
         ))}
       </Box>
-      <Popover placement="top" my="5">
+      <Popover placement="top" my="5" returnFocusOnClose={false} isOpen={isOpen} onClose={close}>
         <PopoverTrigger>
           <Flex
             className="cursor-pointer"
@@ -166,6 +172,7 @@ const NewNote = ({ sections, setSections }) => {
             bg="blue.100"
             justifyContent="center"
             alignItems="center"
+            onClick={open}
           >
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
               <Text>Haz click aqui para agregar una sección</Text>
@@ -177,16 +184,16 @@ const NewNote = ({ sections, setSections }) => {
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverBody>
-            <Button mx="1" onClick={() => handleAddSection(TEXT)}>
+            <Button mx="1" onClick={() => handleAddSection(TEXT, close)}>
               Texto solo
             </Button>
-            <Button mx="1" onClick={() => handleAddSection(TEXT_AND_IMAGE)}>
+            <Button mx="1" onClick={() => handleAddSection(TEXT_AND_IMAGE, close)}>
               Imagen + texto
             </Button>
-            <Button mx="1" onClick={() => handleAddSection(LIST)}>
+            <Button mx="1" onClick={() => handleAddSection(LIST, close)}>
               Lista
             </Button>
-            <Button mx="1" onClick={() => handleAddSection(IMAGE)}>
+            <Button mx="1" onClick={() => handleAddSection(IMAGE, close)}>
               Imagen sola
             </Button>
           </PopoverBody>

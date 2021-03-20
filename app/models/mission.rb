@@ -1,7 +1,7 @@
 class Mission < ApplicationRecord
   belongs_to :club
   has_and_belongs_to_many :assigned_users, class_name: 'User', join_table: :missions_assigned_users
-  has_many :user_missions
+  has_many :user_missions, dependent: :destroy
 
   enum status: [:pending, :in_progress, :completed]
 
