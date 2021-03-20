@@ -7,10 +7,10 @@ import strings from "@common/strings";
 const Posters = () => {
   const history = useHistory();
   return (
-    <Box p={10} mb={4}>
-      <Heading as="h1" mb="4">
+    <Box mb={4}>
+      <Text fontSize="5xl" mr="5">
         {strings.Poster.index.title}
-      </Heading>
+      </Text>
       <Text fontSize="xl" my="4">
         {strings.Poster.index.description}
       </Text>
@@ -114,7 +114,7 @@ const Posters = () => {
         </Flex>
       </Box>
       <Button my="6" onClick={() => history.push(newPosterUrl())}>
-        Crear poster!
+        Crear poster
       </Button>
     </Box>
   );

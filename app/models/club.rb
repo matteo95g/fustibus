@@ -12,9 +12,9 @@ class Club < ApplicationRecord
   has_many :clubs_users_roles, dependent: :destroy
   has_many :users, through: :clubs_users_roles
 
-  has_many :missions
+  has_many :missions, dependent: :destroy
 
-  has_many :invitations
+  has_many :invitations, dependent: :destroy
 
   after_create :add_initial_mission
 

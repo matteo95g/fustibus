@@ -11,6 +11,7 @@ import {
   PopoverCloseButton,
   PopoverBody,
   Switch,
+  Button,
 } from "@common/ui";
 import { updateMission } from "@features/clubDiary/clubDiarySlice";
 import { currentUser } from "@features/users/selectors";
@@ -75,10 +76,10 @@ const MissionsList = ({ missions, onSelect, selectedId }) => {
           <Flex p="2" width="50%">
             Nombre
           </Flex>
-          <Flex p="2" width="25%" justifyContent="flex-end">
+          <Flex p="2" width="20%" justifyContent="flex-end">
             Trofeo
           </Flex>
-          <Flex width="25%" justifyContent="center" alignItems="center" p="2" width="20%">
+          <Flex width="30%" justifyContent="center" alignItems="center" p="2" width="20%">
             Estado
           </Flex>
         </Flex>
@@ -94,7 +95,7 @@ const MissionsList = ({ missions, onSelect, selectedId }) => {
               key={id}
               className="cursor-pointer"
               bg={getBgColor(mission)}
-              _hover={{ bg: "blue.100" }}
+              _hover={{ bg: "blue.50" }}
               p="3"
               borderLeftWidth="4px"
               borderBottomWidth="1px"
@@ -110,17 +111,16 @@ const MissionsList = ({ missions, onSelect, selectedId }) => {
                     svg.setAttribute("style", "width: 50px; height: 50px");
                   }}
                 />
-                <Flex width="25%" justifyContent="center" alignItems="center">
+                <Flex width="30%" justifyContent="center" alignItems="center">
                   {getStatus(status)}
                   {isCounselor && (
                     <Popover placement="right">
                       <PopoverTrigger>
-                        <Icon
-                          name="chevron-right"
-                          ml="1"
-                          size="20px"
-                          onClick={(e) => e.stopPropagation()}
-                        />
+                        <Box w="100px" textAlign="right" onClick={(e) => e.stopPropagation()}>
+                          <Button ml="1" colorScheme="teal" size="xs">
+                            Cambiar
+                          </Button>
+                        </Box>
                       </PopoverTrigger>
                       <PopoverContent zIndex={4} w="200px">
                         <PopoverArrow />
@@ -141,9 +141,7 @@ const MissionsList = ({ missions, onSelect, selectedId }) => {
                             </Box>
                             <Switch
                               isChecked={status === "in_progress"}
-                              onChange={() =>
-                                dispatch(updateMission(id, { status: "in_progress" }))
-                              }
+                              onChange={() => dispatch(updateMission(id, { status: "in_progress" }))}
                             />
                           </Flex>
                           <Flex>

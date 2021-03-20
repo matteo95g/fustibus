@@ -8,7 +8,7 @@ import FormikTextArea from "@common/components/FormikTextArea";
 import AlertWithIcon from "@common/components/AlertWithIcon";
 import FileUploader from "@common/components/FileUploader";
 import { clubsState } from "@features/clubs/selectors";
-import { Button, FormLabel } from "@common/ui";
+import { Button, FormLabel, Text, Box } from "@common/ui";
 import { useHistory } from "react-router-dom";
 import { REQUIRED, ERROR, COMPLETE } from "@app/constants";
 import { useSelector } from "react-redux";
@@ -54,9 +54,7 @@ const ClubForm = ({ club = null, handleUpload, handleSubmit, submitting, actionC
     name: club?.attributes?.name ?? "",
     description: club?.attributes?.description ?? "",
     formal: club?.attributes?.formal ?? false,
-    category:
-      categoriesOption.find((category) => category.label === club?.attributes?.category)?.value ??
-      "",
+    category: categoriesOption.find((category) => category.label === club?.attributes?.category)?.value ?? "",
     area: areasOption.find((area) => area.label === club?.attributes?.area)?.value ?? "",
   };
 
@@ -116,17 +114,18 @@ const ClubForm = ({ club = null, handleUpload, handleSubmit, submitting, actionC
             </option>
           ))}
         </FormikSelect>
-        <FormikCheckbox my="4" isSwitch={true} name="formal">
-          ¿Es de educación formal?
-        </FormikCheckbox>
-        <FormikTextArea
-          mt="4"
-          mb="6"
-          label="Descripción"
-          name="description"
-          type="text"
-          placeholder=""
-        />
+        <FormikTextArea mt="4" mb="6" label="Descripción" name="description" type="text" placeholder="" />
+        <Box my="4">
+          <FormikCheckbox isSwitch={true} name="formal">
+            ¿Es de educación formal?
+          </FormikCheckbox>
+          <Text as="em" fontSize="xs">
+            Educación Inicial y Primaria, Secundaria, Técnico Profesional, Terciaria o Universitaria corresponden a instituciones
+            de <Text as="u">educacion formal</Text>. Niños, jóvenes o adultos que pertenezcan a instituciones tales como INJU,
+            CAIF, INAU, CECAP, Sociedades, Fundaciones, ONG, o cualquier otra organización social o comunitaria corresponden a{" "}
+            <Text as="u">educación no formal.</Text>
+          </Text>
+        </Box>
         <FormLabel>Imagen</FormLabel>
         <FileUploader handleUpload={handleUpload} multiple={false} uploading={false} />
         <Button mr="4" variantColor="red" onClick={() => history.goBack()}>

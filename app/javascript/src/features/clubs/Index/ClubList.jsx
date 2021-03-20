@@ -58,6 +58,7 @@ const ClubList = () => {
                     cursor="pointer"
                     onClick={() => history.push(clubUrl(club.id))}
                     title={club.attributes.name}
+                    description={club.attributes.description}
                     imageUrl={coverUrl}
                     height="100%"
                     mb="2"
@@ -66,11 +67,7 @@ const ClubList = () => {
                     {currentClub?.id === club.id ? (
                       "Club actualmente Activo"
                     ) : (
-                      <Box
-                        display="inline-block"
-                        cursor="pointer"
-                        onClick={() => setAsCurrentClub(club.id)}
-                      >
+                      <Box display="inline-block" cursor="pointer" onClick={() => setAsCurrentClub(club.id)}>
                         Activar
                       </Box>
                     )}
@@ -83,14 +80,7 @@ const ClubList = () => {
         </>
       ) : (
         <Box pos="relative" mt={20}>
-          <Box
-            pos="absolute"
-            top="0"
-            left="50%"
-            transform="translateX(-50%)"
-            zIndex={1}
-            textAlign="center"
-          >
+          <Box pos="absolute" top="0" left="50%" transform="translateX(-50%)" zIndex={1} textAlign="center">
             <Heading mb={4}>No perteneces a ningún club</Heading>
             <CreateButton onClick={() => history.push(newClubUrl())} />
           </Box>
