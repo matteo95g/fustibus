@@ -31,7 +31,7 @@ const Home = () => {
           <Text fontSize="xl">Petates del Equipo</Text>
           <Flex mt="4" align="center">
             <BoxButton title="Carpeta de Campo" onClick={() => history.push(fieldFolderUrl())} />
-            <BoxButton title="Poster" onClick={() => history.push(postersUrl())} />
+            <BoxButton title="Póster" onClick={() => history.push(postersUrl())} />
             <BoxButton title="Informe de Investigación" onClick={() => history.push(reportsUrl())} />
           </Flex>
         </>
