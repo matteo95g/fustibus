@@ -60,7 +60,7 @@ const Navbar = (props) => {
                 </MenuButton>
                 <MenuList color="blue.900">
                   <MenuItem minH="48px" onClick={() => history.push(profileUrl())}>
-                    <Image size="2rem" rounded="full" src={imageUrl ? imageUrl : emptyProfile} mr="12px" />
+                    <Image w="2rem" rounded="full" src={imageUrl ? imageUrl : emptyProfile} mr="12px" />
                     <span>Mi perfil</span>
                   </MenuItem>
                   <MenuItem onClick={() => history.push(clubsUrl())}>Mis clubes</MenuItem>

@@ -39,6 +39,14 @@ module Api
 
       def update
         @club.update!(club_params)
+
+        if params[:cover].present?
+          cover = build_cover(params[:cover])
+          @club.cover = cover
+        end
+
+        @club.save!
+
         render jsonapi: @club, include: [:cover, :fieldFolder], expose: { current_user: current_user }
       end
 
