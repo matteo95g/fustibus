@@ -33,7 +33,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'jsonapi-rails'
 gem 'faker'
-gem 'carrierwave'
+gem "carrierwave", "~> 2.2.0"
 gem 'cloudinary'
 gem 'devise-jwt'
 gem 'will_paginate'
