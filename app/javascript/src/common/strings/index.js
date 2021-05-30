@@ -65,7 +65,7 @@ const strings = {
 
   Poster: {
     index: {
-      title: "Poster científico",
+      title: "Póster científico",
       description:
         "Todo Club de Ciencia debe presentar un póster científico de 90 cm de ancho y 120 cm de alto, aceptándose como alternativa el formato A0 (84,1 cm x 118,4 cm). El póster deberá exhibirse colgado de un soporte provisto por el propio Club de Ciencia.",
       content:
