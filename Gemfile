@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+git_source(:github) { |repo| 'https://github.com/#{repo}.git' }
 
 ruby '2.7.1'
 
@@ -33,7 +33,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'jsonapi-rails'
 gem 'faker'
-gem 'carrierwave'
+gem 'carrierwave', '~> 2.2.0'
 gem 'cloudinary'
 gem 'devise-jwt'
 gem 'will_paginate'
@@ -50,7 +50,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem "letter_opener"
+  gem 'letter_opener'
 end
 
 group :test do
@@ -59,7 +59,7 @@ group :test do
   gem 'database_cleaner-active_record'
 end
 
-gem "figaro"
+gem 'figaro'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
