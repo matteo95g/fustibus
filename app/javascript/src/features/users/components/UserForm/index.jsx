@@ -80,7 +80,7 @@ const UserForm = ({ user, handleSubmit, submitting, handleUpload, success }) => 
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => handleSubmit(values, setSubmitting)}
       >
-        {({ isSubmitting }) => (
+        {() => (
           <Form>
             <Flex direction={{ base: "column", md: "row" }} justify={{ md: "space-between" }}>
               <Box w={{ base: "100%", md: "65%" }} mr={{ base: "0", md: "10" }} mb="4">
@@ -151,7 +151,7 @@ const UserForm = ({ user, handleSubmit, submitting, handleUpload, success }) => 
             </Flex>
             <Box textAlign="right" w={{ base: "100%", md: "65%" }} pr={{ base: "0", md: "12" }}>
               <CancelButton mr="2" onClick={() => history.goBack()} />
-              <SaveButton type="submit" ml="2" isLoading={isSubmitting} />
+              <SaveButton type="submit" ml="2" isLoading={submitting} />
             </Box>
           </Form>
         )}
