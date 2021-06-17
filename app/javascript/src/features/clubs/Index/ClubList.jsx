@@ -44,7 +44,7 @@ const ClubList = () => {
   return (
     <>
       {clubs.length > 0 ? (
-        <>
+        <Box p={10}>
           <Actions />
           <SimpleGrid mt="1rem" columns={{ sm: 2, md: 4 }} spacing="3rem">
             {clubs.map((club) => {
@@ -67,7 +67,11 @@ const ClubList = () => {
                     {currentClub?.id === club.id ? (
                       "Club actualmente Activo"
                     ) : (
-                      <Box display="inline-block" cursor="pointer" onClick={() => setAsCurrentClub(club.id)}>
+                      <Box
+                        display="inline-block"
+                        cursor="pointer"
+                        onClick={() => setAsCurrentClub(club.id)}
+                      >
                         Activar
                       </Box>
                     )}
@@ -77,10 +81,17 @@ const ClubList = () => {
             })}
           </SimpleGrid>
           {!loading && <Pagination pagination={pagination} handlePageClick={handlePageClick} />}
-        </>
+        </Box>
       ) : (
         <Box pos="relative" mt={20}>
-          <Box pos="absolute" top="0" left="50%" transform="translateX(-50%)" zIndex={1} textAlign="center">
+          <Box
+            pos="absolute"
+            top="0"
+            left="50%"
+            transform="translateX(-50%)"
+            zIndex={1}
+            textAlign="center"
+          >
             <Heading mb={4}>No perteneces a ningún club</Heading>
             <CreateButton onClick={() => history.push(newClubUrl())} />
           </Box>

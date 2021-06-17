@@ -7,7 +7,7 @@ import strings from "@common/strings";
 const Posters = () => {
   const history = useHistory();
   return (
-    <Box mb={4}>
+    <Box p={10} mb={4}>
       <Text fontSize="5xl" mr="5">
         {strings.Poster.index.title}
       </Text>
@@ -31,8 +31,9 @@ const Posters = () => {
             {strings.Poster.sections.title}
           </Heading>
           <Text>
-            Debe reflejar con exactitud el tema del estudio o trabajo, claro y conciso. Se recomienda no usar abrevaciones, siglas
-            o acrónimos. \n Se recomienda usar letra Arial en negrita y al menos 36 puntos. No mas de 15 palabras.
+            Debe reflejar con exactitud el tema del estudio o trabajo, claro y conciso. Se
+            recomienda no usar abrevaciones, siglas o acrónimos. Se recomienda usar letra Arial en
+            negrita y al menos 36 puntos. No mas de 15 palabras.
           </Text>
         </Box>
         <Flex>
@@ -42,8 +43,8 @@ const Posters = () => {
                 {strings.Poster.sections.abstract}
               </Heading>
               <Text>
-                En esta sección se presenta de forma sistemática la información más importante del estudio para que el lector
-                tenga una idea general sobre proyecto.
+                En esta sección se presenta de forma sistemática la información más importante del
+                estudio para que el lector tenga una idea general sobre proyecto.
               </Text>
             </Box>
             <Box borderWidth="3px" p="3" m="1">
@@ -65,8 +66,8 @@ const Posters = () => {
                 {strings.Poster.sections.methodology}
               </Heading>
               <Text>
-                Descripción de materiales y métodos, recoge el diseño del estudio, como se llevo a cabo, numero de fases,
-                variables.
+                Descripción de materiales y métodos, recoge el diseño del estudio, como se llevo a
+                cabo, numero de fases, variables.
               </Text>
               <Text my="1">Algunas preguntas que interesa responder en esta sección:</Text>
               <List styleType="disc">
@@ -82,7 +83,10 @@ const Posters = () => {
                 {strings.Poster.sections.results}
               </Heading>
               <Text>Resumen de los resultados obtenidos.</Text>
-              <Text>Selección de los datos mas relevantes y mas relacionados con el objectivo del estudio.</Text>
+              <Text>
+                Selección de los datos mas relevantes y mas relacionados con el objectivo del
+                estudio.
+              </Text>
               <Text>Evitar los textos largos y con muchos datos.</Text>
               <Text>Se pueden incluir tablas, figuras, graficas.</Text>
             </Box>
@@ -114,7 +118,7 @@ const Posters = () => {
         </Flex>
       </Box>
       <Button my="6" onClick={() => history.push(newPosterUrl())}>
-        Crear poster
+        Editar poster
       </Button>
     </Box>
   );

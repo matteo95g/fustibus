@@ -65,8 +65,12 @@ const NewPoster = () => {
   }, []);
 
   return (
-    <Box>
-      <PosterForm editorInternalState={editorInternalState} setEditorInternalState={setEditorInternalState} loading={loading} />
+    <Box p={10}>
+      <PosterForm
+        editorInternalState={editorInternalState}
+        setEditorInternalState={setEditorInternalState}
+        loading={loading}
+      />
       <SaveButton mr="4" isLoading={savingPoster} my="6" onClick={handleSave} />
       <Button my="6" isLoading={savingPosterAndPdf} onClick={handleSaveAndPdf}>
         Guardar y exportar PDF

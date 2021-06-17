@@ -61,13 +61,18 @@ const FieldFolderShow = () => {
   };
 
   return (
-    <>
+    <Box p={10}>
       <Skeleton isLoaded={isLoaded}>
         <Flex align="center">
           <Text fontSize="5xl" mr="5">
             Carpeta de campo
           </Text>
-          <Button mt="1" rightIcon="plus-square" variantColor="green" onClick={() => history.push(newEntryUrl())}>
+          <Button
+            mt="1"
+            rightIcon="plus-square"
+            variantColor="green"
+            onClick={() => history.push(newEntryUrl())}
+          >
             Crear Entrada
           </Button>
         </Flex>
@@ -94,8 +99,18 @@ const FieldFolderShow = () => {
                     <Text fontSize="2xl" mr="2">
                       {entry?.attributes?.title}
                     </Text>
-                    <IconButton variant="link" variantColor="teal" icon="edit" onClick={() => handleEditEntry(entry)} />
-                    <IconButton variant="link" variantColor="red" icon="delete" onClick={() => handleDeleteEntry(entry)} />
+                    <IconButton
+                      variant="link"
+                      variantColor="teal"
+                      icon="edit"
+                      onClick={() => handleEditEntry(entry)}
+                    />
+                    <IconButton
+                      variant="link"
+                      variantColor="red"
+                      icon="delete"
+                      onClick={() => handleDeleteEntry(entry)}
+                    />
                   </Flex>
                   <Text>{entry?.attributes?.description}</Text>
                 </Box>
@@ -116,7 +131,7 @@ const FieldFolderShow = () => {
         setIsOpen={setConfirmDeleteIsOpen}
         onDeleteConfirm={onDeleteConfirm}
       />
-    </>
+    </Box>
   );
 };
 

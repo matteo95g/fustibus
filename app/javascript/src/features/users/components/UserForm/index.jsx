@@ -71,7 +71,7 @@ const UserForm = ({ user, handleSubmit, submitting, handleUpload, success }) => 
   });
 
   return (
-    <Box my={10}>
+    <Box p={10}>
       <Heading as="h2" mb={4}>
         Mi Perfil
       </Heading>

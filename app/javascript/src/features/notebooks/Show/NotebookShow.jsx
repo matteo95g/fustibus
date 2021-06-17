@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Text } from "@common/ui";
+import { Flex, Text, Box } from "@common/ui";
 import { useHistory } from "react-router-dom";
 import { newNoteUrl } from "@utils/app/urlHelpers";
 import CreateButton from "@common/components/CreateButton";
@@ -20,7 +20,7 @@ const NoteBookList = () => {
   }, []);
 
   return (
-    <>
+    <Box p={10}>
       <Flex align="center" justify="space-between">
         <Text fontSize="5xl" mr="5">
           Libreta de apuntes
@@ -28,7 +28,7 @@ const NoteBookList = () => {
         <CreateButton label="Crear nota" onClick={() => history.push(newNoteUrl())} />
       </Flex>
       <List notes={userNotes} />
-    </>
+    </Box>
   );
 };
 

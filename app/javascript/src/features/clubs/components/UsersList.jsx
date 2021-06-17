@@ -42,7 +42,7 @@ const UsersList = ({
       </Skeleton>
       <Box mx={-2}>
         {memberUsers?.map((user) => (
-          <Skeleton key={user.id} isLoaded={isLoaded} display="inline-block" mx={2} w="90px">
+          <Skeleton key={user.id} isLoaded={isLoaded} display="inline-block" mx={2} w="120px">
             <User
               user={user}
               refreshClub={refreshClub}

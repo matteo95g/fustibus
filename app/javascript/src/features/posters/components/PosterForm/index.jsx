@@ -1,7 +1,16 @@
 import React from "react";
 import { RichTextEditor } from "@common/components/RichTextEditor";
 import { Flex, Box, Heading, Input, Skeleton } from "@common/ui";
-import { TITLE, ABSTRACT, INTRODUCTION, METHODOLOGY, RESULTS, CONCLUSIONS, BIBLIOGRAPHY, ACKNOWLEDGMENTS } from "@app/constants";
+import {
+  TITLE,
+  ABSTRACT,
+  INTRODUCTION,
+  METHODOLOGY,
+  RESULTS,
+  CONCLUSIONS,
+  BIBLIOGRAPHY,
+  ACKNOWLEDGMENTS,
+} from "@app/constants";
 import strings from "@common/strings";
 
 const PosterForm = ({ editorInternalState, setEditorInternalState, loading }) => {
@@ -17,7 +26,7 @@ const PosterForm = ({ editorInternalState, setEditorInternalState, loading }) =>
           <Skeleton height="200px" my="10px" />
         </div>
       ) : (
-        <Box w="100%" mt="6">
+        <Box w="100%">
           <Heading m="2">{strings.Poster.sections.title}</Heading>
           <Input
             w="99%"

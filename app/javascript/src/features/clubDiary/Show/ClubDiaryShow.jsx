@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { listMissions } from "@features/clubDiary/clubDiarySlice";
-import { Text, Flex, Tabs, TabList, TabPanels, Tab, TabPanel, SimpleGrid } from "@common/ui";
+import { Text, Flex, Tabs, TabList, TabPanels, Tab, TabPanel, SimpleGrid, Box } from "@common/ui";
 import { useDispatch, useSelector } from "react-redux";
 import MissionsPanel from "@features/clubDiary/components/MissionsPanel";
 import { ReactSVG } from "react-svg";
@@ -10,8 +10,12 @@ import throphies from "@features/throphies";
 
 const Throphies = () => {
   const missions = useSelector((state) => missionsState(state));
-  const missionsWithTrhopy = missions.filter((mission) => mission.attributes.status === "completed");
-  const throphiesWon = missionsWithTrhopy.map((mission) => mission.attributes.thropy).filter(Boolean);
+  const missionsWithTrhopy = missions.filter(
+    (mission) => mission.attributes.status === "completed"
+  );
+  const throphiesWon = missionsWithTrhopy
+    .map((mission) => mission.attributes.thropy)
+    .filter(Boolean);
 
   return (
     <SimpleGrid columns={4} spacing="40px" mt="6">
@@ -48,7 +52,7 @@ const ClubDiaryShow = () => {
   }, [selected]);
 
   return (
-    <>
+    <Box p={10}>
       <Text fontSize="5xl" mr="5">
         Diario de Viaje
       </Text>
@@ -66,7 +70,7 @@ const ClubDiaryShow = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </>
+    </Box>
   );
 };
 
