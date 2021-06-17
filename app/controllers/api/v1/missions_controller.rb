@@ -11,7 +11,7 @@ module Api
         missions = missions.where(status: params[:status]) if params[:status]
 
         if params[:without_notes] == "true"
-          mission_ids_with_notes = UserMission.where(mission_id: missions.ids).joins(:note).pluck(:mission_id)
+          mission_ids_with_notes = current_user.user_missions.joins(:note).pluck(:mission_id)
           missions = missions.where.not(id: mission_ids_with_notes)
         end
 
