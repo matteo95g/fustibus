@@ -137,7 +137,10 @@ const UserForm = ({ user, handleSubmit, submitting, handleUpload, success }) => 
                 <Image
                   w="100%"
                   maxW="350px"
+                  h="100%"
+                  maxH="350px"
                   rounded="full"
+                  objectFit="cover"
                   src={imageUrl ? imageUrl : emptyProfile}
                 />
                 <FileUploader

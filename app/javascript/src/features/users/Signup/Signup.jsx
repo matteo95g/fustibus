@@ -40,9 +40,12 @@ const Signup = () => {
 
   const handleSubmit = (values, setSubmitting) => {
     setTimeout(() => {
-      dispatch(signup({ user: values })).then(() => {
+      dispatch(signup({ user: values })).then((response) => {
         setSubmitting(false);
-        history.push(welcomeUrl());
+
+        if (!response.error) {
+          history.push(welcomeUrl());
+        }
       });
     }, DELAY_TIMEOUT);
   };

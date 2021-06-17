@@ -1,10 +1,27 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Heading, Flex, Link, Menu, MenuButton, MenuList, MenuItem, Icon, Image, MenuDivider } from "@common/ui";
+import {
+  Box,
+  Heading,
+  Flex,
+  Link,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Icon,
+  Image,
+  MenuDivider,
+} from "@common/ui";
 import { useHistory } from "react-router-dom";
 import { homeUrl, clubsUrl, clubUrl, profileUrl } from "@utils/app/urlHelpers";
 import { logout } from "@features/users/usersSlice";
-import { currentUser, currentUserImage, currentUserClub, currentUserInvitations } from "@features/users/selectors";
+import {
+  currentUser,
+  currentUserImage,
+  currentUserClub,
+  currentUserInvitations,
+} from "@features/users/selectors";
 import emptyProfile from "@images/emptyProfile";
 import InvitationsMenu from "./InvitationsMenu";
 import brandLogo2 from "@images/brandLogo2";
@@ -26,7 +43,16 @@ const Navbar = (props) => {
   const invitations = useSelector(currentUserInvitations);
 
   return (
-    <Flex as="nav" align="center" justify="space-between" wrap="wrap" padding="1.5rem" bg="blue.900" color="white" {...props}>
+    <Flex
+      as="nav"
+      align="center"
+      justify="space-between"
+      wrap="wrap"
+      padding="1.5rem"
+      bg="blue.900"
+      color="white"
+      {...props}
+    >
       <Box w="200px" onClick={() => history.push(homeUrl())} cursor="pointer">
         <Image src={brandLogo2} display="inline-block" />
       </Box>
@@ -39,7 +65,12 @@ const Navbar = (props) => {
       </Box>
 
       <Box display={{ xs: show ? "block" : "none", md: "flex" }} width={{ xs: "full", md: "auto" }}>
-        <Box display={{ xs: "block", md: "flex" }} justifyContent="space-between" alignItems="center" width="full">
+        <Box
+          display={{ xs: "block", md: "flex" }}
+          justifyContent="space-between"
+          alignItems="center"
+          width="full"
+        >
           <Flex alignItems="center">
             <Box pr="4">
               <InvitationsMenu invitations={invitations} />
@@ -60,7 +91,15 @@ const Navbar = (props) => {
                 </MenuButton>
                 <MenuList color="blue.900">
                   <MenuItem minH="48px" onClick={() => history.push(profileUrl())}>
-                    <Image w="2rem" rounded="full" src={imageUrl ? imageUrl : emptyProfile} mr="12px" />
+                    <Image
+                      size="2rem"
+                      objectFit="cover"
+                      border="1px"
+                      borderColor="black"
+                      rounded="full"
+                      src={imageUrl ? imageUrl : emptyProfile}
+                      mr="12px"
+                    />
                     <span>Mi perfil</span>
                   </MenuItem>
                   <MenuItem onClick={() => history.push(clubsUrl())}>Mis clubes</MenuItem>

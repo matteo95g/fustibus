@@ -39,7 +39,16 @@ const User = ({ user, refreshClub, isCounselor, canChangeRole }) => {
   if (!canChangeRole) {
     return (
       <Box textAlign="center">
-        <Image w="50px" rounded="full" mb={2} src={user.profile_image || emptyProfile} display="inline-block" />
+        <Image
+          size="70px"
+          objectFit="cover"
+          rounded="full"
+          mb={2}
+          src={user.profile_image || emptyProfile}
+          display="inline-block"
+          border="1px"
+          borderColor="black"
+        />
         <Text isTruncated>{getUserFullNameOrMail(user)}</Text>
       </Box>
     );
@@ -49,7 +58,16 @@ const User = ({ user, refreshClub, isCounselor, canChangeRole }) => {
     <Popover trigger="hover">
       <PopoverTrigger>
         <Box textAlign="center">
-          <Image size="50px" rounded="full" mb={2} src={user.profile_image || emptyProfile} display="inline-block" />
+          <Image
+            size="70px"
+            objectFit="cover"
+            rounded="full"
+            mb={2}
+            src={user.profile_image || emptyProfile}
+            display="inline-block"
+            border="1px"
+            borderColor="black"
+          />
           <Text isTruncated>{getUserFullNameOrMail(user)}</Text>
         </Box>
       </PopoverTrigger>
@@ -60,7 +78,9 @@ const User = ({ user, refreshClub, isCounselor, canChangeRole }) => {
           <PopoverCloseButton />
           <Box p={5}>
             <Text textAlign="center" mb={4}>
-              {isCounselor ? "¿Deseas remover a este usuario como Orientador?" : "¿Deseas hacer a este usuario Orientador?"}
+              {isCounselor
+                ? "¿Deseas remover a este usuario como Orientador?"
+                : "¿Deseas hacer a este usuario Orientador?"}
             </Text>
             <Box textAlign="center">
               <Button

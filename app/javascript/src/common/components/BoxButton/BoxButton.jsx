@@ -14,6 +14,7 @@ const BoxButton = ({ title, onClick }) => {
       onClick={onClick}
       _hover={{ bg: "blue.50" }}
       boxShadow="md"
+      bg="gray.50"
     >
       {title}
     </PseudoBox>
