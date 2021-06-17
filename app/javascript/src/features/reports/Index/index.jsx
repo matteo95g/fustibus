@@ -39,7 +39,7 @@ const Reports = () => {
   };
 
   return (
-    <>
+    <Box p={10}>
       {success && (
         <AlertWithIcon status="success" variant="left-accent" mt="1">
           {strings.Reports.update.success}
@@ -49,12 +49,12 @@ const Reports = () => {
         Informe de investigación
       </Text>
       <Text fontSize="xl">
-        Un Informe de Investigación es un documento escrito, realizado por el estudiante investigador en el cual se describen los
-        resultados de su investigación.
+        Un Informe de Investigación es un documento escrito, realizado por el estudiante
+        investigador en el cual se describen los resultados de su investigación.
       </Text>
       <Text fontSize="xl">
-        El propósito del documento es explicarle a otros científicos cuales son los objetivos, métodos y los hallazgos del estudio
-        realizado.
+        El propósito del documento es explicarle a otros científicos cuales son los objetivos,
+        métodos y los hallazgos del estudio realizado.
       </Text>
       {reportUrl ? (
         <Box my="6">
@@ -64,7 +64,10 @@ const Reports = () => {
               <a href={reportUrl} target="_blank">
                 <Icon mx="2" name="external-link" />
               </a>
-              <a href={reportUrl.replace("/upload/", "/upload/fl_attachment/")} download={clubReport?.attributes?.name}>
+              <a
+                href={reportUrl.replace("/upload/", "/upload/fl_attachment/")}
+                download={clubReport?.attributes?.name}
+              >
                 <Icon mx="2" name="download" />
               </a>
             </Flex>
@@ -75,7 +78,14 @@ const Reports = () => {
         </Box>
       ) : (
         <Box position="relative">
-          <Heading as="h4" size="md" position="absolute" left="50%" top="75%" transform="translate(-50%, -50%)">
+          <Heading
+            as="h4"
+            size="md"
+            position="absolute"
+            left="50%"
+            top="75%"
+            transform="translate(-50%, -50%)"
+          >
             Todavía no hay ningún informe
           </Heading>
           <Image src={reportZeroState} width="700px" mx="auto" />
@@ -92,7 +102,7 @@ const Reports = () => {
       <Button onClick={handleSubmit} mb="6" isLoading={submiting} isDisabled={!filesSelected}>
         Agregar
       </Button>
-    </>
+    </Box>
   );
 };
 

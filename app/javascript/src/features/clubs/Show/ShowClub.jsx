@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { currentClub, currentClubCovers, currentClubCurrentUserRoles, clubStatus } from "@features/clubs/selectors";
+import {
+  currentClub,
+  currentClubCovers,
+  currentClubCurrentUserRoles,
+  clubStatus,
+} from "@features/clubs/selectors";
 import { Box, Text, Skeleton, Flex, Badge, Image, Tag, Button } from "@common/ui";
 import { useParams, useHistory } from "react-router-dom";
 import { find, destroy } from "@features/clubs/clubsSlice";
@@ -60,8 +65,8 @@ const ShowClub = () => {
   };
 
   return (
-    <>
-      <Skeleton mt="8" isLoaded={!loading}>
+    <Box p={10}>
+      <Skeleton isLoaded={!loading}>
         <Flex align="center" justify="space-between">
           <Flex align="center">
             <Text mr="2" fontSize="5xl">
@@ -86,7 +91,12 @@ const ShowClub = () => {
       </Skeleton>
       <Skeleton isLoaded={!loading}>
         <Flex align="center">
-          <Badge fontSize="xl" mr="4" variant="solid" variantColor={getAreaColor(club?.attributes?.area)}>
+          <Badge
+            fontSize="xl"
+            mr="4"
+            variant="solid"
+            variantColor={getAreaColor(club?.attributes?.area)}
+          >
             {translateArea(club?.attributes?.area)}
           </Badge>
           <Badge variant="outline" fontSize="xl">
@@ -112,7 +122,9 @@ const ShowClub = () => {
               <Text fontSize="lg" fontWeight="bold" mb={2}>
                 Descripción del club
               </Text>
-              <Text>{club?.attributes?.description || "El club aún no tiene una descripción."}</Text>
+              <Text>
+                {club?.attributes?.description || "El club aún no tiene una descripción."}
+              </Text>
             </Box>
           </Skeleton>
           <UsersList
@@ -131,7 +143,7 @@ const ShowClub = () => {
         setIsOpen={setConfirmDeleteIsOpen}
         onDeleteConfirm={onDeleteConfirm}
       />
-    </>
+    </Box>
   );
 };
 
