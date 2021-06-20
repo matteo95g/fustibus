@@ -13,7 +13,13 @@ module Api
       end
 
       def index
-        render jsonapi: current_user.notes, include: [:mission, noteSections: [:note]]
+        notes = if current_user.counselor_for_club?(current_club.id)
+                  current_club.notes
+                else
+                  current_club.notes.joins(:user_mission).where(missions_assigned_users: { user_id: current_user.id })
+                end
+
+        render jsonapi: notes, include: [:mission, noteSections: [:note]], expose: { current_user: current_user }
       end
 
       def show
@@ -21,14 +27,27 @@ module Api
       end
 
       def update
-        note = current_user.notes.find(params[:id])
+        note = if current_user.counselor_for_club?(current_club.id)
+                 current_club.notes.find(params[:id])
+               else
+                 current_user.notes.find(params[:id])
+               end
+
         note.note_sections.destroy_all
         NoteSection.create_sections(note, params[:sections])
+
         render jsonapi: note
       end
 
       def destroy
-        current_user.notes.find(params[:id]).destroy!
+        note = if current_user.counselor_for_club?(current_club.id)
+                 current_club.notes.find(params[:id])
+               else
+                 current_user.notes.find(params[:id])
+               end
+
+        note.destroy!
+
         head :ok
       end
     end
