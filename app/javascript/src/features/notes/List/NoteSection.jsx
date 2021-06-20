@@ -7,18 +7,18 @@ const NoteSection = ({ section }) => {
   const { attributes } = section;
 
   return (
-    <Box mx="5rem">
-      {attributes.sectionType === TEXT_STRING && <Text my="2rem"> {attributes.text} </Text>}
+    <Box>
+      {attributes.sectionType === TEXT_STRING && <Text my="1rem"> {attributes.text} </Text>}
       {attributes.sectionType === TEXT_AND_IMAGE_STRING && (
-        <Flex my="2rem">
+        <Flex my="1rem">
           <Image src={attributes.url} mr="2" maxW="500px" rounded="md" />
-          <Text my="4" ml="2">
+          <Text my="2" ml="2">
             {attributes.text}
           </Text>
         </Flex>
       )}
       {attributes.sectionType === LIST_STRING && (
-        <List styleType="disc" my="2rem">
+        <List styleType="disc" my="1rem">
           {attributes.list.map((item, i) => (
             <ListItem key={i}>{item}</ListItem>
           ))}

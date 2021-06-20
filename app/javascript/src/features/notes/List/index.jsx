@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Text, Icon } from "@common/ui";
-import { useHistory } from "react-router-dom";
-import NoteSection from "./NoteSection";
-import { editNoteUrl } from "@utils/app/urlHelpers";
-import ConfirmDeleteModal from "@common/components/ConfirmDeleteModal";
-import notesApi from "@features/notes/api";
+import { Flex, Text, Icon, Box } from "@common/ui";
+import Note from "./Note";
+import { node } from "prop-types";
 
 const SUBSTRACT = "substract";
 const INCREMENT = "increment";
@@ -13,21 +10,17 @@ const NoteList = ({ notes }) => {
   const notesIncluded = notes?.included ?? [];
   const missions = notesIncluded.filter((inc) => inc.type === "missions");
   const notesSections = notesIncluded.filter((inc) => inc.type === "note_sections");
-  const history = useHistory();
 
   const [index, setIndex] = useState(0);
   const [selectedMission, setSelectedMission] = useState(null);
-  const [selectedNotesSections, setSelectedNotesSections] = useState([]);
-  const [selectedNote, setSelectedNote] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedNotes, setSelectedNotes] = useState([]);
 
   useEffect(() => {
     setSelectedMission(missions[index]);
   }, [missions]);
 
   useEffect(() => {
-    setSelectedNotesSections(notesSections.filter((section) => section.attributes.missionId == selectedMission.id));
-    setSelectedNote(notes?.data?.filter((note) => note.attributes.missionId == selectedMission.id)[0]);
+    setSelectedNotes(notes?.data?.filter((note) => note.attributes.missionId == selectedMission.id) || []);
   }, [selectedMission]);
 
   const handleMissionChange = (operation) => {
@@ -41,49 +34,38 @@ const NoteList = ({ notes }) => {
     }
     setIndex(newIndex);
     setSelectedMission(missions[newIndex]);
-    setSelectedNotesSections(notesSections.filter((section) => section.attributes.missionId == missions[newIndex].id));
-    setSelectedNote(notes?.data?.filter((note) => note.attributes.missionId == missions[newIndex].id)[0]);
-  };
-
-  const onDeleteConfirm = async () => {
-    await notesApi.destroy(selectedNote.id);
-    location.reload();
   };
 
   return (
     <>
       {missions.length > 0 && (
-        <Flex alignItems="center" justifyContent="space-between" px="200px" my="5">
-          <Icon className="cursor-pointer" name="chevron-left" size="40px" onClick={() => handleMissionChange(SUBSTRACT)} />
-          <Flex alignItems="center">
-            <Text>{missions?.[index]?.attributes?.name || ""}</Text>
-            {selectedNote && (
-              <>
-                <Icon
-                  name="edit"
-                  ml="4"
-                  className="cursor-pointer"
-                  onClick={() =>
-                    history.push(editNoteUrl(selectedNote.id), { note: selectedNote, sections: selectedNotesSections })
-                  }
-                />
-                <Icon name="delete" ml="4" className="cursor-pointer" onClick={() => setShowDeleteModal(true)} />
-              </>
-            )}
+        <>
+          <Flex alignItems="center" justifyContent="space-between" px="200px" my="5">
+            <Icon
+              className={index === 0 ? "" : "cursor-pointer"}
+              name="chevron-left"
+              size="40px"
+              opacity={index === 0 ? "0.5" : 1}
+              onClick={() => handleMissionChange(SUBSTRACT)}
+            />
+            <Flex alignItems="center">
+              <Text>{missions?.[index]?.attributes?.name || ""}</Text>
+            </Flex>
+            <Icon
+              className={index === missions.length - 1 ? "" : "cursor-pointer"}
+              name="chevron-right"
+              size="40px"
+              opacity={index === missions.length - 1 ? "0.5" : 1}
+              onClick={() => handleMissionChange(INCREMENT)}
+            />
           </Flex>
-          <Icon className="cursor-pointer" name="chevron-right" size="40px" onClick={() => handleMissionChange(INCREMENT)} />
-        </Flex>
+          <Box>
+            {selectedNotes.map((note) => (
+              <Note key={note.id} note={note} notesSections={notesSections} />
+            ))}
+          </Box>
+        </>
       )}
-
-      {selectedNotesSections.map((section, i) => {
-        return <NoteSection section={section} key={i} />;
-      })}
-      <ConfirmDeleteModal
-        header={"¿Seguro que quieres borrar la nota?"}
-        isOpen={showDeleteModal}
-        setIsOpen={setShowDeleteModal}
-        onDeleteConfirm={onDeleteConfirm}
-      />
     </>
   );
 };

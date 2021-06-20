@@ -13,6 +13,7 @@ class Club < ApplicationRecord
   has_many :users, through: :clubs_users_roles
 
   has_many :missions, dependent: :destroy
+  has_many :notes, through: :missions
 
   has_many :invitations, dependent: :destroy
 
